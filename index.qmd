@@ -2,6 +2,12 @@
 title: "Metagenomics bioinformatics at MGnify (2023)"
 ---
 
+::: {.callout-caution}
+## This is a draft
+
+These notes are being written currently. The content will change and be expanded upon in the lead up to the course.
+:::
+
 This is the course material for the [Metagenomics bioinformatics at MGnify course (2023)](https://www.ebi.ac.uk/training/events/metagenomics-bioinformatics-1).
 
 # Overview
