@@ -1,5 +1,7 @@
 project:
   type: website
+  resources: 
+    - "CNAME"
 
 website:
   title: "Metagenomics bioinformatics at MGnify (2023)"
