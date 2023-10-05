@@ -57,12 +57,12 @@ task edit-notebooks
 ::: {.callout-note}
 # The notebook has coloured boxes to indicate relevant steps in the analysis or to introduce material for discussion
 **Yellow boxes:**  
-- Up to you: To re-run the analysis changing parameters  
-- Questions: For open discussion  
+* Up to you: To re-run the analysis changing parameters  
+* Questions: For open discussion  
 
 **Blue boxes:**  
-- Notes: Informative boxes about the running command  
-- Tips: Information useful for results interpretation  
+* Notes: Informative boxes about the running command  
+* Tips: Information useful for results interpretation  
 :::
 
 ::: {.callout-step .callout-tip}
