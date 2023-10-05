@@ -1,0 +1,77 @@
+---
+title: "Comparative metagenomics"
+date: 2023-10-05
+license: "Apache 2.0"
+author:
+  - name: Alejandra Escobar
+    orcid: 0000-0003-3549-9115
+    email: ales@ebi.ac.uk
+    affiliation: 
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+  - name: Christian Atallah
+    orcid: 0000-0002-4853-4189
+    email: chrisata@ebi.ac.uk
+    affiliation: 
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+---
+
+*************************
+Comparative metagenomics 
+*************************
+
+Normalization methods, alpha & beta diversity, and differentially abundant features
+###################################################################################
+
+In this practical session, we aim to demonstrate how the MGnifyR tool can be used to fetch data and metadata of a MGnify metagenomic analyisis. Then we show diversity metrics calculus and two methods to identify differentially abundant features using taxonomic and functional profiles generated through the MGnify v5.0 pipeline for metagenomic assemblies, as shown in the workflow schema below.
+
+The dataset is the TARA ocean metagenomic study (WMS) corresponding to size fractions for prokaryotes `MGYS00002008. <https://www.ebi.ac.uk/metagenomics/studies/MGYS00002008#overview>`_ Find more information about the `TARA Ocean Project. <https://fondationtaraocean.org/en/expedition/tara-oceans/>`_
+
+:::{figure}
+   image: https://www.ebi.ac.uk/metagenomics/static/5e55649e459d5f26ee6c.png
+   alt: Alt Text
+   width: 800px
+   caption: Mgnify assembly analysis pipeline v5.0
+:::
+
+MGnifyR <https://rdrr.io/github/beadyallen/MGnifyR/f/doc/MGnifyR.Rmd>_ is a library that provides a set of tools for easily accessing and processing MGnify data in R, making queries to MGnify databases through the MGnify API. The benefits of MGnifyR are that data can either be fetched in tsv format or be directly combined in a phyloseq object to run an analysis in a custom workflow.
+
+The exercises are organized in 5 main sections:
+
+1. Fetching data and preprocessing
+2. Normalization, alpha diversity indices and taxonomic profiles visualization
+3. Comparative metagenomics at community level: Beta diversity
+4. Detection of differentially abundant taxa (SIAMCAT)
+5. Detection of differentially abundant functions (Aldex2)
+
+###########################################
+
+The practice has been prepared in a Jupyter Notebook available in the `MGnify Notebooks Github repo <https://github.com/EBI-Metagenomics/notebooks>`_.
+
+|action| Open a new Terminal and type the following commands:
+
+.. code-block:: bash
+# Run
+```bash
+cd ~/mgnify-notebooks
+task edit-notebooks
+```
+    
+|action| Find and open the 'comparative_practice_2023' notebook in the 'R examples' directory 
+
+|info| The notebook has colored boxes to indicate relevant steps in the analysis or to introduce material for discussion.
+
+Yellow boxes:
+	* Up to you: To re-run the analysis changing parameters
+	* Questions: For open discussion
+
+Blue boxes:
+	* Notes: Informative boxes about the running command
+	* Tips: Information useful for results interpretation
+
+|info| To leave the notebook, you can save the changes and close the window. Type CTRL+C to terminate the process at the terminal.
+
+
+
+
