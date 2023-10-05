@@ -31,7 +31,7 @@ The dataset is the TARA ocean metagenomic study (WMS) corresponding to size frac
    caption: Mgnify assembly analysis pipeline v5.0
 :::
 
-[MGnifyR](https://rdrr.io/github/beadyallen/MGnifyR/f/doc/MGnifyR.Rmd) is a library that provides a set of tools for easily accessing and processing MGnify data in R, making queries to MGnify databases through the MGnify API. The benefits of MGnifyR are that data can either be fetched in tsv format or be directly combined in a phyloseq object to run an analysis in a custom workflow.
+[MGnifyR](https://rdrr.io/github/beadyallen/MGnifyR/f/doc/MGnifyR.Rmd) is a library that provides a set of tools for easily accessing and processing MGnify data in R, making queries to MGnify databases through the MGnify API. The benefits of MGnifyR are that data can either be fetched in TSV format or be directly combined in a phyloseq object to run an analysis in a custom workflow.
 
 The exercises are organized into 5 main sections:
 
