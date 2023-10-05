@@ -1,0 +1,73 @@
+---
+title: "MAG Catalogues"
+date: 2023-10-05
+license: "Apache 2.0"
+author:
+  - name: Sandy Rogers
+    orcid: 0000-0002-4283-6135
+    email: sandyr@ebi.ac.uk
+    affiliation: 
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+---
+
+# MAG Catalogues as a resource
+
+MAGs [^magdef] are an approach to deriving genome-resolved information from metagenomic datasets.
+
+[^magdef]: Metagenome Assembled Genomes
+
+[MGnify's MAG Catalogues](https://www.ebi.ac.uk/metagenomics/browse/genomes) are **biome-specific, clustered, annotated collections** of MAGs. Biomes are selected on the grounds of data availability, community interest, and project objectives.
+
+## Practical 1: finding MAGs by taxonomy on the [MGnify website](https://www.ebi.ac.uk/metagenomics/browse/genomes)
+
+::: {.callout-step .callout-tip}
+# Search the MGnify website
+Search the [All genomes list](https://www.ebi.ac.uk/metagenomics/browse/genomes?browse-by=search-all) for the genus _`Jonquetella`_
+:::
+
+::: {.callout-question .callout-tip}
+In which catalogues is that genus found?
+
+What do thise biomes have in common, and how does this align with the species found? [^anthropi]
+:::
+
+[^anthropi]: Hint... what does `anthropi` in the species _`J. anthropi`_ derive from?
+
+Now, we want to get a FASTA sequence for this genus.
+
+::: {.callout-step .callout-tip}
+# Find the "best" MAG
+Using what we've learned about QC on the course, look at the detail statistics of the _Jonquetella_ MAGs.
+Which one is best? [^qc]
+:::
+
+::: {.callout-step .callout-tip}
+# Download the DNA sequence FASTA file of the "best" MAG
+We will use it later.
+:::
+
+[^qc]: Hint... each MAG's detail page overview tab shows stats including completeness, contamination, and N~50~.
+
+
+
+## Practical 2: query [MGnify catalogues](https://www.ebi.ac.uk/metagenomics/browse/genomes) using sourmash
+[Sourmash](https://sourmash.readthedocs.io/en/latest/) is a tool to compare DNA sequences against each other.
+The MGnify Genomes resource uses the sourmash library to create sketches (hashes) of every genome in every catalogues.
+You can query this index using your own sequences (typically MAGs you have retrieved from elsewhere or assembled yourself).
+
+
+::: {.callout-step .callout-tip}
+# Query the catalogues using the _Jonquetella_ MAG
+Use the MAG sequence FASTA file you earlier retrieved. [^magdl]
+:::
+
+[^magdl]: If you got lost earlier, download it from [MGYG000304175.fna](https://www.ebi.ac.uk/metagenomics/api/v1/genomes/MGYG000304175/downloads/MGYG000304175.fna)
+
+::: {.callout-question .callout-tip}
+In which catalogues is a match found for that query genome?
+
+What use cases can you think of for this kind of cross-catalogue search? [^serviceusecase]
+:::
+
+[^serviceusecase]: There are interesting use cases for researchers (checking which environments a species is found in, checking whether a newly assembled genome is novel etc), as well as use cases for services like MGnify (cross-linking genomes between catalogues where those datasets are not clustered together).
