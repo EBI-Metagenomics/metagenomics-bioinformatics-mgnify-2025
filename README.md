@@ -5,6 +5,8 @@ To edit the materials, you can just add/edit Markdown files (using normal markdo
 
 To preview your changes, you need to [install Quarto](https://quarto.org/docs/get-started/).
 
+And run `quarto preview .` in this directory.
+
 ### Converting older materials
 If you're converting materials from RST format in earlier year's courses, you might find the following prompt helpful for your LLM of choice:
 
