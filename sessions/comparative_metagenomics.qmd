@@ -24,7 +24,7 @@ In this practical session, we aim to demonstrate how the MGnifyR tool can be use
 
 The dataset is the TARA ocean metagenomic study (WMS) corresponding to size fractions for prokaryotes [MGYS00002008](https://www.ebi.ac.uk/metagenomics/studies/MGYS00002008#overview). Find more information about the [TARA Ocean Project](https://fondationtaraocean.org/en/expedition/tara-oceans/).
 
-:::{figure}
+::: {figure}
    image: https://www.ebi.ac.uk/metagenomics/static/5e55649e459d5f26ee6c.png
    alt: Alt Text
    width: 800px
@@ -61,13 +61,13 @@ task edit-notebooks
 
 ::: {.callout-note}
 # The notebook has colored boxes to indicate relevant steps in the analysis or to introduce material for discussion
-Yellow boxes:
-	* Up to you: To re-run the analysis changing parameters
-	* Questions: For open discussion
+**Yellow boxes:**
+- Up to you: To re-run the analysis changing parameters
+- Questions: For open discussion
 
-Blue boxes:
-	* Notes: Informative boxes about the running command
-	* Tips: Information useful for results interpretation
+**Blue boxes:**
+- Notes: Informative boxes about the running command
+- Tips: Information useful for results interpretation
 :::
 
 ::: {.callout-step .callout-tip}
