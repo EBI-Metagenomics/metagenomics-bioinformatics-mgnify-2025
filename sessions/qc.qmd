@@ -373,6 +373,57 @@ cd /opt/data/skin
 ```
 :::
 
+Running the practical externally
+---------------------------------
+
+We need to first fetch the practical datasets.
+
+```bash
+    wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
+    or
+    rsync -av --partial --progress rsync://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz .
+```
+
+Once downloaded, extract the files from the tarball:
 
 
+```bash
+    tar -xzvf quality.tar.gz
+```
+
+We also need the trimmomatic binary
+
+```bash
+    cd quality
+    wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip
+    unzip Trimmomatic-0.39.zip
+    cd ..
+```
+
+Now pull the docker container and set the above quality directory as DATADIR.
+
+
+```bash
+    docker pull microbiomeinformatics/biata-qc-assembly:v2021
+    export DATADIR={path to quality directory}
+    xhost +
+```
+
+You will see the message "access control disabled, clients can connect from any host"
+
+
+
+```bash
+    docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY microbiomeinformatics/biata-qc-assembly:v2021
+```
+
+The container has the following tools installed:
+- kneaddata
+- fastqc
+- multiqc
+- blast
+- bowtie-2
+
+
+You can now continue this practical from the section "Quality control and filtering of the raw sequence files"
 
