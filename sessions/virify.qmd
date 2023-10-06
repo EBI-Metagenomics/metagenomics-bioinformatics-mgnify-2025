@@ -171,7 +171,7 @@ First, we are going to generate a tabular file that lists the taxonomic annotati
 Next, we will take the tabular annotation files generated and use them to create the viral contig gene maps:
 
 ```bash
-    for file in $(find exp_results/ -name '*annotation.tsv' -type f); do Make_viral_contig_map.R -t ${file} -o ${file%/*}; done
+    for file in $(find obs_results/ -name '*annotation.tsv' -type f); do Make_viral_contig_map.R -t ${file} -o ${file%/*}; done
 ```
 :::
 
