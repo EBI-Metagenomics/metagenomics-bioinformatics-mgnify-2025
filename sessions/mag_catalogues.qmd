@@ -88,7 +88,8 @@ To open it on your training VM:
 
 ```bash
 cd ~/mgnify-notebooks
-git switch comparative_practice_2023
+git status
+# make sure you're on the "comparative_practice_2023" branch
 task edit-notebooks
 ```
 
