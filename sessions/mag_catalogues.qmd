@@ -52,6 +52,7 @@ We will use it later.
 
 
 ## Practical 2: query [MGnify catalogues](https://www.ebi.ac.uk/metagenomics/browse/genomes) using sourmash
+
 [Sourmash](https://sourmash.readthedocs.io/en/latest/) is a tool to compare DNA sequences against each other.
 The MGnify Genomes resource uses the sourmash library to create sketches (hashes) of every genome in every catalogues.
 You can query this index using your own sequences (typically MAGs you have retrieved from elsewhere or assembled yourself).
@@ -71,3 +72,26 @@ What use cases can you think of for this kind of cross-catalogue search? [^servi
 :::
 
 [^serviceusecase]: There are interesting use cases for researchers (checking which environments a species is found in, checking whether a newly assembled genome is novel etc), as well as use cases for services like MGnify (cross-linking genomes between catalogues where those datasets are not clustered together).
+
+
+
+
+## Practical 3: query [MGnify catalogues](https://www.ebi.ac.uk/metagenomics/browse/genomes) using sourmash, programmatically
+
+The MGnify website is just a **client** of the MGnify API [^api].
+
+[^api]: Application Programming Interface
+
+For this part of the practical, there is a Jupyter Notebook you can follow along and try to complete the code blocks.
+
+To open it on your training VM:
+
+```bash
+cd ~/mgnify-notebooks
+git switch comparative_practice_2023
+task edit-notebooks
+```
+
+::: {.callout-step .callout-tip}
+# Find and open the 'Search MGnify Genomes (course practical 2023)' notebook in the 'Python examples' directory.
+:::
