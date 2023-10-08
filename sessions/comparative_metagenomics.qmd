@@ -46,7 +46,10 @@ The practice has been prepared in a Jupyter Notebook available in the [MGnify No
 # To access the notebook open a terminal and run the following commands:
 ```bash
 cd ~/mgnify-notebooks
-git switch comparative_practice_2023 --discard-changes
+sudo chown -R training .
+git stash --all
+git pull
+git switch comparative_practice_2023
 task edit-notebooks
 ```
 :::
