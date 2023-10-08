@@ -21,6 +21,7 @@ To begin the practical we need to setup our docker container.
 Change into the **virify_tutorial** directory and setup the environment by running the following commands in your current terminal session:
 
 ```bash
+    cp -r /media/penelopeCloud/virify_tutorial /home/training
     cd /home/training/virify_tutorial
     docker pull quay.io/microbiome-informatics/2023-metagenomics-course-virify:1.0
     docker run --rm -it -v $(pwd):/opt/data quay.io/microbiome-informatics/2023-metagenomics-course-virify:1.0
