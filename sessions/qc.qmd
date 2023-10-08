@@ -30,7 +30,7 @@ chmod -R 777 /home/training/quality
 export DATADIR=/home/training/quality
 xhost +
 ```
-
+You will get the message "access control disabled, clients can connect from any host"
 Now start the Docker container:
 
 ```bash
@@ -66,6 +66,7 @@ fastqc oral_human_example_1_splitaa.fastq.gz
 fastqc oral_human_example_2_splitaa.fastq.gz
 mv *.zip fastqc_results
 mv *.html fastqc_results
+chown 1001 fastqc_results/*.html
 ```
 :::
 
@@ -122,6 +123,7 @@ We are currently only looking at two files, but often we want to look at many fi
 cd /opt/data
 mkdir multiqc_results
 multiqc fastqc_results -o multiqc_results
+chown 1001 multiqc_results/*.html
 ```
 :::
 
@@ -173,7 +175,7 @@ bowtie2-build GRCh38_phix.fasta GRCh38_phix.index
 ```
 :::
 
-It is possible to automatically download a pre-indexed human genome in Bowtie2 format using the following command (but do not do this now, as this will take a while to download):
+It is possible to automatically download a pre-indexed human genome in Bowtie2 format using the following command (but DO NOT do this now, as this will take a while to download):
 
 > kneaddata_database --download human_genome bowtie2
 
@@ -191,7 +193,7 @@ mkdir clean
 We now need to uncompress the fastq files.
 
 ::: {.callout-step .callout-tip}
-# Compress
+# Uncompress
 ```bash
 gunzip -c oral_human_example_2_splitaa.fastq.gz > oral_human_example_2_splitaa.fastq
 gunzip -c oral_human_example_1_splitaa.fastq.gz > oral_human_example_1_splitaa.fastq
@@ -222,17 +224,19 @@ mkdir fastqc_final
 <you construct the commands>
 mv /opt/data/clean/*.zip /opt/data/clean/fastqc_final
 mv /opt/data/clean/*.html /opt/data/clean/fastqc_final
+chown 1001 /opt/data/clean/fastqc_final/*.html
 ```
 :::
 
 ::: {.callout-step .callout-tip}
 # Run multiQC
-**Also generate a multiQC report and look at the sequence quality histograms.**
+**Also generate a multiQC report. Send the output to the folder multiqc_final and look at the sequence quality histograms.**
 
 ```bash
 cd /opt/data/clean/
 mkdir multiqc_final
 <you construct the command>
+chown 1001 /opt/data/clean/multiqc_final/*.html
 ```
 :::
 
@@ -334,7 +338,7 @@ Using Negative Controls
 This exercise will look at the analysis of negative controls. You will assess the microbial diversity between a negative control and a skin sample.
 :::
 
-The images below show the taxonomic classification of two samples: a reagent negative control and a skin metagenomic sample. The skin sample is taken from the antecubital fossa - the elbow crease, which is moist and site of high microbial diversity. The classification was performed with kraken2. Kraken2 takes a while to run, so we have done this for you and plotted the results. An example of the command used to do this:
+The images below show the taxonomic classification of two samples: a reagent negative control and a skin metagenomic sample. The skin sample is taken from the antecubital fossa - the elbow crease, which is moist and site of high microbial diversity. The classification was performed with kraken2. Kraken2 takes a while to run, so we have done this for you and plotted the results. An example of the command used to do this. DO NOT run this now:
 
 > `kraken2 --db standard_db --threshold 0.10 --threads 8 --use-names --fastq-input --report out.report --gzip-compressed in_1.fastq.gz in_2.fastq.gz`
 See the [kraken2 manual](https://github.com/DerrickWood/kraken2/wiki/Manual) for more information
@@ -366,12 +370,19 @@ Consider other [trimmomatic options from the manual](http://www.usadellab.org/cm
 :::
 
 ::: {.callout-step .callout-tip}
-# Navigate to skin folder and run quality control
+# Navigate to skin folder and run quality control.
 ```bash
 cd /opt/data/skin
 <construct the required commands>
 ```
 :::
+
+Remember you will need to run the following command to view any html files in the VM browsers:
+
+```bash
+chown 1001 foldername/*.html
+```
+
 
 Running the practical externally
 ---------------------------------
