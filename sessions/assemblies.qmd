@@ -67,31 +67,50 @@ for all steps in the respective ".bak" folders.
 
 # Short-reads assemblies: metaSPAdes
 For short reads, we will use SPAdes - St. Petersburg genome assembler 
-(https://github.com/ablab/spades). Different pipelines are provided within
-this suite. For metagenomic data, we will explore metaSPAdes.
+(https://github.com/ablab/spades), a suite of assembling tools containing
+different assembly pipelines. For metagenomic data, we will explore metaSPAdes.
 metaSPAdes offers many options that fit your preferences differently,
 mostly depending on the type of data you are willing to assemble.
 To explore them, type `metaspades.py -h`. Bear in mind that options will 
 differ when selecting different tools (e.g. spades.py).
 
 :::{.callout-step .callout-tip}
-To run metaspades without error correction, execute the following commands:
+The default metaSPAdes pipeline executes an error correction step on the 
+input fastqs. To run metaspades without the error correction step, execute 
+the following commands:
+
 ```bash
 mkdir assembly_spades
 metaspades.py -t 4 --only-assembler -m 10 -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o spades_out
+```
 :::
 
+:::{.callout-note}
+The execution will take up to 20 minutes.
+:::
+
+Once the assembly has completed, you will see plenty of files, including
+intermediate ones, in the `assembly_spades` folder. `contigs.fasta` and 
+`scaffolds.fasta` are the ones you are usually interested into (also for 
+downstream analyses like binning and MAG generation). We will focus on 
+`contigs.fasta` for this session, which is the same you are going to use
+in the coming practicals. Contigs are ordered from the longest assembled
+to the shortest. You can already try to infer the strongest taxonomic 
+signal at this stage with a quick blastn alignment.
 
 :::{.callout-step .callout-tip}
-For this, take the first 40 lines of the sequence and perform a blast search
+Take the first 100 lines of the sequence and perform a blast search
 at NCBI (https://blast.ncbi.nlm.nih.gov/Blast.cgi, choose
 Nucleotide:Nucleotide from the set of options). Leave all other options
-as default on the search page. To select the first 40 lines of the assembly
+as default on the search page. To select the first 100 lines of the assembly
 perform the following:
 
 ```bash
-head -41 assembly.bak/contigs.fasta
+head -n 101 assembly.bak/contigs.fasta
 ```
+
+The resulting output is going to look similar to this:
+![BlastN](assembly/blast.png)
 :::
 
 :::{.callout-question .callout-tip}
