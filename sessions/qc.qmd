@@ -1,5 +1,6 @@
 ---
 title: "Quality control and filtering of the raw sequence files"
+order: 1
 date: 2023-08-30
 license: "Apache 2.0"
 author:

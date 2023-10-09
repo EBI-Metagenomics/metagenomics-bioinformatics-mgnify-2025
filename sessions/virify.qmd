@@ -2,6 +2,7 @@
 title: "Viral detection and classification"
 date: 2023-10-05
 license: "Apache 2.0"
+order: 2.5
 author:
   - name: Varsha Kale
     orcid: 0000-0002-3503-6383
