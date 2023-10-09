@@ -1,6 +1,5 @@
 ---
 title: "Assemblies and Co-assemblies"
-order: 2
 date: 2023-10-10
 license: "Apache 2.0"
 author:
@@ -18,29 +17,72 @@ author:
         url: www.ebi.ac.uk
 ---
 
-Assembling data
-===============
-
-- What constitutes a good assembly?
-- How to estimate assembly quality
-- Co-assembly
-
 Assembly and Co-assembly of Metagenomic Raw Reads
 --------------------------------------------------
 
-Learning Objectives - in the following exercises you will learn how to perform a metagenomic assembly and to start some basic analysis of the output. Subsequently, we will demonstrate the application of co-assembly. Note, due to the complexity of metagenomics assembly, we will only be investigating very simple example datasets as these often take days of CPU time and 100s of GB of memory. Thus, do not think that there is an issue with the assemblies.
+#Learning Objectives
 
-Once you have quality filtered your sequencing reads, you may want to perform *de novo* assembly in addition to, or
-as an alternative to a read-based analyses. The first step is to
+In the following exercises you will learn how to perform a 
+metagenomic assembly and to start some basic analysis of the output. Subsequently, 
+we will demonstrate the application of co-assembly. 
+
+::: {.callout-note}
+The process of metagenomics assembly can take hours, if not days, to complete on a 
+normal sample, as it often requires days of CPU time and 100s of GB of memory. In
+this practical, we will only be investigating very simple example datasets. Thus, 
+do not think that there is an issue with the assemblies.
+:::
+
+Once you have quality filtered your sequencing reads, you may want 
+to perform *de novo* assembly in addition to, or as an
+alternative to read-based analyses. The first step is to
 assemble your sequences into contigs. There are many tools available for
 this, such as MetaVelvet, metaSPAdes, IDBA-UD, MEGAHIT. We generally use
 metaSPAdes, as in most cases it yields the best contig size statistics
 (i.e. more continguous assembly) and has been shown to be able to
-capture high degrees of community diversity (Vollmers, et al. PLOS One 2017). However, you should consider the pros and cons of different assemblers, which not only includes the accuracy of the assembly, but also their computational overhead. Compare these factors to what you have available. For example, very diverse samples with a lot of sequence data uses a lot of memory with SPAdes. In the following practicals we will demonstrate the use of metaSPAdes on a small short-read sample, Flye on a long-read sample, and MEGAHIT to perform co-assembly.
+capture high degrees of community diversity (Vollmers, et al. PLOS One 2017). 
+However, you should consider the pros and cons of different assemblers, 
+which not only includes the accuracy of the assembly, but also their 
+computational overhead. Compare these factors to what you have available. 
+For example, very diverse samples with a lot of sequence data (e.g. samples 
+from the soil) uses a lot of memory with SPAdes. In the following practicals 
+we will demonstrate the use of **metaSPAdes** on a small short-read sample, 
+**Flye** on a long-read sample, and **MEGAHIT** to perform co-assembly.
+
+# Before we start...
+
+Let’s first change to the working directory where we will be running all 
+the analyses:
+
+```bash
+cd /home/training/Assembly/
+```
+
+You will find all inputs needed for assemblies in the `reads` folder. 
+
+:::{.callout-note}
+If anything goes wrong during the practical, you will find assembly backups 
+for all steps in the respective ".bak" folders. 
+:::
+
+# Short-reads assemblies: metaSPAdes
+For short reads, we will use SPAdes - St. Petersburg genome assembler 
+(https://github.com/ablab/spades). Different pipelines are provided within
+this suite. For metagenomic data, we will explore metaSPAdes.
+metaSPAdes offers many options that fit your preferences differently,
+mostly depending on the type of data you are willing to assemble.
+To explore them, type `metaspades.py -h`. Bear in mind that options will 
+differ when selecting different tools (e.g. spades.py).
 
 :::{.callout-step .callout-tip}
-Since the assembly process would take ~1h we are just going to analyse the output present in "assembly.bak". Let's look at the "contigs.fasta" file.  
+To run metaspades without error correction, execute the following commands:
+```bash
+mkdir assembly_spades
+metaspades.py -t 4 --only-assembler -m 10 -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o spades_out
+:::
 
+
+:::{.callout-step .callout-tip}
 For this, take the first 40 lines of the sequence and perform a blast search
 at NCBI (https://blast.ncbi.nlm.nih.gov/Blast.cgi, choose
 Nucleotide:Nucleotide from the set of options). Leave all other options
