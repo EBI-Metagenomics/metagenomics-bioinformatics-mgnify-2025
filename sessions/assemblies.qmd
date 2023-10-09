@@ -20,28 +20,26 @@ author:
 
 # Learning Objectives
 
-In the following exercises you will learn how to perform a 
-metagenomic assembly and to start some basic analysis of the output. Subsequently, 
-we will demonstrate the application of co-assembly. We will shortly observe assembly 
+In the following exercises you will learn how to perform metagenomic assembly 
+and co-assembly, and to start exploring the output. We will shortly observe assembly 
 graphs with `Bandage`, peek into assembly statistics with `assembly_stats`, and 
 align contig files against the BLAST database.
 
 ::: {.callout-note}
-The process of metagenomics assembly can take hours, if not days, to complete on a 
+The process of metagenomic assembly can take hours, if not days, to complete on a 
 normal sample, as it often requires days of CPU time and 100s of GB of memory. In
-this practical, we will only be investigating very simple example datasets. Thus, 
-do not think that there is an issue with the assemblies.
+this practical, we will only be investigating very simple example datasets. 
 :::
 
 Once you have quality filtered your sequencing reads, you may want 
 to perform *de novo* assembly in addition to, or as an
 alternative to read-based analyses. The first step is to
 assemble your sequences into contigs. There are many tools available for
-this, such as MetaVelvet, metaSPAdes, IDBA-UD, MEGAHIT. We generally use
+this, such as MetaVelvet, metaSPAdes, IDBA-UD, or MEGAHIT. We generally use
 metaSPAdes, as in most cases it yields the best contig size statistics
-(i.e. more continguous assembly) and has been shown to be able to
+(i.e. more continguous assembly), and it has been shown to be able to
 capture high degrees of community diversity (Vollmers, et al. PLOS One 2017). 
-However, you should consider the pros and cons of different assemblers, 
+However, you should consider pros and cons of different assemblers, 
 which not only includes the accuracy of the assembly, but also their 
 computational overhead. Compare these factors to what you have available. 
 For example, very diverse samples with a lot of sequence data (e.g. samples 
@@ -51,8 +49,7 @@ we will demonstrate the use of **metaSPAdes** on a small short-read sample,
 
 # Before we start...
 
-Let’s first change to the working directory where we will be running all 
-the analyses:
+Let’s first move to the root working directory to run all analyses:
 
 ```bash
 cd /home/training/Assembly/
@@ -66,7 +63,7 @@ for all steps in the respective ".bak" folders.
 :::
 
 # Short-reads assemblies: metaSPAdes
-For short reads, we will use SPAdes - St. Petersburg genome assembler 
+For short reads, we will use SPAdes - St. Petersburg genome Assembler 
 (https://github.com/ablab/spades), a suite of assembling tools containing
 different assembly pipelines. For metagenomic data, we will explore metaSPAdes.
 metaSPAdes offers many options that fit your preferences differently,
@@ -87,7 +84,7 @@ metaspades.py -t 4 --only-assembler -m 10 -1 reads/oral_human_example_1_splitaa_
 :::
 
 :::{.callout-note}
-The execution will take up to 20 minutes.
+The execution will take up to 20 minutes. Grab a coffee or read through the materials!
 :::
 
 Once the assembly has completed, you will see plenty of files, including
@@ -110,7 +107,7 @@ perform the following:
 head -n 101 assembly.bak/contigs.fasta
 ```
 
-The resulting output is going to look similar to this:
+The resulting output is going to look like this:
 ![Blast-n](blast.png)
 :::
 
@@ -121,18 +118,18 @@ result at all?
 :::
 
 As mentioned in the theory talk, you might be interested in different 
-types of statistics for your contigs file. `assembly_stats` is a tool that
+statistics for your contigs file. `assembly_stats` is a tool that
 produces two simple tables in JSON format with various measures, including
-N10 to N50, GC content, longest contig and more. The first section 
-corresponds to the scaffolds in the assembly, while the second corresponds 
-to the contigs.
+N10 to N50, GC content, longest contig length and more. The first section 
+of the JSON corresponds to the scaffolds in the assembly, while the second 
+corresponds to the contigs.
 
 N50 is a measure to describe the quality of assembled genomes
 that are fragmented in contigs of different length.  We can apply this
 with some caution to metagenomes, where we can use it to crudely assess
-the contig length that covers 50% of the total assembly.  Essentially
+the contig length covering 50% of the total assembly. Essentially,
 the longer the better, but this only makes sense when thinking about
-alike metagenomes. Note, N10 is the minimum contig length to cover 10
+alike metagenomes. Note that N10 is the minimum contig length to cover 10
 percent of the metagenome. 
 
 :::{.callout-step .callout-tip}
@@ -192,21 +189,22 @@ genome. Note, you can install Bandage on your local system. With
 Bandage, you can zoom and pan around the graph and search for sequences,
 and much more.
 
-Wnen looking at metaSPAdes output, it is usually recommended to 
+When looking at metaSPAdes output, it is usually recommended to 
 launch Bandage on `assembly_graph.fastg`. However, our assembly is 
 quite fragmented, so we will load `assembly_graph_after_simplification.gfa`.
 
-We will use Bandage to compare the two assemblies we have generated.
+We will use Bandage to compare the two assemblies we have generated, Flye and
+metaSPAdes.
 
 :::{.callout-step .callout-tip}
 ```bash
 Bandage
 ```
 
-In the Bandage GUI perform the following
+In the Bandage GUI perform the following:
 
 - Select File -> Load graph
-- Navigate to Home/training/Data/Assembly -> assembly.bak and open `assembly_graph_after_simplification.gfa`
+- Navigate to Home/training/Data/Assembly/assembly.bak and open `assembly_graph_after_simplification.gfa`
 
 Once loaded, you need to draw the graph. To do so, under the “Graph
 drawing” panel on the left side perform the following:
@@ -244,7 +242,7 @@ metadata you find on ENA?
 In the following steps of this exercise, we will perform co-assembly of multiple 
 datasets. The first execution requires around 6-7 minutes to finish, the 
 general suggestion is to run the first intruction and then rely on files in
-the **coassembly** directory, which contains all expected results.
+the **coassembly.bak** directory, which contains all expected results.
 
 :::{.callout-step .callout-tip}
 First, make sure that output directories do not already exist, as MEGAHIT 
@@ -252,13 +250,13 @@ can't overwrite existing directories. Bear in mind that backup assemblies
 for this exercise are in:
 
 ```bash
-cd /home/training/Assembly/coassembly.bak
+ls /home/training/Assembly/coassembly.bak
 ```
 
-Then, perform co-assemblies with MEGAHIT, as follows:
+You can perform co-assemblies with MEGAHIT as follows:
 
 ```bash
-megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o  assembly1_new -t 4 --k-list 23,51,77 
+megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o assembly1_new -t 4 --k-list 23,51,77 
 
 megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq -o assembly2_new -t 4 --k-list 23,51,77 
 
@@ -266,16 +264,26 @@ megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/ora
 ```
 :::
 
-You should now have three different assemblies generated from different 
+You should now have three different co-assemblies generated from different 
 subsamples of the same data.
 
 :::{.callout-step .callout-tip}
-Compare the results of contig files with `assembly_stats`. How do these 
-assemblies differ to the one generated previously with metaSPAdes? 
+Compare the results of the three contig files with `assembly_stats`. How do 
+these assemblies differ from the one generated previously with metaSPAdes? 
 Which one do you think is best?
+
+To generate assembly graphs for MEGAHIT output, execute:
+```bash
+megahit_toolkit contig2fastg 77 final.contigs.fa > final.contigs.fastg
+```
 :::
 
 # ... And now?
 If you have reached the end of the practical and have some spare time, 
 look at the paragraphs labelled "Extra". They contain optional exercises for the 
 curious student :)
+
+# ........ Yes, but now that I am really, really done?
+You could try to assemble raw reads with different assemblers or parameters, 
+and compare statistics and assembly graphs. Note, for example, that
+metaSPAdes can deal ONT data (but it will likely yield a lower quality assembly). 
