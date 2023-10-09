@@ -1,5 +1,5 @@
 ---
-title: "Assemblies and Co-assemblies"
+title: "Assembly and Co-assembly of Metagenomic Raw Reads"
 date: 2023-10-10
 license: "Apache 2.0"
 author:
@@ -16,8 +16,6 @@ author:
       - name: EMBL-EBI
         url: www.ebi.ac.uk
 ---
-
-Assembly and Co-assembly of Metagenomic Raw Reads
 --------------------------------------------------
 
 # Learning Objectives
@@ -74,7 +72,8 @@ different assembly pipelines. For metagenomic data, we will explore metaSPAdes.
 metaSPAdes offers many options that fit your preferences differently,
 mostly depending on the type of data you are willing to assemble.
 To explore them, type `metaspades.py -h`. Bear in mind that options will 
-differ when selecting different tools (e.g. spades.py).
+differ when selecting different tools (e.g. spades.py) and they should be tuned
+according to the input dataset and desired outcome.
 
 :::{.callout-step .callout-tip}
 The default metaSPAdes pipeline executes an error correction step on the 
@@ -151,20 +150,54 @@ sequences were ~150bp long paired-end sequences, what does this tell you
 about the assembly?
 :::
 
+Another tool to keep in mind for metagenomic assemblies is QUAST,
+which provides a deeper insight on assemblies statistics like indels
+and misassemblies rate in a very short time.
+
+# Long-reads assemblies: Flye
+
+For long-reads, we will use Flye (https://github.com/fenderglass/Flye), 
+which assembles single-molecule sequencing reads like PacBio and 
+Oxford Nanopore Technologies (ONT) reads. As spades, Flye is a pipeline that 
+takes care of assembly polishing. Similarly to assembly scaffolding, it tries 
+to overcome long-reads base call error by comparing different reads that cover 
+the same sequencing fragment. Flye's parameters are quickly described in the
+help command (`flye -h`).
+
+Flye supports metagenomic assemblies with the `--meta` flag.
+
 :::{.callout-step .callout-tip}
+```bash
+flye --nano-raw reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq --out-dir flye_out --threads 4
+```
+:::
+
+:::{.callout-note}
+# Extra
+Note that we are not using the `--meta` flag. If you have some spare time, 
+try to execute the same command with this flag and output folder "`LR_meta_assembly`".
+:::
+
+:::{.callout-note}
+Each execution will take around 5 minutes.
+:::
+
+Let's have a first look at how assembly graphs look like.
 Bandage (a Bioinformatics Application for Navigating De novo
-Assembly Graphs Easily), is a program that creates interactive
+Assembly Graphs Easily) is a program that creates interactive
 visualisations of assembly graphs. They can be useful for finding
-sections of the graph, such as rRNA, or to try to find parts of a
+sections of the graph, such as rRNA, or identify specific parts of a
 genome. Note, you can install Bandage on your local system. With
 Bandage, you can zoom and pan around the graph and search for sequences,
-plus much more. The following guide allows you to look at the assembly
-graph.  Normally, I would recommend looking at the ‘
-assembly_graph.fastg, but our assembly is quite fragmented, so we will
-load up the assembly_graph_after_simplification.gfa.   
+and much more.
 
-At the terminal, type 
+Wnen looking at metaSPAdes output, it is usually recommended to 
+launch Bandage on `assembly_graph.fastg`. However, our assembly is 
+quite fragmented, so we will load `assembly_graph_after_simplification.gfa`.
 
+We will use Bandage to compare the two assemblies we have generated.
+
+:::{.callout-step .callout-tip}
 ```bash
 Bandage
 ```
@@ -172,35 +205,40 @@ Bandage
 In the Bandage GUI perform the following
 
 - Select File -> Load graph
-- Navigate to Home -> training -> Data -> Assembly -> files -> assembly.bak and open the file assembly_graph_after_simplification.gfa
+- Navigate to Home/training/Data/Assembly -> assembly.bak and open `assembly_graph_after_simplification.gfa`
 
 Once loaded, you need to draw the graph. To do so, under the “Graph
 drawing” panel on the left side perform the following:
 
-- Set Scope to 'Entire graph'
-- The click on Draw graph
+- Set Scope to `Entire graph`
+- Click on `Draw graph`
 :::
 
 :::{.callout-question .callout-tip}
-Can you find any large, complex parts of the graph? If so,
-what do they look like.
-:::
-
-:::{.callout-step .callout-tip}
-For the long-reads assembly we will use Flye:
-
-```bash
-flye --nano-raw reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq --out-dir flye_out --threads 4
-```
+Can you find any large, complex parts of the metaSPAdes graph? 
+If so, what do they look like?
 :::
 
 :::{.callout-question .callout-tip}
-How do these assemblies differ to the one generated previously with metaSPAdes?
+How does the Flye assembly differ from the one generated with metaSPAdes?
 :::
+
+:::{.callout-note}
+# Extra
+We launched Flye both with and without `--meta` on file `reads/ONT_example.fastq`.
+This file actually comes from run ERR3775163, which can be browsed on ENA
+(https://www.ebi.ac.uk/ena/browser/home). Have a look at sample metadata. Can 
+you understand why, despite dealing with a metagenomic sample, the assembly graph
+looks better for the execution without the `--meta` option?
+:::
+
+# Co-assemblies: MEGAHIT
 
 :::{.callout-step .callout-tip}
 In the following steps of this exercise, we will look at
-performing co-assembly of multiple datasets. Each should take about 15-20 min. In case you do not manage to finish these on time, the directory **coassembly** contains all the expected results.
+performing co-assembly of multiple datasets.
+In case you do not manage to finish these on time, the directory **coassembly** 
+contains all the expected results.
 :::
 
 :::{.callout-step .callout-tip}
@@ -217,4 +255,21 @@ Then, perform the coassemblies with MEGAHIT, as follows:
 ```bash
 megahit -1 ../reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 ../reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o  assembly1_new -t 4 --k-list 23,51,77 
 
-megahit -1 ../reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq -2 ../reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq -o assembly2_new -
+megahit -1 ../reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq -2 ../reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq -o assembly2_new -t 4 --k-list 23,51,77 
+
+megahit -1 ../reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq,../reads/oral_human_example_1_splitac_kneaddata_paired_1.fastq -2 ../reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq,../reads/oral_human_example_1_splitac_kneaddata_paired_2.fastq -o assembly3_new -t 4 --k-list 23,51,77
+:::
+
+You should now have three different assemblies generated from different 
+subsamples of the same data.
+
+:::{.callout-step .callout-tip}
+Compare the results of contig files with `assembly_stats`. How do these 
+assemblies differ to the one generated previously with metaSPAdes? 
+Which one do you think is best?
+:::
+
+# ... And now?
+If you have reached the end of the practical and have some spare time, 
+look at the paragraphs labelled "Extra". They contain optional exercises for the 
+curious student :)
