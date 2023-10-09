@@ -79,7 +79,7 @@ the following commands:
 
 ```bash
 mkdir assembly_spades
-metaspades.py -t 4 --only-assembler -m 10 -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o spades_out
+metaspades.py -t 4 --only-assembler -m 10 -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o assembly_spades
 ```
 :::
 
@@ -166,6 +166,7 @@ for this section can be found in the `Assembly` folder, starting with "`LR`".
 
 :::{.callout-step .callout-tip}
 ```bash
+mkdir flye_out
 flye --nano-raw reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq --out-dir flye_out --threads 4
 ```
 :::
@@ -256,11 +257,11 @@ ls /home/training/Assembly/coassembly.bak
 You can perform co-assemblies with MEGAHIT as follows:
 
 ```bash
-megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o assembly1_new -t 4 --k-list 23,51,77 
+megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o coassembly1_new -t 4 --k-list 23,51,77 
 
-megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq -o assembly2_new -t 4 --k-list 23,51,77 
+megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq -o coassembly2_new -t 4 --k-list 23,51,77 
 
-megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitac_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitac_kneaddata_paired_2.fastq -o assembly3_new -t 4 --k-list 23,51,77
+megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitac_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitac_kneaddata_paired_2.fastq -o coassembly3_new -t 4 --k-list 23,51,77
 ```
 :::
 
