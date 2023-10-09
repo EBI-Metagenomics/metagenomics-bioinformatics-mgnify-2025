@@ -164,7 +164,8 @@ to overcome long-reads base call error by comparing different reads that cover
 the same sequencing fragment. Flye's parameters are quickly described in the
 help command (`flye -h`).
 
-Flye supports metagenomic assemblies with the `--meta` flag.
+Flye supports metagenomic assemblies with the `--meta` flag. Backup assemblies
+for this section can be found in the `Assembly` folder, starting with "`LR`".
 
 :::{.callout-step .callout-tip}
 ```bash
@@ -228,36 +229,41 @@ How does the Flye assembly differ from the one generated with metaSPAdes?
 We launched Flye both with and without `--meta` on file `reads/ONT_example.fastq`.
 This file actually comes from run ERR3775163, which can be browsed on ENA
 (https://www.ebi.ac.uk/ena/browser/home). Have a look at sample metadata. Can 
-you understand why, despite dealing with a metagenomic sample, the assembly graph
+you understand why, despite dealing with a long-read sample, the assembly graph
 looks better for the execution without the `--meta` option?
+:::
+
+:::{.callout-note}
+# Extra
+If you blast the first contig of the long-read assembly, do results match the 
+metadata you find on ENA?
 :::
 
 # Co-assemblies: MEGAHIT
 
-:::{.callout-step .callout-tip}
-In the following steps of this exercise, we will look at
-performing co-assembly of multiple datasets.
-In case you do not manage to finish these on time, the directory **coassembly** 
-contains all the expected results.
-:::
+In the following steps of this exercise, we will perform co-assembly of multiple 
+datasets. The first execution requires around 6-7 minutes to finish, the 
+general suggestion is to run the first intruction and then rely on files in
+the **coassembly** directory, which contains all expected results.
 
 :::{.callout-step .callout-tip}
-First, we need to make sure the output directories we are going to create do not already exist (MEGAHIT cannot overwrite existing directories). Run:
+First, make sure that output directories do not already exist, as MEGAHIT 
+can't overwrite existing directories. Bear in mind that backup assemblies
+for this exercise are in:
 
 ```bash
 cd /home/training/Assembly/coassembly.bak
 ```
-:::
 
-:::{.callout-step .callout-tip}
-Then, perform the coassemblies with MEGAHIT, as follows:
+Then, perform co-assemblies with MEGAHIT, as follows:
 
 ```bash
-megahit -1 ../reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 ../reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o  assembly1_new -t 4 --k-list 23,51,77 
+megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o  assembly1_new -t 4 --k-list 23,51,77 
 
-megahit -1 ../reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq -2 ../reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq -o assembly2_new -t 4 --k-list 23,51,77 
+megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq -o assembly2_new -t 4 --k-list 23,51,77 
 
-megahit -1 ../reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq,../reads/oral_human_example_1_splitac_kneaddata_paired_1.fastq -2 ../reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,../reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq,../reads/oral_human_example_1_splitac_kneaddata_paired_2.fastq -o assembly3_new -t 4 --k-list 23,51,77
+megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitac_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitac_kneaddata_paired_2.fastq -o assembly3_new -t 4 --k-list 23,51,77
+```
 :::
 
 You should now have three different assemblies generated from different 
