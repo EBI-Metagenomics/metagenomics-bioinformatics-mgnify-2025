@@ -15,7 +15,7 @@ author:
 # MAG generation
 
 - Generation of metagenome assembled genomes (MAGs) from assemblies
-- Assessment of quality (MIMAGs)
+- Assessment of quality (MIMAG)
 - Taxonomic assignment
 
 Prerequisites
@@ -47,7 +47,7 @@ binning metagenome assemblies. Examples include, but are not limited to:
 - [COCACOLA](https://github.com/younglululu/COCACOLA)
 - [MetaBAT](https://bitbucket.org/berkeleylab/metabat)
 
-There is no clear winner between these tools, so the best is to
+There is no clear winner between these tools, so it is best to
 experiment and compare a few different ones to determine which works
 best for your dataset. For this exercise, we will be using **MetaBAT**
 (specifically, MetaBAT2). The way in which MetaBAT bins contigs together
@@ -60,8 +60,8 @@ is summarized in Figure 1.
 
 :::{.callout-step .callout-tip}
 Prior to running MetaBAT, we need to generate coverage
-statistics by mapping reads to the contigs. To do this, we can use [bwa](http://bio-bwa.sourceforge.net/) and then the samtools software
-[htslib.org](http://www.htslib.org/) to reformat the
+statistics by mapping reads to the contigs. To do this, we can use [bwa](http://bio-bwa.sourceforge.net/) and then 
+[the samtools software](http://www.htslib.org/) to reformat the
 output. This can take some time, so we have run it in advance.
 :::
 
