@@ -60,7 +60,7 @@ is summarized in Figure 1.
 
 :::{.callout-step .callout-tip}
 Prior to running MetaBAT, we need to generate coverage
-statistics by mapping reads to the contigs. To do this, we can use [bwa](http://bio-bwa.sourceforge.net/) and then 
+statistics by mapping reads to the contigs. To do this, we can use [bwa](http://bio-bwa.sourceforge.net/) and then
 [the samtools software](http://www.htslib.org/) to reformat the
 output. This can take some time, so we have run it in advance.
 :::
@@ -77,7 +77,9 @@ You should find the following files in this directory:
 - `contigs.fasta`: *a file containing the primary metagenome assembly produced by metaSPAdes (contigs that haven't been binned)*
 - `input.fastq.sam.bam`: *a pre-generated file that contains reads mapped back to contigs*
 
-To generate the `input.fastq.sam.bam` file yourself, you would run the following commands:
+:::
+
+If you wanted to generate the `input.fastq.sam.bam` file yourself, you would run the following commands:
 
 ```bash
 
@@ -104,7 +106,6 @@ bwa mem contigs.fasta ERR011322_1.fastq ERR011322_2.fastq > input.fastq.sam
 samtools view -Sbu input.fastq.sam > junk 
 samtools sort junk -o input.fastq.sam.bam
 ```
-:::
 
 
 ### Running MetaBAT
