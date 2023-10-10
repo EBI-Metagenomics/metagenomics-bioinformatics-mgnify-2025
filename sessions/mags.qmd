@@ -79,6 +79,7 @@ You should find the following files in this directory:
 
 :::
 
+::: {.callout-tip}
 If you wanted to generate the `input.fastq.sam.bam` file yourself, you would run the following commands:
 
 ```bash
@@ -106,7 +107,7 @@ bwa mem contigs.fasta ERR011322_1.fastq ERR011322_2.fastq > input.fastq.sam
 samtools view -Sbu input.fastq.sam > junk 
 samtools sort junk -o input.fastq.sam.bam
 ```
-
+:::
 
 ### Running MetaBAT
 
