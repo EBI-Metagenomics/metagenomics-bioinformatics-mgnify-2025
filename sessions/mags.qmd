@@ -166,10 +166,6 @@ metabat2 --inFile contigs.fasta --outFile contigs.fasta.metabat-bins2000/bin --a
 :::
 
 :::{.callout-note}
-We set the minimum contig size to 2000 using the `--minContig` parameter.
-:::
-
-:::{.callout-note}
 Once the binning process is complete, each bin will be
 grouped into a multi-fasta file with a name structure of
 **bin.[0-9].fa**.
