@@ -167,7 +167,7 @@ for this section can be found in the `Assembly` folder, starting with "`LR`".
 :::{.callout-step .callout-tip}
 ```bash
 mkdir flye_out
-flye --nano-raw reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq --out-dir flye_out --threads 4
+flye --nano-raw reads/ONT_example.fastq --out-dir flye_out --threads 4
 ```
 :::
 
