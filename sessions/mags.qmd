@@ -151,16 +151,14 @@ Here is what we are trying to do:
 
 Put your command together but please check the answer below before running it to make sure everything is correct.
 
-```bash
-metabat2 --inFile contigs.fasta --outFile contigs.fasta.metabat-bins2000/bin --abdFile contigs.fasta.depth.txt --minContig 2000
-```
 
 <details>
 
-<summary>summary here</summary>
+<summary>See the answer</summary>
 
-Whatever you want here. Code, diagrams, images, you name it.
-
+```bash
+metabat2 --inFile contigs.fasta --outFile contigs.fasta.metabat-bins2000/bin --abdFile contigs.fasta.depth.txt --minContig 2000
+```
 </details>
 
 :::
