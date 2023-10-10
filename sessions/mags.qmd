@@ -151,25 +151,6 @@ Here is what we are trying to do:
 
 Put your command together but please check the answer below before running it to make sure everything is correct.
 
-::: {.hidden}
-```bash
-metabat2 --inFile  contigs.fasta --outFile contigs.fasta.metabat-bins2000/bin --abdFile contigs.fasta.depth.txt --minContig 2000
-```
-:::
-
-@[html]{<style>
-  .collapse-content {
-    display: none;
-  }
-
-  .show-content:checked + .collapse-content {
-    display: block;
-  }
-</style>}
-
-[Toggle Code](#) <input type="checkbox" class="show-content" id="toggle-code">
-
-<div class="collapse-content">
 ```bash
 metabat2 --inFile contigs.fasta --outFile contigs.fasta.metabat-bins2000/bin --abdFile contigs.fasta.depth.txt --minContig 2000
 
