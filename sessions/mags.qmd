@@ -143,13 +143,15 @@ Here is what we are trying to do:
 
 * we want to bin the assembly file called `contigs.fasta`
 
-* the results should be saved into the `contigs.fasta.metabat-bins2000` folder
+* the resulting bins should be saved into the `contigs.fasta.metabat-bins2000` folder
 
 * we want the bin file names to start with the prefix `bin`
 
+* we want to use the contig depth file we just generated (`contigs.fasta.depth.txt`)
+
 * the minimum contig length should be 2000
 
-Put your command together but please check the answer below before running it to make sure everything is correct.
+Take a moment to put your command together but please check the answer below before running it to make sure everything is correct.
 
 
 <details>
