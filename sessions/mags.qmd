@@ -157,6 +157,22 @@ metabat2 --inFile  contigs.fasta --outFile contigs.fasta.metabat-bins2000/bin --
 ```
 :::
 
+@[html]{<style>
+  .collapse-content {
+    display: none;
+  }
+
+  .show-content:checked + .collapse-content {
+    display: block;
+  }
+</style>}
+
+[Toggle Code](#) <input type="checkbox" class="show-content" id="toggle-code">
+
+<div class="collapse-content">
+```bash
+metabat2 --inFile contigs.fasta --outFile contigs.fasta.metabat-bins2000/bin --abdFile contigs.fasta.depth.txt --minContig 2000
+
 :::
 
 :::{.callout-note}
