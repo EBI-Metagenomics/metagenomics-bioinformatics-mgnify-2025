@@ -140,6 +140,7 @@ metabat2 -h
 ```
 
 Here is what we are trying to do:  
+
 * we want to bin the assembly file called `contigs.fasta`
 
 * the results should be saved into the `contigs.fasta.metabat-bins2000` folder
