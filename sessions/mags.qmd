@@ -297,7 +297,7 @@ purpose of this tutorial we have already created one for you with an
 example tree.
 :::
 
-Go to the [**iTOL**](http://itol.embl.de/index.shtml) website.
+Go to the [**iTOL**](http://itol.embl.de/index.shtml) website (open the link in a new window).
 
 The login is as follows:
 
