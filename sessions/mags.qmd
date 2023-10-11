@@ -15,7 +15,7 @@ author:
 # MAG generation
 
 - Generation of metagenome assembled genomes (MAGs) from assemblies
-- Assessment of quality (MIMAG)
+- Assessment of quality 
 - Taxonomic assignment
 
 Prerequisites
@@ -84,13 +84,13 @@ If you wanted to generate the `input.fastq.sam.bam` file yourself, you would run
 
 ```bash
 
-# NOTE: you will not be able to run subsequent steps before this workflow is completed because you need
-# the input.fastq.sam.bam file to calculate contig depth in the next step
+# NOTE: you will not be able to run subsequent steps until this workflow is completed because you need
+# the input.fastq.sam.bam file to calculate contig depth in the next step.
+
+# If you would like to practice this now, back up the input.fastq.sam.bam file that we provided first,
+# as these steps will take a while:
 
 cd /opt/data/assemblies/
-    
-# if you would like to practice this now, back up the input.fastq.sam.bam file that we provided first, 
-# as these steps will take a while:
 mv input.fastq.sam.bam input.fastq.sam.bam.bak
 
 # index the contigs file that was produced by metaSPAdes:
