@@ -324,6 +324,9 @@ blank correspond to the **target genomes** we placed in the tree.
 Highlighting each tip of the phylogeny will let you see the whole
 taxon/sample name. Feel free to play around with the plot.
 
+To find the bins you generated, click on the search icon in the left-hand side menu (magnifying glass
+with the letters "Aa" in it). In the search field type **bin.**. Click on each bin name to see it in the tree.
+
 :::{.callout-question .callout-tip}
-Does the CheckM taxonomic classification make sense? What about the unknowns? What is their most likely taxon?
+Does the CheckM taxonomic classification make sense? Were you able to find all of the bins in the tree? If not, why do you think that is?
 :::
