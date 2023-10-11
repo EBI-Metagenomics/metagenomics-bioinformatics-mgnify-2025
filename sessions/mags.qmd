@@ -223,10 +223,11 @@ wrapped into the **lineage_wf** workflow.
 
 
 :::{.callout-step .callout-tip}
-Now run CheckM with the following command:
+STOP!!!! The following command fails. Please use backups instead, inspect the command visually only:
 
 ```bash
 cd /opt/data/assemblies
+# INSPECT BUT DO NOT RUN!
 checkm lineage_wf -x fa contigs.fasta.metabat-bins2000 checkm_output --tab_table -f MAGs_checkm.tab --reduced_tree -t 4
 ```
 
