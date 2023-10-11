@@ -101,3 +101,13 @@ Open the last one (`http://127.0.0.1:8888/lab?token=.....`), by right-clicking o
 # Find and open the 'Search MGnify Genomes (course practical 2023)' notebook in the 'Python examples' directory.
 Follow along the steps (completing some code blocks) in the notebook.
 :::
+
+### Use the Jupyter Notebook after the course
+
+This notebook is based on a publicly accessible version.
+You can use this at any time.
+
+1. It is available to use from your web browser, no installation needed: [notebooks.mgnify.org](http://notebooks.mgnify.org)
+2. You can see a completed version of it, with all the outputs, on [docs.mgnify.org](https://docs.mgnify.org)
+3. You can use a prebuilt docker image and our public `notebooks` repository: [github.com/ebi-metagenomics/notebooks](https://www.github.com/ebi-metagenomics/notebooks). This should work on any computer you can install Docker on.
+4. You can try and install all the dependencies yourself `¯\_(ツ)_/¯`
