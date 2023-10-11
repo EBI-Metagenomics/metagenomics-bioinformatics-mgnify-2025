@@ -15,7 +15,7 @@ author:
 # MAG generation
 
 - Generation of metagenome assembled genomes (MAGs) from assemblies
-- Assessment of quality 
+- Assessment of quality
 - Taxonomic assignment
 
 Prerequisites
@@ -296,6 +296,8 @@ To use **iTOL** you will need a user account. For the
 purpose of this tutorial we have already created one for you with an
 example tree.
 :::
+
+Go to the [**iTOL**](http://itol.embl.de/index.shtml) website.
 
 The login is as follows:
 
