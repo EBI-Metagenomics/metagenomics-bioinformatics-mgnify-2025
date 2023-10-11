@@ -37,19 +37,18 @@ What do thise biomes have in common, and how does this align with the species fo
 
 Now, we want to get a FASTA sequence for this genus.
 
-::: {.callout-step .callout-tip}
+::: {.callout-question .callout-tip}
 # Find the "best" MAG
 Using what we've learned about QC on the course, look at the detail statistics of the _Jonquetella_ MAGs.
 Which one is best? [^qc]
 :::
 
+[^qc]: Hint... each MAG's detail page overview tab shows stats including completeness, contamination, and N~50~.
+
 ::: {.callout-step .callout-tip}
 # Download the DNA sequence FASTA file of the "best" MAG
 We will use it later.
 :::
-
-[^qc]: Hint... each MAG's detail page overview tab shows stats including completeness, contamination, and N~50~.
-
 
 
 ## Practical 2: query [MGnify catalogues](https://www.ebi.ac.uk/metagenomics/browse/genomes) using sourmash
@@ -87,13 +86,18 @@ For this part of the practical, there is a Jupyter Notebook you can follow along
 
 To open it on your training VM:
 
+::: {.callout-step .callout-tip}
 ```bash
 cd ~/mgnify-notebooks
 git status
 # make sure you're on the "comparative_practice_2023" branch
 task edit-notebooks
 ```
+After a few seconds, some URLs will be printed in the terminal. 
+Open the last one (`http://127.0.0.1:8888/lab?token=.....`), by right-clicking on the URL and selecting "Open Link", or by copying-and-pasting it into a web browser like Chromium/Firefox.
+:::
 
 ::: {.callout-step .callout-tip}
 # Find and open the 'Search MGnify Genomes (course practical 2023)' notebook in the 'Python examples' directory.
+Follow along the steps (completing some code blocks) in the notebook.
 :::

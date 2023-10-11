@@ -53,6 +53,9 @@ git pull
 git switch comparative_practice_2023
 task edit-notebooks
 ```
+
+After a few seconds, some URLs will be printed in the terminal. 
+Open the last one (`http://127.0.0.1:8888/lab?token=.....`), by right-clicking on the URL and selecting "Open Link", or by copying-and-pasting it into a web browser like Chromium/Firefox.
 :::
 
 ::: {.callout-step .callout-tip}
@@ -62,10 +65,12 @@ task edit-notebooks
 ::: {.callout-note}
 # The notebook has coloured boxes to indicate relevant steps in the analysis or to introduce material for discussion
 **Yellow boxes:**  
+
 * Up to you: To re-run the analysis changing parameters  
 * Questions: For open discussion  
 
 **Blue boxes:**  
+
 * Notes: Informative boxes about the running command  
 * Tips: Information useful for results interpretation  
 :::
