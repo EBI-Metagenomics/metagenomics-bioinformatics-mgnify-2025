@@ -31,7 +31,7 @@ These instructions are for the course VM. To run externally, please refer to the
 
 ::: {.callout-note}
 # Keeping your results organised
-This practical (and and the others) will generate quite a few output files from the different commands. It's therefore recommended you keep your results well organised into different subdirectories, starting with the creation of a `qc_results` directory that will contain everything else.
+This practical (and the others) will generate quite a few output files from the different commands. It's therefore recommended you keep your results well organised into different subdirectories, starting with the creation of a `qc_results` directory that will contain everything else.
 
 ```bash
 mkdir /home/training/qc_results
@@ -52,7 +52,7 @@ You will get the message "access control disabled, clients can connect from any 
 Now start the Docker container:
 
 ```bash
-docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY microbiomeinformatics/biata-qc-assembly:v2021
+docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY microbiomeinformatics/biata-qc-assembly:v2021
 ```
 
 Quality control and filtering of the raw sequencing read files
@@ -81,10 +81,10 @@ We will start by using a tool called FastQC, which will generate a report descri
 # Generate a directory of the FastQC results
 
 ```bash
-mkdir -p /results/fastqc_results/oral
-fastqc /opt/data/oral_human_example_1_splitaa.fastq.gz -o /results/fastqc_results/oral
-fastqc /opt/data/oral_human_example_2_splitaa.fastq.gz -o /results/fastqc_results/oral
-chown 1001 /results/fastqc_results/oral/*.html
+mkdir -p /opt/results/fastqc_results/oral
+fastqc /opt/data/oral_human_example_1_splitaa.fastq.gz -o /opt/results/fastqc_results/oral
+fastqc /opt/data/oral_human_example_2_splitaa.fastq.gz -o /opt/results/fastqc_results/oral
+chown 1001 /opt/results/fastqc_results/oral/*.html
 ```
 :::
 
@@ -139,9 +139,9 @@ We are currently only looking at two files, but often we want to look at many fi
 ::: {.callout-step .callout-tip}
 # Run
 ```bash
-mkdir /results/multiqc_results/oral
-multiqc /results/fastqc_results/oral -o /results/multiqc_results/oral
-chown 1001 /results/multiqc_results/oral/*.html
+mkdir /opt/results/multiqc_results/oral
+multiqc /opt/results/fastqc_results/oral -o /opt/results/multiqc_results/oral
+chown 1001 /opt/results/multiqc_results/oral/*.html
 ```
 :::
 
@@ -172,7 +172,7 @@ Our first step will be to perform quality filtering of the reads using a tool ca
 ::: {.callout-step .callout-tip}
 # Create directories that will store output files from the cleaning process
 ```bash
-mkdir -p /results/cleaned/oral
+mkdir -p /opt/results/cleaned/oral
 ```
 :::
 
@@ -183,11 +183,11 @@ The `fastp` command you will run contains multiple parameters, so let's slowly d
 ```bash
 fastp --in1 /opt/data/oral_human_example_1_splitaa.fastq.gz \
       --in2 /opt/data/oral_human_example_2_splitaa.fastq.gz \
-      --out1 /results/cleaned/oral/oral_human_example_1_splitaa.trimmed.fastq.gz \
-      --out2 /results/cleaned/oral/oral_human_example_2_splitaa.trimmed.fastq.gz \
+      --out1 /opt/results/cleaned/oral/oral_human_example_1_splitaa.trimmed.fastq.gz \
+      --out2 /opt/results/cleaned/oral/oral_human_example_2_splitaa.trimmed.fastq.gz \
       -l 50 --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 -t 1 \
       --detect_adapter_for_pe \
-      --json /results/cleaned/oral/oral.fastp.json --html /results/cleaned/oral/oral.fastp.html
+      --json /opt/results/cleaned/oral/oral.fastp.json --html /opt/results/cleaned/oral/oral.fastp.html
 ```
 :::
 
@@ -243,15 +243,15 @@ bowtie2-build /opt/data/decontamination/chr10_phix.fasta /opt/data/decontaminati
 It is possible to automatically download a pre-indexed human genome in bowtie2
 :::
 
-Now we are going to use our new indexed chr10_phix reference and decontaminate our already quality filtered reads from `fastp`. Using bowtie2 again:
+Now we are going to use our new indexed chr10_phix reference and decontaminate our already quality-filtered reads from `fastp`. Using bowtie2 again:
 
 ::: {.callout-step .callout-tip}
 # Run
 ```bash
-bowtie2 -1 /results/cleaned/oral/oral_human_example_1_splitaa.trimmed.fastq.gz \
-        -2 /results/cleaned/oral/oral_human_example_2_splitaa.trimmed.fastq.gz \
+bowtie2 -1 /opt/results/cleaned/oral/oral_human_example_1_splitaa.trimmed.fastq.gz \
+        -2 /opt/results/cleaned/oral/oral_human_example_2_splitaa.trimmed.fastq.gz \
         -x /opt/data/decontamination/chr10_phix.index \
-        --un-conc-gz  /results/cleaned/oral/oral_human_example.fastq.gz \
+        --un-conc-gz  /opt/results/cleaned/oral/oral_human_example.fastq.gz \
         --very-sensitive --dovetail > /dev/null
 ```
 :::
@@ -265,8 +265,8 @@ bowtie2 -1 /results/cleaned/oral/oral_human_example_1_splitaa.trimmed.fastq.gz \
 ::: {.callout-step .callout-tip}
 # Run
 ```bash
-mv /results/cleaned/oral/oral_human_example.fastq.1.gz /results/cleaned/oral/oral_human_example_1_splitaa_trimmed_decontam.fastq.gz
-mv /results/cleaned/oral/oral_human_example.fastq.2.gz /results/cleaned/oral/oral_human_example_2_splitaa_trimmed_decontam.fastq.gz
+mv /opt/results/cleaned/oral/oral_human_example.fastq.1.gz /opt/results/cleaned/oral/oral_human_example_1_splitaa_trimmed_decontam.fastq.gz
+mv /opt/results/cleaned/oral/oral_human_example.fastq.2.gz /opt/results/cleaned/oral/oral_human_example_2_splitaa_trimmed_decontam.fastq.gz
 ```
 
 :::
@@ -275,15 +275,15 @@ mv /results/cleaned/oral/oral_human_example.fastq.2.gz /results/cleaned/oral/ora
 
 ::: {.callout-step .callout-tip}
 # Run FastQC
-Using what you have learned previously, generate a FastQC report for each of the `*trimmed_decontam.fastq.gz` files. Output the new fastqc report files in the same `/results/fastqc_results/oral` directory as last time.
+Using what you have learned previously, generate a FastQC report for each of the `*trimmed_decontam.fastq.gz` files. Output the new fastqc report files in the same `/opt/results/fastqc_results/oral` directory as last time.
 :::
 
 ::: {.callout-step .callout-tip}
 # Run multiQC
-Also generate a multiQC report, with `/results/fastqc_results/oral` as input. The reason we generated the new FastQC reports in the same directory is so that you can compare how the reads have changed after the quality filtering and decontamination steps in the same final multiqc report.
+Also generate a multiQC report, with `/opt/results/fastqc_results/oral` as input. The reason we generated the new FastQC reports in the same directory is so that you can compare how the reads have changed after the quality filtering and decontamination steps in the same final multiqc report.
 
 ```bash
-mkdir -p /results/final_multiqc_results/oral
+mkdir -p /opt/results/final_multiqc_results/oral
 <you construct the command>
 ```
 :::
@@ -328,9 +328,9 @@ Prepare the freshwater sediment example assembly file and search against the new
 ::: {.callout-step .callout-tip}
 # Run
 ```bash
-mkdir -p /results/blast_results
+mkdir -p /opt/results/blast_results
 gunzip /opt/data/freshwater_sediment_contigs.fa.gz
-blastn -query /opt/data/freshwater_sediment_contigs.fa -db /opt/data/decontamination/phix_blastDB -task megablast -word_size 28 -best_hit_overhang 0.1 -best_hit_score_edge 0.1 -dust yes -evalue 0.0001 -min_raw_gapped_score 100 -penalty -5 -soft_masking true -window_size 100 -outfmt 6 -out /results/blast_results/freshwater_blast_out.txt
+blastn -query /opt/data/freshwater_sediment_contigs.fa -db /opt/data/decontamination/phix_blastDB -task megablast -word_size 28 -best_hit_overhang 0.1 -best_hit_score_edge 0.1 -dust yes -evalue 0.0001 -min_raw_gapped_score 100 -penalty -5 -soft_masking true -window_size 100 -outfmt 6 -out /opt/results/blast_results/freshwater_blast_out.txt
 ```
 :::
 
@@ -346,8 +346,8 @@ The BLAST options are:
 # Add headers to the blast output and look at the contents of the final output file:
 
 ```bash
-cat /opt/data/blast_outfmt6.txt /results/blast_results/freshwater_blast_out.txt > /results/blast_results/freshwater_blast_out_headers.txt
-cat /results/blast_results/freshwater_blast_out_headers.txt
+cat /opt/data/blast_outfmt6.txt /opt/results/blast_results/freshwater_blast_out.txt > /opt/results/blast_results/freshwater_blast_out_headers.txt
+cat /opt/results/blast_results/freshwater_blast_out_headers.txt
 ```
 :::
 
