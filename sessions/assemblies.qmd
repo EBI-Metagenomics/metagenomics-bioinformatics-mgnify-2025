@@ -59,19 +59,27 @@ metaSPAdes offers many options that fit your preferences differently, mostly dep
 To explore them, type `metaspades.py -h`. 
 Bear in mind that options will differ when selecting different tools (e.g. spades.py) and they should be tuned according to the input dataset and desired outcome.
 
-:::{.callout-step .callout-tip}
-The default metaSPAdes pipeline executes an error correction step on the input fastqs. 
-To run metaspades without the error correction step, execute the following commands:
+:::{.callout-tip}
+The default metaSPAdes pipeline executes an error correction step on the input fastqs.
+Since reads have already been polished in the past step, you can run metaspades without the error correction step.
 
+You can see available metaspades parameters by typing the following: 
 ```bash
-mkdir assembly_spades
-metaspades.py -t 4 --only-assembler -m 10 -1 reads/oral_human_example_1_splitaa_trimmed_decontam.fastq -2 reads/oral_human_example_2_splitaa_trimmed_decontam.fastq -o assembly_spades
+metaspades.py -h 
 ```
 :::
 
-:::{.callout-note}
+:::{.callout-warning}
 This execution should be able to run on a 4-core, 32 GB ram laptop. However, the command above will NOT work on your VMs to prevent overload on the system if all VM users are running this command at the same time. If you are willing to launch this, the execution will take up to 20 minutes. 
 :::
+
+An explanation of involved parameters follows:
+* `-t 4` threads
+* `--only-assembler` skips the error correction step
+* `-m 10` memory limit in Gb
+* `-1 reads/oral_human_example_1_splitaa_trimmed_decontam.fastq` forward read
+* `-2 reads/oral_human_example_2_splitaa_trimmed_decontam.fastq` reverse read
+*`-o assembly_spades` output folder
 
 Once the assembly has completed, you will see plenty of files, in the `assembly_spades` folder including intermediate ones. 
 `contigs.fasta` and `scaffolds.fasta` are the ones you are usually interested into for downstream analyses (e.g. binning and MAG generation). 
@@ -93,7 +101,7 @@ The resulting output is going to look like this:
 :::
 
 :::{.callout-question .callout-tip}
-Which species do you think this sequence may be coming from?
+What species does this sequence seem to be coming from?
 
 Does this make sense as a human oral bacterium? Are you surprised by this result at all?  
 :::
@@ -105,7 +113,7 @@ The first section of the JSON corresponds to the scaffolds in the assembly, whil
 N50 is a measure to describe the quality of assembled genomes that are fragmented in contigs of different length, used to assess the sequence length of the shortest contig at 50% of the total assembly length (after sorting assembled contigs from longest to shortest). 
 
 A (hopefully) clarifying picture to understand N50:
-![N50](assemblies/N50.png)
+![N50](assemblies/N50.png){width="70%" height="70%"}
 
 Essentially, the higher this value, the better, as it means that longer (i.e. more complete) contigs cover a certain fraction of the final assembly.
 However, this only makes sense when thinking about alike metagenomes. 
