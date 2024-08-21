@@ -45,8 +45,7 @@ gene a classification of core or accessory.
 
 3. Finding core and accessory genes from MAG data -- 45 minutes.
 
-Use the sidebar to see the instructions for each part, or the arrows at
-the side of the page.
+Use the sidebar to see the instructions for each part.
 
 The files for all practicals should be available on the virtual machine. Alternatively,
 you can download all of the files from google drive:
