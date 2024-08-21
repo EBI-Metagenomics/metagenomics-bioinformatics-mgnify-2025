@@ -55,6 +55,18 @@ you can download all of the files from google drive:
 https://drive.google.com/drive/folders/1pc17JErBHRwLeRf8Ch8yu4dXSIwFfBQK?usp=share_link
 ```
 
+The course prerequisities are already install on the VM. To activate the environment, run:
+
+```bash
+source mgnify_pangenome/bin/activate
+```
+
+If the enviroment has been found correctly, you should see something similar to the following on your terminal
+
+```bash
+(mgnify_pangenome) user@address ~ %
+```
+
 1. Building PopPUNK models
 ---------------------------------------------
 
@@ -71,8 +83,7 @@ using [PopPUNK](https://genome.cshlp.org/content/29/2/304).
 
 [Installation instructions](https://poppunk.readthedocs.io/en/latest/installation.html) and an [overview](https://poppunk.readthedocs.io/en/latest/overview.html) are available. 
 
-PopPUNK is already installed on the VM. Confirm this by activating the conda environment `conda activate poppunk` and running `poppunk
---version`.
+PopPUNK is already installed on the VM. Confirm this by running `poppunk --version`.
 
 ### Creating the database
 
@@ -285,7 +296,7 @@ with nothing in the core genome.
 
 ### CELEBRIMBOR: a pipeline for pangenome analysis and threshold correction
 
-CELEBRIMBOR is already install on the VM. Confirm this by activating the conda environment `conda activate celebrimbor`.
+The CELEBRIMBOR prerequisities are already install on the VM. The source code files can be found in the `CELEBRIMBOR` directory
 
 Unzip the genomes :
 
