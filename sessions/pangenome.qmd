@@ -1,0 +1,388 @@
+---
+title: "Pangenome analysis of metagenomic data"
+order: 6
+date: 2024-08-21
+license: "Apache 2.0"
+author:
+  - name: Samuel Horsfield
+    orcid: 0000-0002-3859-4073
+    email: shorsfield@ebi.ac.uk
+    affiliation: 
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+  - name: Johanna von Wachsmann,
+    orcid: 0000-0002-4464-3900
+    email: wachsmannj@ebi.ac.uk
+    affiliation:
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+  - name: John Lees
+    orcid: 0000-0001-5360-1254
+    email: jlees@ebi.ac.uk
+    affiliation:
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+---
+
+Preamble
+-------------
+
+We will first run through how to use our tool PopPUNK to build
+models to find subclusters within isolates data, then how to use these
+models (or pre-existing models) to assign MAG data to these clusters.
+
+We anticipate the following timings:
+
+1. Building a PopPUNK model -- 45 minutes.
+2. Assigning using a PopPUNK model -- 30 minutes.
+
+Please do not spend significantly longer than this on each one if you
+wish to complete the practical. You can move onto the next section at
+any time.
+
+We will then show how to correct MAG data for incompleteness to give each
+gene a classification of core or accessory.
+
+3. Finding core and accessory genes from MAG data -- 45 minutes.
+
+Use the sidebar to see the instructions for each part.
+
+The files for all practicals should be available on the virtual machine. Alternatively,
+you can download all of the files from google drive:
+
+```bash
+https://drive.google.com/drive/folders/1pc17JErBHRwLeRf8Ch8yu4dXSIwFfBQK?usp=share_link
+```
+
+The course prerequisities are already install on the VM. To activate the environment, run:
+
+```bash
+source mgnify_pangenome/bin/activate
+```
+
+If the enviroment has been found correctly, you should see something similar to the following on your terminal
+
+```bash
+(mgnify_pangenome) user@address ~ %
+```
+
+1. Building PopPUNK models
+---------------------------------------------
+
+First, unpack the genomes we will be using in this step by
+running the following commands:
+```bash
+tar xvf MAGs_to_build_model.gz
+mkdir isolate_genomes && mv *.fasta isolate_genomes
+```
+
+This will unzip 112 _B. uniformis_ isolate genomes (i.e. not MAG data).
+We are going to use these to define subspecies within the population
+using [PopPUNK](https://genome.cshlp.org/content/29/2/304).
+
+[Installation instructions](https://poppunk.readthedocs.io/en/latest/installation.html) and an [overview](https://poppunk.readthedocs.io/en/latest/overview.html) are available. 
+
+PopPUNK is already installed on the VM. Confirm this by running `poppunk --version`.
+
+### Creating the database
+
+The first step to running PopPUNK on a new species is to create
+a 'database' which contains sketches of the genomes and calculates all
+of the core and accessory distances between the samples. We will be
+following the guidance in the [relevant section of the documentation](https://poppunk.readthedocs.io/en/latest/sketching.html).
+
+First, we need to create a list of the input files. This needs to have
+the sample names and the location of files with their genomes. This can
+be created in many ways, here we will use a simple bash command:
+```bash
+paste <(ls isolate_genomes | cut -d "." -f 1 ) <(ls isolate_genomes/MGYG*) > rfile.txt
+```
+
+We can now create the input database with `--create-db` as follows:
+```bash
+poppunk --create-db --output b_uniformis_db --r-files rfile.txt --min-k 17 --max-k 33 --plot-fit 10 --threads 4
+```
+
+This will run on 4 CPU cores to increase the speed. The other option is
+the range of k-mer lengths used, [see the documentation](https://poppunk.readthedocs.io/en/latest/sketching.html#choosing-the-right-k-mer-lengths) for more
+information. Have a look at the plots in the output directory e.g. `b_uniformis_db/b_uniformis_db_distanceDistribution.png` and some of the fit examples such as `b_uniformis_db_fit_example_1.pdf`.
+
+Usually we want to run some [quality control](https://poppunk.readthedocs.io/en/latest/qc.html) on the data, which we can
+do as follows:
+
+```bash
+poppunk --qc-db --ref-db b_uniformis_db --max-pi-dist 0.05 --max-a-dist 1 --output b_uniformis_db_qc
+```
+
+This removes outlying distances and poor quality samples. In this case
+the data is all good quality and should all be retained.
+
+However if we run with a smaller core (pi) distance, this will remove half of the samples.
+
+```bash
+poppunk --qc-db --ref-db b_uniformis_db --max-pi-dist 0.01 --max-a-dist 1 --output b_uniformis_db_qc
+```
+
+This isn't a good idea here as this core distance is too strict for a species as diverse as _B. uniformis_.
+
+### Fitting a model
+
+We now need to create a 'model' which determines a cutoff below which
+genomes are considered the same subspecies.
+
+There are many options available, as detailed in the [documentation](https://poppunk.readthedocs.io/en/latest/model_fitting.html).
+
+As we have 'small' sample collection with strain-structure where distance distribution components are clearly separated, we'll try the Bayesian Gaussian Mixture Model with two components:
+
+```bash
+poppunk --fit-model bgmm --ref-db b_uniformis_db --output b_uniformis_BGMM_K2 --K 2
+```
+
+From the output we can see that everything is in one cluster (In `Network Summary` there is one component) and so we
+haven't found any subspecies. Have a look at the output plot `b_uniformis_BGMM_K2/b_uniformis_BGMM_K2_DPGMM_fit.png` too.
+
+It looks like adding an extra component ('blob') might help, so let's
+try that and make three rather than two:
+
+```bash
+poppunk --fit-model bgmm --ref-db b_uniformis_db --output b_uniformis_BGMM_K3 --K 3
+```
+
+That looks better and there are some clusters (In `Network Summary` there are is seven components), but if you look at the
+same plot again (`b_uniformis_BGMM_K3/b_uniformis_BGMM_K3_DPGMM_fit.png`) it doesn't look like a great fit to the data.
+
+In this case the data is actually a bit sparse to automatically get
+a good fit and we can do a much better job if we enrich the dataset with
+a few thousand MAGs and then use the 'refine' model mode. But for now
+we'll take a shortcut and impose a cutoff that looks like it will work
+by using the `threshold` model:
+
+```bash
+poppunk --fit-model threshold --ref-db b_uniformis_db --output b_uniformis_threshold --threshold 0.0025
+```
+
+In fact, this way of choosing a model is supported by population genetic
+simulations (see this [paper](https://genome.cshlp.org/content/early/2023/05/30/gr.277395.122)).
+So we are acutally free to choose a cutoff that defines subspecies which
+'work' for us, and the models in PopPUNK are mostly a more convenient
+way of automating this to find useful clusters in general.
+
+As you can see, this is all a bit fiddly and requires iteration. It is
+usually better to use a previously fitted and tested model, which we
+will cover in the next part.
+
+### Visualising the results
+
+But before we move on, let's get a better look at the results. We can
+make a core genome tree and accessory genome embedding and plot the
+clusters interactively in the browser. First, run the
+[`poppunk_visualise` command](https://poppunk.readthedocs.io/en/latest/visualisation.html).
+
+```bash
+poppunk_visualise --ref-db b_uniformis_db --model-dir b_uniformis_threshold --microreact --maxIter 100000 --output b_uniformis_db_viz
+```
+
+Here, `maxIter` is being used to reduce the number embedding iterations
+as the dataset is small, just so the command runs quickly.
+
+Now, open up <https://microreact.org/> in your browser and choose 'Upload'.
+Drag and drop the `.microreact` file in the `b_uniformis_db_viz`
+directory to see the clusters and the tree. Do they look ok?
+
+
+### Further analysis
+
+If you have time, try playing around with different methods of fitting PopPUNK models
+in the [documentation](https://poppunk.readthedocs.io/en/latest/model_fitting.html).
+
+You can experiment with [HDBSCAN](https://hdbscan.readthedocs.io/en/latest/how_hdbscan_works.html),
+a method for automatically detecting the number and position of clusters.
+
+Once you have a model fitted using BGMM or HDBSCAN, you can also [refine](https://poppunk.readthedocs.io/en/latest/model_fitting.html#refine) it. 
+This method takes a previously identified within-strain boundary and moves it to optimise the network score of the strain cluster network.
+We always recommend refining a previous fit, as it may significantly improve strain assignments.
+
+You can also play around with visualisation tools such as [Cytoscape](https://cytoscape.org/what_is_cytoscape.html). Use the `poppunk_visualise`
+tool to generate a cytoscape output following the [documentation](https://poppunk.readthedocs.io/en/latest/visualisation.html#cytoscape). This
+will allow you to visualise the strain cluster network, the components of which are the strains detected by PopPUNK.
+
+2. Assigning using PopPUNK models
+---------------------------------------
+
+It is faster to ['assign'](https://poppunk.readthedocs.io/en/latest/query_assignment.html) new samples to an existing definition of
+subspecies. This has the bonus that their names will be consistent
+across studies.
+
+Typically, you can download an existing database with a fit from
+<https://www.bacpop.org/poppunk/>. If you have a fit for a new species
+please send it to us and we can share it here.
+
+There is no fit for _B. uniformis_ (yet...) so we'll use the one we just
+made.
+
+### Using `poppunk_assign` to assign MAGs to subspecies
+
+Now we'll work with a large collection of MAGs. These are the _B. uniformis_
+MAGs from MGnify with >95% completeness and \<5% contamination.
+
+PopPUNK distances are relatively robust to missing sequence content seen
+in MAGs, but less able to deal with contamination.
+
+Again, unzip and create the list of input files for poppunk:
+
+```bash
+tar xvf MAGs_to_assign.bz2
+mv fasta mag_fastas
+paste <(ls mag_fastas | cut -d "." -f 1 ) <(ls mag_fastas/*.fasta) > qfile.txt
+```
+
+One small problem is that these MAGs also contain the isolates from
+before. PopPUNK will refuse to assign these without unique names. Here's
+a bash incantation to remove the duplicates:
+```bash
+cut -f 1 rfile.txt > ref_names.txt && grep -v -w -f ref_names.txt qfile.txt > qfile_nodups.txt
+mv qfile_nodups.txt qfile.txt
+```
+
+The command is relatively simple, we need to provide the database, the model directory and the input 'query' genomes to assign. Quality control is 'built-in':
+```bash
+poppunk_assign --db b_uniformis_db --model-dir b_uniformis_threshold --query qfile.txt --output b_uniformis_queries --threads 4 --max-merge 3 --run-qc --max-a-dist 0.8
+```
+The `b_uniformis_queries_clusters.csv` file contains the subspecies
+assignments.
+
+The visualisation command is a bit more involved as we need to point to
+both directories and the model directory:
+```bash
+poppunk_visualise --ref-db b_uniformis_db --query-db b_uniformis_queries --model-dir b_uniformis_threshold --microreact --output b_uniformis_query_viz --threads 4 --maxIter 10000000 --previous-query-clustering b_uniformis_queries/b_uniformis_queries_clusters.csv --previous-clustering b_uniformis_threshold/b_uniformis_threshold_clusters.csv
+```
+Load the `.microreact` output file in the `b_uniformis_query_viz`
+directory in [Microreact](https://microreact.org/) again to see the output.
+
+Use the menu under the 'eye' to change from reference/query colour
+('Status') to 'Cluster_Cluster' to see the clusters.
+
+### Updating the database
+
+You'll see that some MAGs formed new clusters ('novel clusters'), whilst others were merged, as the new genomes connected to multiple clusters 
+generating in the original database.
+
+It is possible to permanently add the query genomes to the database, so
+future uses make use of novel cluster assignments. Simply add
+`--update-db` to the command above. This is beyond the scope of this
+practical but is documented [here](https://poppunk.readthedocs.io/en/latest/query_assignment.html#updating-the-database) and [here](https://poppunk.readthedocs.io/en/latest/model_distribution.html).
+
+### Further analysis
+
+If you have time, try generating another visualisation of the query network using Cytoscape. How does this network
+compare to the original one from the previous section, when you only built using isolate genomes and not MAG data?
+
+Also, try building a PopPUNK model as before, but only using the MAG data. How do the distance distributions compare
+between the isolate data and MAG data? Does a threshold model work with the data, or would an automated method
+for model fitting work better?
+
+Once you have a model fitted using BGMM or HDBSCAN, you can also [refine](https://poppunk.readthedocs.io/en/latest/model_fitting.html#refine) it. 
+This method takes a previously identified within-strain boundary and moves it to optimise the network score of the strain cluster network.
+We always recommend refining a previous fit, as it may significantly improve strain assignments.
+
+3. Finding core and accessory genes
+-------------------------------------
+
+We can use a probabilistic model to correct for the fact that we know
+MAGs are missing some genes. If we don't do this then we will
+systematically under-estimate their population frequency, and end up
+with nothing in the core genome.
+
+### CELEBRIMBOR: a pipeline for pangenome analysis and threshold correction
+
+The CELEBRIMBOR prerequisities are already install on the VM. The source code files can be found in the `CELEBRIMBOR` directory
+
+Unzip the genomes :
+
+```bash
+tar xvf MAGs_for_CELEBRIMBOR.tar.gz
+```
+
+This archive contains two directories. `CELEBRIMBOR_MAGs` contains the fasta files we will be analysing. 
+`results` contains the [Bakta](https://github.com/oschwengers/bakta) output which was generated previously from these genomes. As this is
+the slowest part of the analysis, we have provided them to allow you to generate results faster.
+
+CELEBRIMBOR is a snakemake pipeline which enables automated gene annotation, clustering, completeness estimation
+and core threshold adjustment. Snakemake allows workflows to be re-run if workflows stop prematurely. To prevent CELEBRIMBOR
+from re-running Bakta, we must update the creation times of the input and output files using `touch`.
+
+```bash
+(cd MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs && touch *.fasta)
+(cd MAGs_for_CELEBRIMBOR/results && touch annotated/*/* && touch annotated/*)
+```
+
+Documentation for CELEBRIMBOR can be found [here](https://github.com/bacpop/CELEBRIMBOR).
+
+Snakemake reads a `config.yaml` file to assign parameters. Navigate to the `CELEBRIMBOR` directory, and update the `config.yaml` file 
+with the appropriate parameters.
+
+```bash
+#output directory
+output_dir: /path/to/MAGs_for_CELEBRIMBOR/results
+
+# dir with genome fasta files, must have '.fasta' extension, to convert use 'rename .fa .fasta  *.fa' (e.g. if extensions are .fa)
+genome_fasta: /path/to/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs
+
+# path to bakta DB:
+bakta_db: /path/to/bakta_db/db-light
+
+# cgt executable parameters
+cgt_exe: /path/to/bin/cgt_bacpop
+cgt_breaks: 0.05,0.95
+cgt_error: 0.05
+
+# choice of clustering method, either "mmseqs2" or "panaroo"
+clustering_method: "panaroo"
+
+# must be one of "strict", "moderate" or "sensitive"
+panaroo_stringency: "strict"
+```
+
+Update where it says `/path/to/` variables to point to the correct locations. We will leave the rest of the parameters as they are for now.
+
+To run CELEBRIMBOR, simply run the below command. Snakemake will read the `config.yaml` file and run CELEBRIMBOR on the associated files, avoiding
+bakta as the annotations are already present in `MAGs_for_CELEBRIMBOR/results`
+
+```bash
+snakemake --cores 4
+```
+
+You'll see a number of tools being run, including [CheckM](https://github.com/Ecogenomics/CheckM) for completeness calculation, [Panaroo](https://github.com/gtonkinhill/panaroo) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment.
+
+You'll observe the new frequency thresholds printed to the console. Here, the core threshold was reduced from 95% to 92.73%, whilst the rare threshold was increased from 5% to 10%.
+
+```bash
+Core threshold: >= 102 observations or >= 92.73% frequency
+Rare threshold: <= 11 observations or <= 10.00% frequency
+```
+
+Take a look at the output files. The `pangenome_summary.tsv` describes the assignments of each gene family to a frequency compartment
+based on the raw frequency values. `cgt_output.txt` details the adjusted frequency compartment assignments calculated by CELEBRIMBOR.
+
+Using RStudio, you can plot the different between the adjusted and unadjusted results by updating the script `plot_frequency.R` with the paths to 
+`pangenome_summary.tsv` and `cgt_output.txt`. Observe that the core genome and rare genome sizes increase after adjustment, whilst the middle or intermediate decreases.
+
+![Effect of frequency adjustment](pangenome/frequency_adjustment.png)
+
+There are other files that can be used for downstream analysis, such as `presence_absence_matrix.txt` which defines in which genomes gene families are found, 
+as well as the `annotated` directory, which contains gene annotations generated using Bakta.
+
+### Further analysis
+
+Try running CELEBRIMBOR with different parameters, such as `cgt_breaks` which defines the original rare and core thresholds to adjust, or `cgt_error`, which 
+defines the false negative rate of CELEBRIMBOR. 
+
+Also try setting `panaroo_stringency` to `moderate` or `senstive`. Details on the effect of these parameters can be found [here](https://gthlab.au/panaroo/#/gettingstarted/params). You can also try running with `clustering_method` set to `mmseqs2`, which is a more scalable but less accurate clustering method than Panaroo.
+
+
+
+
+
+
+
+
