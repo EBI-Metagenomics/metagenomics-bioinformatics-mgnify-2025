@@ -30,12 +30,14 @@ In this practical, we will only investigate very simple example datasets.
 
 Once you have quality filtered your sequencing reads, you may want to perform *de novo* assembly in addition to, or as an alternative to, read-based analyses. 
 The first step is to assemble your sequences into contigs. 
-There are many tools available for this, such as MetaVelvet, metaSPAdes, IDBA-UD, or MEGAHIT. 
-We generally use metaSPAdes, as in most cases it yields the best contig size statistics (i.e. more continguous assembly), and it has been shown to be able to capture high degrees of community diversity (Vollmers, et al. PLOS One 2017). 
+There are many tools available for this, such as `MetaVelvet`, `metaSPAdes`, `IDBA-UD`, or `MEGAHIT`. 
+
+We generally use `metaSPAdes`, as in most cases it yields the best contig size statistics (i.e. more continguous assembly), and it has been shown to be able to capture high degrees of community diversity (Vollmers, et al. PLOS One 2017). 
 However, you should consider pros and cons of different assemblers, which not only includes the accuracy of the assembly, but also their computational overhead. 
 Compare these factors to what you have available. 
+
 For example, very diverse samples with a lot of sequence data (e.g. samples from the soil) uses a lot of memory with SPAdes. 
-In the following practicals we will demonstrate the use of **metaSPAdes** on a small short-read sample, **Flye** on a long-read sample, and **MEGAHIT** to perform co-assembly.
+In the following practicals we will demonstrate the use of `metaSPAdes` on a small short-read sample, `Flye` on a long-read sample, and `MEGAHIT` to perform co-assembly.
 
 # Before we start...
 
@@ -45,17 +47,13 @@ Let’s first move to the root working directory to run all analyses:
 cd /home/training/Assembly/
 ```
 
-You will find all inputs needed for assemblies in the `reads` folder. 
-
-:::{.callout-note}
-If anything goes wrong during the practical, you will find assembly backups 
-for all steps in the respective ".bak" folders. 
-:::
+You will find all inputs needed for assemblies in the "`reads`" folders (both short and long). 
 
 # Short-reads assemblies: metaSPAdes
 For short reads, we will use [SPAdes - St. Petersburg genome Assembler](https://github.com/ablab/spades), a suite of assembling tools containing different assembly pipelines. 
-For metagenomic data, we will the more metagenomi-specific side of SPAdes - metaSPAdes.
-metaSPAdes offers many options that fit your preferences differently, mostly depending on the type of data you are willing to assemble.
+For metagenomic data, we will the more metagenomic-specific side of `SPAdes`: `metaSPAdes`.
+
+metaSPAdes offers many options that fit your preferences differently, mostly depending on the type of data you want to assemble.
 To explore them, type `metaspades.py -h`. 
 Bear in mind that options will differ when selecting different tools (e.g. spades.py) and they should be tuned according to the input dataset and desired outcome.
 
@@ -69,23 +67,24 @@ metaspades.py -h
 ```
 :::
 
-:::{.callout-warning}
-This execution should be able to run on a 4-core, 32 GB ram laptop. However, the command above will NOT work on your VMs to prevent overload on the system if all VM users are running this command at the same time. If you are willing to launch this, the execution will take up to 20 minutes. 
+:::{.callout-important}
+This execution should be able to run on a 4-core, 32 GB ram laptop. However, we kindly ask you to NOT launch the execution on your VMs to prevent overload on the system if all VM users are running this command at the same time. The command will work if assembled correctly, but we kindly ask you to run it at a different moment. The execution would take around 15 minutes. 
 :::
 
 An explanation of involved parameters follows:
-* `-t 4` threads
-* `--only-assembler` skips the error correction step
-* `-m 10` memory limit in Gb
-* `-1 reads/oral_human_example_1_splitaa_trimmed_decontam.fastq` forward read
-* `-2 reads/oral_human_example_2_splitaa_trimmed_decontam.fastq` reverse read
-*`-o assembly_spades` output folder
 
-Once the assembly has completed, you will see plenty of files, in the `assembly_spades` folder including intermediate ones. 
+*    `-t 4` threads
+*    `--only-assembler` skips the error correction step
+*    `-m 10` memory limit in Gb
+*    `-1 reads/oral_human_example_1_splitaa_trimmed_decontam.fastq` forward read
+*    `-2 reads/oral_human_example_2_splitaa_trimmed_decontam.fastq` reverse read
+*    `-o assembly_spades` output folder
+
+Once the assembly has completed, all output files (including intermediate ones) can be found in the `assembly_spades` folder. 
 `contigs.fasta` and `scaffolds.fasta` are the ones you are usually interested into for downstream analyses (e.g. binning and MAG generation). 
 We will focus on `contigs.fasta` for this session, which is the same you are going to use in the coming practicals. 
-Contigs in this file are ordered from the longest to the shortest. 
-Without having to go all the way down to MAGs, you could sometimes identify strong taxonomic signals at the assembly stage with a quick blastn alignment.
+
+Without having to go all the way down to MAGs, you can sometimes identify strong taxonomic signals at the assembly stage with a quick blastn alignment.
 
 :::{.callout-step .callout-tip}
 Take the first 100 lines of the sequence and perform a [blast](https://blast.ncbi.nlm.nih.gov/Blast.cgi) search (choose Nucleotide:Nucleotide from the set of options). 
@@ -93,14 +92,14 @@ Leave all other options as default on the search page.
 To select the first 100 lines of the assembly perform the following:
 
 ```bash
-head -n 101 assembly.bak/contigs.fasta
+head -n 101 assembly_spades/contigs.fasta
 ```
 
 The resulting output is going to look like this:
 ![Blast-n](assemblies/BLAST_assembly_spades_results.png)
 :::
 
-:::{.callout-question .callout-tip}
+:::{.callout-question}
 What species does this sequence seem to be coming from?
 
 Does this make sense as a human oral bacterium? Are you surprised by this result at all?  
@@ -110,24 +109,30 @@ As mentioned in the theory talk, you might be interested in different statistics
 `assembly_stats` is a tool that produces two simple tables in JSON format with various measures, including N10 to N50, GC content, longest contig length and more. 
 The first section of the JSON corresponds to the scaffolds in the assembly, while the second corresponds to the contigs.
 
+:::{.callout-tip}
+Contigs in this file are ordered from the longest to the shortest. 
+:::
+
 N50 is a measure to describe the quality of assembled genomes that are fragmented in contigs of different length, used to assess the sequence length of the shortest contig at 50% of the total assembly length (after sorting assembled contigs from longest to shortest). 
 
-A (hopefully) clarifying picture to understand N50:
+A (hopefully) clarifying picture to understand N50, where N50==60:
 ![N50](assemblies/N50.png){width="70%" height="70%"}
 
-Essentially, the higher this value, the better, as it means that longer (i.e. more complete) contigs cover a certain fraction of the final assembly.
+Essentially, the higher this value, the better, as it means that longer (i.e. more complete) contigs cover half of the final assembly.
 However, this only makes sense when thinking about alike metagenomes. 
+
 Note that, like N50, other values can be considered e.g. N90 is the shortest contig length to cover 90 percent of the metagenome. 
 
-:::{.callout-step .callout-tip}
+You can call `assembly_stats` with the following command:
 
+:::{.callout-step .callout-tip}
 ```bash
-assembly-stats assembly.bak/scaffolds.fasta
+assembly-stats assembly_spades/scaffolds.fasta
 ```
 :::
 
 You will see a short output with a few statistics for your assembly. 
-In lines with format `N50 = YYY, n = Z`, n represents the amount of sequences needed to cover 50% of the total assembly.
+In lines with format `N50 = YYY, n = Z`, `n` represents the amount of sequences needed to cover 50% of the total assembly.
 A "gap" is any consecutive run of Ns (undetermined nucleotide bases) of any length. 
 `N_count` is the total Ns (undetermined nucleotide bases) across the entire assembly.
 
@@ -142,28 +147,34 @@ Another tool to keep in mind for metagenomic assemblies is QUAST, which provides
 # Long-reads assemblies: Flye
 
 For long-reads, we will use [Flye](https://github.com/fenderglass/Flye), which assembles single-molecule sequencing reads like PacBio and Oxford Nanopore Technologies (ONT) reads. 
-As spades, Flye is a pipeline that takes care of assembly polishing. 
+As SPAdes, Flye is a pipeline that takes care of assembly polishing. 
 Similarly to assembly scaffolding, it tries to overcome long-reads base call error by comparing different reads that cover the same sequencing fragment. 
-Flye's parameters are quickly described in the help command (`flye -h`).
+
+:::{.callout-tip}
+
+Flye's parameters are quickly described in the help command:
+```bash
+flye -h
+```
 
 Flye supports metagenomic assemblies with the `--meta` flag. 
-Backup assemblies for this section can be found in the `Assembly` folder, starting with "`LR`".
-
-:::{.callout-step .callout-tip}
-```bash
-mkdir flye_out
-flye --nano-raw reads/ONT_example.fastq --out-dir flye_out --threads 4
-```
 :::
+
+The output for this section can be found in the `assembly_flye` folder. They have been generated with the following parameters:
+
+* `--nano-raw`: depending on the quality of data, a different pre-set can be used. For example, if reads were previously polished and adapters were removed, we could use `--nano-corr`. `--nano-hq` should be reserved for high-quality data. 
+* `long_reads/ONT_example.fastq` input raw reads file
+* `--out-dir assembly_flye` output folder
+* `--threads 4` number of threads
 
 :::{.callout-note}
 # Extra
-Note that we are not using the `--meta` flag. 
-If you have some spare time, try to execute the same command with this flag and output folder "`LR_meta_assembly`".
+Note that we did not use the `--meta` flag. 
+You can also the result of using this flag in addition to the command above in the folder `assembly_flye_meta`.
 :::
 
-:::{.callout-note}
-Each execution will take around 5 minutes.
+:::{.callout-warning}
+As before, we recommend to NOT launch this command during this session. Each execution will take around 5 minutes.
 :::
 
 Let's have a first look at how assembly graphs look like.
