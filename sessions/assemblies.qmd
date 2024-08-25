@@ -59,7 +59,7 @@ Bear in mind that options will differ when selecting different tools (e.g. spade
 
 :::{.callout-tip}
 The default metaSPAdes pipeline executes an error correction step on the input fastqs.
-Since reads have already been polished in the past step, you can run metaspades without the error correction step.
+Since reads have already been polished in the previous step, you could run metaspades without the error correction step.
 
 You can see available metaspades parameters by typing the following: 
 ```bash
@@ -73,14 +73,14 @@ This execution should be able to run on a 4-core, 32 GB ram laptop. However, we 
 
 An explanation of involved parameters follows:
 
-*    `-t 4` threads
-*    `--only-assembler` skips the error correction step
-*    `-m 10` memory limit in Gb
-*    `-1 reads/oral_human_example_1_splitaa_trimmed_decontam.fastq` forward read
-*    `-2 reads/oral_human_example_2_splitaa_trimmed_decontam.fastq` reverse read
-*    `-o assembly_spades` output folder
+- `-t 4` threads
+- `--only-assembler` skips the error correction step
+- `-m 10` memory limit in Gb
+- `-1 reads/oral_human_example_1_splitaa_trimmed_decontam.fastq` forward read
+- `-2 reads/oral_human_example_2_splitaa_trimmed_decontam.fastq` reverse read
+- `-o assembly_spades` output folder
 
-Once the assembly has completed, all output files (including intermediate ones) can be found in the `assembly_spades` folder. 
+All output files (including intermediate ones) can be found in the `assembly_spades` folder. 
 `contigs.fasta` and `scaffolds.fasta` are the ones you are usually interested into for downstream analyses (e.g. binning and MAG generation). 
 We will focus on `contigs.fasta` for this session, which is the same you are going to use in the coming practicals. 
 
@@ -162,19 +162,19 @@ Flye supports metagenomic assemblies with the `--meta` flag.
 
 The output for this section can be found in the `assembly_flye` folder. They have been generated with the following parameters:
 
-* `--nano-raw`: depending on the quality of data, a different pre-set can be used. For example, if reads were previously polished and adapters were removed, we could use `--nano-corr`. `--nano-hq` should be reserved for high-quality data. 
-* `long_reads/ONT_example.fastq` input raw reads file
-* `--out-dir assembly_flye` output folder
-* `--threads 4` number of threads
+- `--nano-raw`: depending on the quality of data, a different pre-set can be used. For example, if reads were previously polished and adapters were removed, we could use `--nano-corr`. `--nano-hq` should be reserved for high-quality data. The same applies to the `pacbio` options.
+- `long_reads/ONT_example.fastq` input raw reads file
+- `--out-dir assembly_flye` output folder
+- `--threads 4` number of threads
 
 :::{.callout-note}
 # Extra
 Note that we did not use the `--meta` flag. 
-You can also the result of using this flag in addition to the command above in the folder `assembly_flye_meta`.
+You also have the result of using this flag in addition to the command above in the folder `assembly_flye_meta`.
 :::
 
 :::{.callout-warning}
-As before, we recommend to NOT launch this command during this session. Each execution will take around 5 minutes.
+As before, we recommend to NOT launch this command during this session. Each execution would take around 5 minutes.
 :::
 
 Let's have a first look at how assembly graphs look like.
@@ -183,7 +183,7 @@ They can be useful for finding sections of the graph, such as rRNA, or identify 
 Note, you can install Bandage on your local system. 
 With Bandage, you can zoom and pan around the graph and search for sequences, and much more.
 
-When looking at metaSPAdes output, it is usually recommended to launch Bandage on `assembly_graph.fastg`. 
+When looking at files generated with metaSPAdes, it is usually recommended to launch Bandage on `assembly_graph.fastg`. 
 However, our assembly is quite fragmented, so we will load `assembly_graph_after_simplification.gfa`.
 
 We will use Bandage to compare the two assemblies we have generated, Flye and metaSPAdes.
@@ -217,8 +217,9 @@ How does the Flye assembly differ from the one generated with metaSPAdes?
 :::{.callout-note}
 # Extra
 We launched Flye both with and without `--meta` on file `reads/ONT_example.fastq`.
-This file actually comes from run ERR3775163, which can be browsed on [ENA](https://www.ebi.ac.uk/ena/browser/home). 
+This file originally comes from run ERR3775163, which can be browsed on [ENA](https://www.ebi.ac.uk/ena/browser/home). 
 Have a look at sample metadata.
+
 Despite dealing with a long-read sample, can you understand why the assembly graph looks better for the execution without the `--meta` option?
 :::
 
@@ -229,38 +230,37 @@ If you blast the first contig of the long-read assembly, do results match the me
 
 # Co-assemblies: MEGAHIT
 
-In the following steps of this exercise, we will perform co-assembly of multiple datasets. 
-The first execution requires around 6-7 minutes to finish, the general suggestion is to run the first instruction and then rely on files in the **coassembly.bak** directory, which contains all expected results.
-
-:::{.callout-step .callout-tip}
-First, make sure that output directories do not already exist, as MEGAHIT can't overwrite existing directories. 
-Bear in mind that backup assemblies for this exercise are in:
+In the following steps of this exercise, we will observe co-assembly of multiple datasets. Remember that co-assembly produces meaningful results only when applied to "similar" samples. This is the case for the raw reads we co-assembled: they originally come from a single sample that has been split for this exercise. 
 
 ```bash
-ls /home/training/Assembly/coassembly.bak
-```
+megahit -h```
 
-You can perform co-assemblies with MEGAHIT as follows:
-
-```bash
-megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq -o coassembly1_new -t 4 --k-list 23,51,77 
-
-megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq -o coassembly2_new -t 4 --k-list 23,51,77 
-
-megahit -1 reads/oral_human_example_1_splitaa_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_1.fastq,reads/oral_human_example_1_splitac_kneaddata_paired_1.fastq -2 reads/oral_human_example_1_splitaa_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitab_kneaddata_paired_2.fastq,reads/oral_human_example_1_splitac_kneaddata_paired_2.fastq -o coassembly3_new -t 4 --k-list 23,51,77
-```
+:::{.callout-tip}
+When you launch MEGAHIT, make sure that output directories do not already exist, as it can't overwrite existing directories. 
+You will find MEGAHIT output files in the `co_assembly_short_reads` folder.
 :::
 
-You should now have three different co-assemblies generated from different subsamples of the same data.
+:::{.callout-warning}
+As earlier, we will leave you with parameters you could perform co-assemblies with, but we recommend not to try in this instance.
+:::
 
-:::{.callout-step .callout-tip}
-Compare the results of the three contig files with `assembly_stats`. 
+- `-1 [forward files comma-separated]`
+- `-2 [reverse files comma-separated]`
+- `-o co_assembly_megahit` output folder
+- `-t 4` number of threads
+- `--k-list 23,51,77` list of kmer lengths
+
+:::{.callout-step}
+Compare the results of the co-assembly contig file to the single-assembly one with `assembly_stats`. 
+
 How do these assemblies differ from the one generated previously with metaSPAdes? 
 Which one do you think is best?
+:::
 
-To generate assembly graphs for MEGAHIT output, execute:
+:::{.callout-step}
+To generate assembly graphs for the MEGAHIT output, execute:
 ```bash
-megahit_toolkit contig2fastg 77 final.contigs.fa > final.contigs.fastg
+megahit_toolkit contig2fastg 77 co_assembly_megahit/final.contigs.fa > co_assembly_megahit/final.contigs.fastg
 ```
 :::
 
