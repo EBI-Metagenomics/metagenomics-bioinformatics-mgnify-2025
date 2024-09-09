@@ -340,12 +340,6 @@ from re-running Bakta, we must update the creation times of the input and output
 
 Documentation for CELEBRIMBOR can be found [here](https://github.com/bacpop/CELEBRIMBOR).
 
-As CELEBRIMBOR runs CheckM, we'll need to point to the correct database :
-
-```bash
-checkm data setRoot ~/course_dir/data_dir/MGnify_training_course/pangenome_mgnify_env/checkm_data
-```
-
 Snakemake reads a `config.yaml` file to assign parameters. Navigate to the `CELEBRIMBOR` directory, and update the `config.yaml` file 
 with the appropriate parameters.
 
@@ -380,8 +374,14 @@ panaroo_stringency: "strict"
 
 Note: paths in the `config.yaml` file cannot contain `~` symbols.
 
+As CELEBRIMBOR runs CheckM, we'll need to point to the correct database :
+
+```bash
+checkm data setRoot ~/course_dir/data_dir/MGnify_training_course/pangenome_mgnify_env/checkm_data
+```
+
 To run CELEBRIMBOR, simply run the below command. Snakemake will read the `config.yaml` file and run CELEBRIMBOR on the associated files, avoiding
-bakta as the annotations are already present in `MAGs_for_CELEBRIMBOR/results`
+bakta as the annotations are already present in `MAGs_for_CELEBRIMBOR/results`.
 
 ```bash
 snakemake --cores 4
@@ -406,15 +406,13 @@ Using R, you can plot the different between the adjusted and unadjusted results 
 
 ![Effect of frequency adjustment](pangenome/frequency_adjustment.png)
 
-There are other files that can be used for downstream analysis, such as `presence_absence_matrix.txt` which defines in which genomes gene families are found, 
-as well as the `annotated` directory, which contains gene annotations generated using Bakta.
+There are other files that can be used for downstream analysis, such as `presence_absence_matrix.txt` which defines in which genomes gene families are found, as well as the `annotated` directory, which contains gene annotations generated using Bakta.
 
 ### Further analysis
 
-Try running CELEBRIMBOR with different parameters, such as `cgt_breaks` which defines the original rare and core thresholds to adjust, or `cgt_error`, which 
-defines the false negative rate of CELEBRIMBOR. 
+Try running CELEBRIMBOR with different parameters, such as `cgt_breaks` which defines the original rare and core thresholds to adjust, or `cgt_error`, which defines the false negative rate of CELEBRIMBOR. 
 
-You can also try running with `clustering_method` set to `panaroo`, which uses [Panaroo](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02090-4), a more accurate clustering method but less scalable than MMseqs2. Also, when running Panaroo, try setting `panaroo_stringency` to `moderate` or `senstive`. Details on the effect of these parameters can be found [here](https://gthlab.au/panaroo/#/gettingstarted/params)
+You can also try running with `clustering_method` set to `panaroo`, which uses [Panaroo](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02090-4), a more accurate clustering method but less scalable than MMseqs2. Also, when running Panaroo, try setting `panaroo_stringency` to `moderate` or `senstive`. Details on the effect of these parameters can be found [here](https://gthlab.au/panaroo/#/gettingstarted/params).
 
 
 
