@@ -329,12 +329,14 @@ cp -r ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/results 
 ```
 
 CELEBRIMBOR is a snakemake pipeline which enables automated gene annotation, clustering, completeness estimation
-and core threshold adjustment. Snakemake allows workflows to be re-run if workflows stop prematurely. To prevent CELEBRIMBOR
-from re-running Bakta and CheckM, we must update the creation times of the input and output files using `touch`.
+and core threshold adjustment. Snakemake allows workflows to be re-run if workflows stop prematurely. 
+
+To prevent CELEBRIMBOR from re-running Bakta and CheckM, we must update the creation times of the input and output files using `touch`. For your own analysis, this is not recommended as you will run the full CELEBRIMBOR pipeline.
 
 ```bash
 (cd ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs && touch *.fasta)
 (cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch annotated/*/* && touch annotated/*)
+(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out/* && touch checkm_out/*/* && && touch checkm_out/*/*/*)
 (cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out.tsv)
 ```
 
@@ -384,10 +386,12 @@ To run CELEBRIMBOR, simply run the below command. Snakemake will read the `confi
 Bakta and CheckM as these results have already been generated.
 
 ```bash
-snakemake --cores 4
+snakemake --cores 4 --ignore-incomplete
 ```
 
-This will take a little while. You'll see a number of tools being run, including [MMseqs2](https://www.nature.com/articles/nbt.3988) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment. 
+Note: we need the `--ignore-incomplete` flag here as we are not running Bakta or CheckM. For your own analysis, this option is not recommended.
+
+This will run for a few minutes. You'll see a number of tools being run, including [MMseqs2](https://www.nature.com/articles/nbt.3988) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment. 
 
 While you're waiting, feel free to take a look at the [CELEBRIMBOR](https://www.biorxiv.org/content/10.1101/2024.04.05.588231v1) preprint or [PopPUNK](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6360808/) paper.
 
