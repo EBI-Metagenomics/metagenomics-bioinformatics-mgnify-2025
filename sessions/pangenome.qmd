@@ -63,7 +63,7 @@ source ~/course_dir/data_dir/MGnify_training_course/pangenome_mgnify_env/bin/act
 If the enviroment has been found correctly, you should see something similar to the following on your terminal
 
 ```bash
-(pangenome_mgnify_env) training@ip-172-17-32-100:~$
+(pangenome_mgnify_env) training@user:~$
 ```
 
 1. Building PopPUNK models
@@ -320,10 +320,9 @@ ls ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR
 ```
 
 This archive contains two directories. `CELEBRIMBOR_MAGs` contains the fasta files we will be analysing. 
-`results` contains the [Bakta](https://github.com/oschwengers/bakta) output which was generated previously from these genomes. As this is
-the slowest part of the analysis, we have provided them to allow you to generate results faster.
+`results` contains the [Bakta](https://github.com/oschwengers/bakta) and [CheckM](https://github.com/Ecogenomics/CheckM) outputs which were generated previously from these genomes. As these are the slowest parts of the analysis, we have provided them to allow you to generate results faster.
 
-As well be working with `results`, copy the whole directory to your working directory : 
+As we'll be updating `results`, copy the whole directory to your working directory : 
 
 ```bash
 cp -r ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/results ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results
@@ -331,11 +330,12 @@ cp -r ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/results 
 
 CELEBRIMBOR is a snakemake pipeline which enables automated gene annotation, clustering, completeness estimation
 and core threshold adjustment. Snakemake allows workflows to be re-run if workflows stop prematurely. To prevent CELEBRIMBOR
-from re-running Bakta, we must update the creation times of the input and output files using `touch`.
+from re-running Bakta and CheckM, we must update the creation times of the input and output files using `touch`.
 
 ```bash
 (cd ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs && touch *.fasta)
 (cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch annotated/*/* && touch annotated/*)
+(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out.tsv)
 ```
 
 Documentation for CELEBRIMBOR can be found [here](https://github.com/bacpop/CELEBRIMBOR).
@@ -381,13 +381,13 @@ checkm data setRoot ~/course_dir/data_dir/MGnify_training_course/pangenome_mgnif
 ```
 
 To run CELEBRIMBOR, simply run the below command. Snakemake will read the `config.yaml` file and run CELEBRIMBOR on the associated files, avoiding
-bakta as the annotations are already present in `MAGs_for_CELEBRIMBOR/results`.
+Bakta and CheckM as these results have already been generated.
 
 ```bash
 snakemake --cores 4
 ```
 
-This will take some time. You'll see a number of tools being run, including [CheckM](https://github.com/Ecogenomics/CheckM) for completeness calculation, [MMseqs2](https://www.nature.com/articles/nbt.3988) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment. 
+This will take a little while. You'll see a number of tools being run, including [MMseqs2](https://www.nature.com/articles/nbt.3988) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment. 
 
 While you're waiting, feel free to take a look at the [CELEBRIMBOR](https://www.biorxiv.org/content/10.1101/2024.04.05.588231v1) preprint or [PopPUNK](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6360808/) paper.
 
@@ -413,11 +413,3 @@ There are other files that can be used for downstream analysis, such as `presenc
 Try running CELEBRIMBOR with different parameters, such as `cgt_breaks` which defines the original rare and core thresholds to adjust, or `cgt_error`, which defines the false negative rate of CELEBRIMBOR. 
 
 You can also try running with `clustering_method` set to `panaroo`, which uses [Panaroo](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02090-4), a more accurate clustering method but less scalable than MMseqs2. Also, when running Panaroo, try setting `panaroo_stringency` to `moderate` or `senstive`. Details on the effect of these parameters can be found [here](https://gthlab.au/panaroo/#/gettingstarted/params).
-
-
-
-
-
-
-
-
