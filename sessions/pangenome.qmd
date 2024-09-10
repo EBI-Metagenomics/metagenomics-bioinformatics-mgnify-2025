@@ -57,28 +57,25 @@ https://drive.google.com/drive/folders/1pc17JErBHRwLeRf8Ch8yu4dXSIwFfBQK?usp=sha
 The course prerequisities are already install on the VM. To activate the environment, run:
 
 ```bash
-source mgnify_pangenome/bin/activate
+source ~/course_dir/data_dir/MGnify_training_course/pangenome_mgnify_env/bin/activate
 ```
 
 If the enviroment has been found correctly, you should see something similar to the following on your terminal
 
 ```bash
-(mgnify_pangenome) user@address ~ %
+(pangenome_mgnify_env) training@user:~$
 ```
 
 1. Building PopPUNK models
 ---------------------------------------------
 
-First, unpack the genomes we will be using in this step by
-running the following commands:
-```bash
-tar xvf MAGs_to_build_model.gz
-mkdir isolate_genomes && mv *.fasta isolate_genomes
-```
-
-This will unzip 112 _B. uniformis_ isolate genomes (i.e. not MAG data).
+We will be using 112 _B. uniformis_ isolate genomes (i.e. not MAG data).
 We are going to use these to define subspecies within the population
-using [PopPUNK](https://genome.cshlp.org/content/29/2/304).
+using [PopPUNK](https://genome.cshlp.org/content/29/2/304). These can be listed using:
+
+```bash
+ls ~/course_dir/data_dir/MGnify_training_course/MAGs_to_build_model
+```
 
 [Installation instructions](https://poppunk.readthedocs.io/en/latest/installation.html) and an [overview](https://poppunk.readthedocs.io/en/latest/overview.html) are available. 
 
@@ -91,11 +88,17 @@ a 'database' which contains sketches of the genomes and calculates all
 of the core and accessory distances between the samples. We will be
 following the guidance in the [relevant section of the documentation](https://poppunk.readthedocs.io/en/latest/sketching.html).
 
-First, we need to create a list of the input files. This needs to have
+First, navigate to the working directory and create a new directory:
+
+```bash
+cd ~/course_dir/work_dir/Day_5 && mkdir pangenome && cd pangenome
+```
+
+We need to create a list of the input files. This needs to have
 the sample names and the location of files with their genomes. This can
 be created in many ways, here we will use a simple bash command:
 ```bash
-paste <(ls isolate_genomes | cut -d "." -f 1 ) <(ls isolate_genomes/MGYG*) > rfile.txt
+paste <(ls ~/course_dir/data_dir/MGnify_training_course/MAGs_to_build_model | cut -d "." -f 1 ) <(ls ~/course_dir/data_dir/MGnify_training_course/MAGs_to_build_model/MGYG*) > rfile.txt
 ```
 
 We can now create the input database with `--create-db` as follows:
@@ -138,7 +141,7 @@ As we have 'small' sample collection with strain-structure where distance distri
 poppunk --fit-model bgmm --ref-db b_uniformis_db --output b_uniformis_BGMM_K2 --K 2
 ```
 
-From the output we can see that everything is in one cluster (In `Network Summary` there is one component) and so we
+From the output to the console we can see that everything is in one cluster (In `Network Summary` there is one component) and so we
 haven't found any subspecies. Have a look at the output plot `b_uniformis_BGMM_K2/b_uniformis_BGMM_K2_DPGMM_fit.png` too.
 
 It looks like adding an extra component ('blob') might help, so let's
@@ -204,7 +207,7 @@ We always recommend refining a previous fit, as it may significantly improve str
 
 You can also play around with visualisation tools such as [Cytoscape](https://cytoscape.org/what_is_cytoscape.html). Use the `poppunk_visualise`
 tool to generate a cytoscape output following the [documentation](https://poppunk.readthedocs.io/en/latest/visualisation.html#cytoscape). This
-will allow you to visualise the strain cluster network, the components of which are the strains detected by PopPUNK.
+will allow you to visualise the strain cluster network, the components of which are the strains detected by PopPUNK. Note: this will generate a file for each component, as well as the whole network, enabling visualisation of the whole network or just parts of it.
 
 2. Assigning using PopPUNK models
 ---------------------------------------
@@ -223,17 +226,20 @@ made.
 ### Using `poppunk_assign` to assign MAGs to subspecies
 
 Now we'll work with a large collection of MAGs. These are the _B. uniformis_
-MAGs from MGnify with >95% completeness and \<5% contamination.
+MAGs from MGnify with >95% completeness and \<5% contamination. They can be listed here
+
+```bash
+ls ~/course_dir/data_dir/MGnify_training_course/MAGs_to_assign/fasta/
+```
 
 PopPUNK distances are relatively robust to missing sequence content seen
 in MAGs, but less able to deal with contamination.
 
-Again, unzip and create the list of input files for poppunk:
+Again, navigate to the work directory and create the list of input files for poppunk:
 
 ```bash
-tar xvf MAGs_to_assign.bz2
-mv fasta mag_fastas
-paste <(ls mag_fastas | cut -d "." -f 1 ) <(ls mag_fastas/*.fasta) > qfile.txt
+cd ~/course_dir/work_dir/Day_5/pangenome
+paste <(ls ~/course_dir/data_dir/MGnify_training_course/MAGs_to_assign/fasta | cut -d "." -f 1 ) <(ls ~/course_dir/data_dir/MGnify_training_course/MAGs_to_assign/fasta/*.fasta) > qfile.txt
 ```
 
 One small problem is that these MAGs also contain the isolates from
@@ -295,25 +301,43 @@ with nothing in the core genome.
 
 ### CELEBRIMBOR: a pipeline for pangenome analysis and threshold correction
 
-The CELEBRIMBOR prerequisities are already install on the VM. The source code files can be found in the `CELEBRIMBOR` directory
-
-Unzip the genomes :
+The CELEBRIMBOR prerequisities are already install on the VM. The source code files can be found in the `CELEBRIMBOR` directory which can be listed here :
 
 ```bash
-tar xvf MAGs_for_CELEBRIMBOR.tar.gz
+ls /home/training/course_dir/data_dir/MGnify_training_course/CELEBRIMBOR
+```
+
+As well be editing the source code, make a copy in your working directory : 
+
+```bash
+cp -r /home/training/course_dir/data_dir/MGnify_training_course/CELEBRIMBOR ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR
+```
+
+The files we will be analysing can be listed here :
+
+```bash
+ls ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR
 ```
 
 This archive contains two directories. `CELEBRIMBOR_MAGs` contains the fasta files we will be analysing. 
-`results` contains the [Bakta](https://github.com/oschwengers/bakta) output which was generated previously from these genomes. As this is
-the slowest part of the analysis, we have provided them to allow you to generate results faster.
+`results` contains the [Bakta](https://github.com/oschwengers/bakta) and [CheckM](https://github.com/Ecogenomics/CheckM) outputs which were generated previously from these genomes. As these are the slowest parts of the analysis, we have provided them to allow you to generate results faster.
 
-CELEBRIMBOR is a snakemake pipeline which enables automated gene annotation, clustering, completeness estimation
-and core threshold adjustment. Snakemake allows workflows to be re-run if workflows stop prematurely. To prevent CELEBRIMBOR
-from re-running Bakta, we must update the creation times of the input and output files using `touch`.
+As we'll be updating `results`, copy the whole directory to your working directory : 
 
 ```bash
-(cd MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs && touch *.fasta)
-(cd MAGs_for_CELEBRIMBOR/results && touch annotated/*/* && touch annotated/*)
+cp -r ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/results ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results
+```
+
+CELEBRIMBOR is a snakemake pipeline which enables automated gene annotation, clustering, completeness estimation
+and core threshold adjustment. Snakemake allows workflows to be re-run if workflows stop prematurely. 
+
+To prevent CELEBRIMBOR from re-running Bakta and CheckM, we must update the creation times of the input and output files using `touch`. If you do your own analysis outside of this practical, this is not recommended as you would want to run the full CELEBRIMBOR pipeline.
+
+```bash
+(cd ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs && touch *.fasta)
+(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch annotated/*/* && touch annotated/*)
+(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out/* && touch checkm_out/*/* && && touch checkm_out/*/*/*)
+(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out.tsv)
 ```
 
 Documentation for CELEBRIMBOR can be found [here](https://github.com/bacpop/CELEBRIMBOR).
@@ -322,37 +346,54 @@ Snakemake reads a `config.yaml` file to assign parameters. Navigate to the `CELE
 with the appropriate parameters.
 
 ```bash
+cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR
+vim config.yaml
+```
+
+To start typing in vim, type `i`. To close vim, first use the `esc` key, and then WITH saving type, `:wq`, or WITHOUT saving, type `:q!`
+
+```bash
 #output directory
-output_dir: /path/to/MAGs_for_CELEBRIMBOR/results
+output_dir: /home/training/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results
 
 # dir with genome fasta files, must have '.fasta' extension, to convert use 'rename .fa .fasta  *.fa' (e.g. if extensions are .fa)
-genome_fasta: /path/to/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs
+genome_fasta: /home/training/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs
 
 # path to bakta DB:
-bakta_db: /path/to/bakta_db/db-light
+bakta_db: /home/training/course_dir/data_dir/db-light
 
 # cgt executable parameters
-cgt_exe: /path/to/bin/cgt_bacpop
+cgt_exe: /home/training/.cargo/bin/cgt_bacpop
 cgt_breaks: 0.05,0.95
 cgt_error: 0.05
 
 # choice of clustering method, either "mmseqs2" or "panaroo"
-clustering_method: "panaroo"
+clustering_method: "mmseqs2"
 
 # must be one of "strict", "moderate" or "sensitive"
 panaroo_stringency: "strict"
 ```
 
-Update where it says `/path/to/` variables to point to the correct locations. We will leave the rest of the parameters as they are for now.
+Note: paths in the `config.yaml` file cannot contain `~` symbols.
 
-To run CELEBRIMBOR, simply run the below command. Snakemake will read the `config.yaml` file and run CELEBRIMBOR on the associated files, avoiding
-bakta as the annotations are already present in `MAGs_for_CELEBRIMBOR/results`
+As CELEBRIMBOR runs CheckM, we'll need to point to the correct database :
 
 ```bash
-snakemake --cores 4
+checkm data setRoot ~/course_dir/data_dir/MGnify_training_course/pangenome_mgnify_env/checkm_data
 ```
 
-You'll see a number of tools being run, including [CheckM](https://github.com/Ecogenomics/CheckM) for completeness calculation, [Panaroo](https://github.com/gtonkinhill/panaroo) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment.
+To run CELEBRIMBOR, simply run the below command. Snakemake will read the `config.yaml` file and run CELEBRIMBOR on the associated files, avoiding
+Bakta and CheckM as these results have already been generated.
+
+```bash
+snakemake --cores 4 --ignore-incomplete
+```
+
+Note: we need the `--ignore-incomplete` flag here as we are not running Bakta or CheckM. For your own analysis outside of this practical, this option is not recommended.
+
+This will run for a few minutes. You'll see a number of tools being run, including [MMseqs2](https://www.nature.com/articles/nbt.3988) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment. 
+
+While you're waiting, feel free to take a look at the [CELEBRIMBOR](https://www.biorxiv.org/content/10.1101/2024.04.05.588231v1) preprint or [PopPUNK](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6360808/) paper.
 
 You'll observe the new frequency thresholds printed to the console. Here, the core threshold was reduced from 95% to 92.73%, whilst the rare threshold was increased from 5% to 10%.
 
@@ -361,28 +402,72 @@ Core threshold: >= 102 observations or >= 92.73% frequency
 Rare threshold: <= 11 observations or <= 10.00% frequency
 ```
 
-Take a look at the output files. The `pangenome_summary.tsv` describes the assignments of each gene family to a frequency compartment
-based on the raw frequency values. `cgt_output.txt` details the adjusted frequency compartment assignments calculated by CELEBRIMBOR.
+Take a look at the output files by running :
 
-Using RStudio, you can plot the different between the adjusted and unadjusted results by updating the script `plot_frequency.R` with the paths to 
-`pangenome_summary.tsv` and `cgt_output.txt`. Observe that the core genome and rare genome sizes increase after adjustment, whilst the middle or intermediate decreases.
+```bash
+cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && ls
+```
+
+The `pangenome_summary.tsv` describes the assignments of each gene family to a frequency compartment based on the raw frequency values (column order: gene name, gene annotation, frequency, frequency compartment). 
+
+`cgt_output.txt` details the adjusted frequency compartment assignments calculated by CELEBRIMBOR (column order: gene name, gene count, adjusted frequency compartment).
+
+Using `R`, you can plot the different between the adjusted and unadjusted results by updating the script `plot_frequency.R` with the paths to `pangenome_summary.tsv` and `cgt_output.txt`. 
+
+Copy the R script to the working directory and edit:
+
+```bash
+cp ~/course_dir/data_dir/MGnify_training_course/plot_frequency.R ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results
+vim plot_frequency.R
+```
+
+Edit the file below : 
+
+```bash
+library(ggplot2)
+
+# read in data
+pangenome.summary <- read.csv("/home/training/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results/pangenome_summary.tsv", sep = "\t", header=FALSE)
+colnames(pangenome.summary) <- c("gene_name", "gene_family", "frequency", "compartment_freq")
+pangenome.summary$gene_family <- NULL
+
+cgt.summary <- read.csv("/home/training/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results/cgt_output.txt", sep = "\t", header=TRUE)
+colnames(cgt.summary) <- c("gene_name", "count", "compartment_adjusted")
+
+# Merge data
+total.df <- merge(pangenome.summary, cgt.summary, by = "gene_name")
+
+# stack data
+stacked.df <- data.frame(Type = "Unadjusted", Compartment = total.df$compartment_freq)
+stacked.df <- rbind(stacked.df, data.frame(Type = "Adjusted", Compartment = total.df$compartment_adjusted))
+stacked.df$Compartment <- factor(stacked.df$Compartment, levels = c("rare", "middle", "core"))
+stacked.df$Type <- factor(stacked.df$Type, levels = c("Unadjusted", "Adjusted"))
+
+# plot data
+p <- ggplot(stacked.df, aes(x=Type, fill = Type)) + facet_grid(Compartment~., scales = "free_y") + geom_bar() + xlab("Pangenome analysis type") + ylab("Gene count") + theme(legend.position = "none")
+ggsave("/home/training/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results/adjusted_gene_frequency.png", plot = p)
+```
+
+Run the script from the `R` terminal : 
+
+```bash
+R
+```
+
+```R
+source("plot_frequency.R")
+```
+
+Use `Ctrl + Z` to close the R terminal.
+
+Take a look at `adjusted_gene_frequency.png`. Observe that the core genome and rare genome sizes increase after adjustment, whilst the middle or intermediate decreases.
 
 ![Effect of frequency adjustment](pangenome/frequency_adjustment.png)
 
-There are other files that can be used for downstream analysis, such as `presence_absence_matrix.txt` which defines in which genomes gene families are found, 
-as well as the `annotated` directory, which contains gene annotations generated using Bakta.
+There are other files that can be used for downstream analysis, such as `presence_absence_matrix.txt` which defines in which genomes gene families are found, as well as the `annotated` directory, which contains gene annotations generated using Bakta.
 
 ### Further analysis
 
-Try running CELEBRIMBOR with different parameters, such as `cgt_breaks` which defines the original rare and core thresholds to adjust, or `cgt_error`, which 
-defines the false negative rate of CELEBRIMBOR. 
+Try running CELEBRIMBOR with different parameters, such as `cgt_breaks` which defines the original rare and core thresholds to adjust, or `cgt_error`, which defines the false negative rate of CELEBRIMBOR. 
 
-Also try setting `panaroo_stringency` to `moderate` or `senstive`. Details on the effect of these parameters can be found [here](https://gthlab.au/panaroo/#/gettingstarted/params). You can also try running with `clustering_method` set to `mmseqs2`, which is a more scalable but less accurate clustering method than Panaroo.
-
-
-
-
-
-
-
-
+You can also try running with `clustering_method` set to `panaroo`, which uses [Panaroo](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02090-4), a more accurate clustering method but less scalable than MMseqs2. Also, when running Panaroo, try setting `panaroo_stringency` to `moderate` or `senstive`. Details on the effect of these parameters can be found [here](https://gthlab.au/panaroo/#/gettingstarted/params).
