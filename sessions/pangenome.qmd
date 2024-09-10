@@ -331,7 +331,7 @@ cp -r ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/results 
 CELEBRIMBOR is a snakemake pipeline which enables automated gene annotation, clustering, completeness estimation
 and core threshold adjustment. Snakemake allows workflows to be re-run if workflows stop prematurely. 
 
-To prevent CELEBRIMBOR from re-running Bakta and CheckM, we must update the creation times of the input and output files using `touch`. For your own analysis, this is not recommended as you will run the full CELEBRIMBOR pipeline.
+To prevent CELEBRIMBOR from re-running Bakta and CheckM, we must update the creation times of the input and output files using `touch`. If you do your own analysis outside of this practical, this is not recommended as you would want to run the full CELEBRIMBOR pipeline.
 
 ```bash
 (cd ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs && touch *.fasta)
@@ -389,7 +389,7 @@ Bakta and CheckM as these results have already been generated.
 snakemake --cores 4 --ignore-incomplete
 ```
 
-Note: we need the `--ignore-incomplete` flag here as we are not running Bakta or CheckM. For your own analysis, this option is not recommended.
+Note: we need the `--ignore-incomplete` flag here as we are not running Bakta or CheckM. For your own analysis outside of this practical, this option is not recommended.
 
 This will run for a few minutes. You'll see a number of tools being run, including [MMseqs2](https://www.nature.com/articles/nbt.3988) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment. 
 
@@ -405,7 +405,7 @@ Rare threshold: <= 11 observations or <= 10.00% frequency
 Take a look at the output files by running :
 
 ```bash
-cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results
+cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && ls
 ```
 
 The `pangenome_summary.tsv` describes the assignments of each gene family to a frequency compartment based on the raw frequency values (column order: gene name, gene annotation, frequency, frequency compartment). 
@@ -454,7 +454,7 @@ Run the script from the `R` terminal :
 R
 ```
 
-```bash
+```R
 source("plot_frequency.R")
 ```
 
