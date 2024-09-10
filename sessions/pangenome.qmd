@@ -402,11 +402,65 @@ Core threshold: >= 102 observations or >= 92.73% frequency
 Rare threshold: <= 11 observations or <= 10.00% frequency
 ```
 
-Take a look at the output files. The `pangenome_summary.tsv` describes the assignments of each gene family to a frequency compartment
-based on the raw frequency values. `cgt_output.txt` details the adjusted frequency compartment assignments calculated by CELEBRIMBOR.
+Take a look at the output files by running :
 
-Using R, you can plot the different between the adjusted and unadjusted results by updating the script `~/course_dir/data_dir/MGnify_training_course/plot_frequency.R` with the paths to 
-`pangenome_summary.tsv` and `cgt_output.txt`. Observe that the core genome and rare genome sizes increase after adjustment, whilst the middle or intermediate decreases.
+```bash
+cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results
+```
+
+The `pangenome_summary.tsv` describes the assignments of each gene family to a frequency compartment based on the raw frequency values (column order: gene name, gene annotation, frequency, frequency compartment). 
+
+`cgt_output.txt` details the adjusted frequency compartment assignments calculated by CELEBRIMBOR (column order: gene name, gene count, adjusted frequency compartment).
+
+Using `R`, you can plot the different between the adjusted and unadjusted results by updating the script `plot_frequency.R` with the paths to `pangenome_summary.tsv` and `cgt_output.txt`. 
+
+Copy the R script to the working directory and edit:
+
+```bash
+cp ~/course_dir/data_dir/MGnify_training_course/plot_frequency.R ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results
+vim plot_frequency.R
+```
+
+Edit the file below : 
+
+```bash
+library(ggplot2)
+
+# read in data
+pangenome.summary <- read.csv("/home/training/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results/pangenome_summary.tsv", sep = "\t", header=FALSE)
+colnames(pangenome.summary) <- c("gene_name", "gene_family", "frequency", "compartment_freq")
+pangenome.summary$gene_family <- NULL
+
+cgt.summary <- read.csv("/home/training/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results/cgt_output.txt", sep = "\t", header=TRUE)
+colnames(cgt.summary) <- c("gene_name", "count", "compartment_adjusted")
+
+# Merge data
+total.df <- merge(pangenome.summary, cgt.summary, by = "gene_name")
+
+# stack data
+stacked.df <- data.frame(Type = "Unadjusted", Compartment = total.df$compartment_freq)
+stacked.df <- rbind(stacked.df, data.frame(Type = "Adjusted", Compartment = total.df$compartment_adjusted))
+stacked.df$Compartment <- factor(stacked.df$Compartment, levels = c("rare", "middle", "core"))
+stacked.df$Type <- factor(stacked.df$Type, levels = c("Unadjusted", "Adjusted"))
+
+# plot data
+p <- ggplot(stacked.df, aes(x=Type, fill = Type)) + facet_grid(Compartment~., scales = "free_y") + geom_bar() + xlab("Pangenome analysis type") + ylab("Gene count") + theme(legend.position = "none")
+ggsave("/home/training/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results/adjusted_gene_frequency.png", plot = p)
+```
+
+Run the script from the `R` terminal : 
+
+```bash
+R
+```
+
+```bash
+source("plot_frequency.R")
+```
+
+Use `Ctrl + Z` to close the R terminal.
+
+Take a look at `adjusted_gene_frequency.png`. Observe that the core genome and rare genome sizes increase after adjustment, whilst the middle or intermediate decreases.
 
 ![Effect of frequency adjustment](pangenome/frequency_adjustment.png)
 
