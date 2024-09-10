@@ -304,13 +304,13 @@ with nothing in the core genome.
 The CELEBRIMBOR prerequisities are already install on the VM. The source code files can be found in the `CELEBRIMBOR` directory which can be listed here :
 
 ```bash
-ls ~/softwares_download/CELEBRIMBOR-1.1.2
+ls /home/training/course_dir/data_dir/MGnify_training_course/CELEBRIMBOR
 ```
 
 As well be editing the source code, make a copy in your working directory : 
 
 ```bash
-cp -r ~/softwares_download/CELEBRIMBOR-1.1.2 ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR
+cp -r /home/training/course_dir/data_dir/MGnify_training_course/CELEBRIMBOR ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR
 ```
 
 The files we will be analysing can be listed here :
