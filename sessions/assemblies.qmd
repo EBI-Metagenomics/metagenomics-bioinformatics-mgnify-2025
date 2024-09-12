@@ -32,7 +32,7 @@ Once you have quality filtered your sequencing reads, you may want to perform *d
 The first step is to assemble your sequences into contigs. 
 There are many tools available for this, such as `MetaVelvet`, `metaSPAdes`, `IDBA-UD`, or `MEGAHIT`. 
 
-We generally use `metaSPAdes`, as in most cases it yields the best contig size statistics (i.e. more continguous assembly), and it has been shown to be able to capture high degrees of community diversity (Vollmers, et al. PLOS One 2017). 
+We generally use `metaSPAdes`, as in most cases it yields the best contig size statistics (i.e. more continguous assembly), and it has been shown to be able to capture high degrees of community diversity ([Vollmers, et al. PLOS One 2017](https://europepmc.org/article/MED/28099457)).
 However, you should consider pros and cons of different assemblers, which not only includes the accuracy of the assembly, but also their computational overhead. 
 Compare these factors to what you have available. 
 
@@ -47,19 +47,19 @@ Let’s first move to the root working directory to run all analyses:
 cd /home/training/Assembly/
 ```
 
-You will find all inputs needed for assemblies in the "`reads`" folders (both short and long). 
+The raw reads used for assembly generation can be found in the `data_dir/[long/short]_reads`" folders. 
 
 # Short-reads assemblies: metaSPAdes
 For short reads, we will use [SPAdes - St. Petersburg genome Assembler](https://github.com/ablab/spades), a suite of assembling tools containing different assembly pipelines. 
 For metagenomic data, we will the more metagenomic-specific side of `SPAdes`: `metaSPAdes`.
 
-metaSPAdes offers many options that fit your preferences differently, mostly depending on the type of data you want to assemble.
+`metaSPAdes` offers many options that fit your requirements differently, which mostly depend on the type of data you want to assemble.
 To explore them, type `metaspades.py -h`. 
-Bear in mind that options will differ when selecting different tools (e.g. spades.py) and they should be tuned according to the input dataset and desired outcome.
+Bear in mind that options will differ when selecting different tools (e.g. `spades.py` vs `metaspades.py`) and they should be tuned according to the input dataset and desired outcome.
 
 :::{.callout-tip}
 The default metaSPAdes pipeline executes an error correction step on the input fastqs.
-Since reads have already been polished in the previous step, you could run metaspades without the error correction step.
+Since reads have already been polished in the previous step, you can run metaspades without the error correction step.
 
 You can see available metaspades parameters by typing the following: 
 ```bash
@@ -68,20 +68,20 @@ metaspades.py -h
 :::
 
 :::{.callout-important}
-This execution should be able to run on a 4-core, 32 GB ram laptop. However, we kindly ask you to NOT launch the execution on your VMs to prevent overload on the system if all VM users are running this command at the same time. The command will work if assembled correctly, but we kindly ask you to run it at a different moment. The execution would take around 15 minutes. 
+This execution should be able to run on a 4-core, 16 GB RAM machine. However, we kindly ask you to NOT launch the execution on your VMs. Execution time would overall cover half of the session (metaSPAdes alone would take ~15 minutes). Also, you will prevent overload on the VMs and potential crashing, since VMs available resources barely cover metaSPAdes' requirements. 
 :::
 
-An explanation of involved parameters follows:
+An explanation of selected parameters follows:
 
 - `-t 4` threads
 - `--only-assembler` skips the error correction step
-- `-m 10` memory limit in Gb
-- `-1 reads/oral_human_example_1_splitaa_trimmed_decontam.fastq` forward read
-- `-2 reads/oral_human_example_2_splitaa_trimmed_decontam.fastq` reverse read
+- `-m 5` memory limit in Gb
+- `-1 short_reads/input_1.fastq` forward reads
+- `-2 short_reads/input_2.fastq` reverse reads
 - `-o assembly_spades` output folder
 
 All output files (including intermediate ones) can be found in the `assembly_spades` folder. 
-`contigs.fasta` and `scaffolds.fasta` are the ones you are usually interested into for downstream analyses (e.g. binning and MAG generation). 
+`contigs.fasta` and `scaffolds.fasta` are usually used for downstream analyses (e.g. binning and MAG generation). 
 We will focus on `contigs.fasta` for this session, which is the same you are going to use in the coming practicals. 
 
 Without having to go all the way down to MAGs, you can sometimes identify strong taxonomic signals at the assembly stage with a quick blastn alignment.
@@ -95,22 +95,23 @@ To select the first 100 lines of the assembly perform the following:
 head -n 101 assembly_spades/contigs.fasta
 ```
 
-The resulting output is going to look like this:
-![Blast-n](assemblies/BLAST_assembly_spades_results.png)
+The resulting output is going to have the following format (but look a bit better than this):
+![Blast-n](assemblies/blast_corrupted.jpg)
+
 :::
 
-:::{.callout-question}
+:::{.callout-question .callout-tip}
 What species does this sequence seem to be coming from?
 
 Does this make sense as a human oral bacterium? Are you surprised by this result at all?  
 :::
 
-As mentioned in the theory talk, you might be interested in different statistics for your contigs file. 
+As mentioned in the theory talk, you might be interested in different statistics for your contigs. 
 `assembly_stats` is a tool that produces two simple tables in JSON format with various measures, including N10 to N50, GC content, longest contig length and more. 
 The first section of the JSON corresponds to the scaffolds in the assembly, while the second corresponds to the contigs.
 
 :::{.callout-tip}
-Contigs in this file are ordered from the longest to the shortest. 
+Contigs are ordered from the longest to the shortest. 
 :::
 
 N50 is a measure to describe the quality of assembled genomes that are fragmented in contigs of different length, used to assess the sequence length of the shortest contig at 50% of the total assembly length (after sorting assembled contigs from longest to shortest). 
@@ -118,7 +119,7 @@ N50 is a measure to describe the quality of assembled genomes that are fragmente
 A (hopefully) clarifying picture to understand N50, where N50==60:
 ![N50](assemblies/N50.png){width="70%" height="70%"}
 
-Essentially, the higher this value, the better, as it means that longer (i.e. more complete) contigs cover half of the final assembly.
+Essentially, the higher this value, the better, as it means that longer contigs cover half of the final assembly, making it less fragmented.
 However, this only makes sense when thinking about alike metagenomes. 
 
 Note that, like N50, other values can be considered e.g. N90 is the shortest contig length to cover 90 percent of the metagenome. 
@@ -147,12 +148,12 @@ Another tool to keep in mind for metagenomic assemblies is QUAST, which provides
 # Long-reads assemblies: Flye
 
 For long-reads, we will use [Flye](https://github.com/fenderglass/Flye), which assembles single-molecule sequencing reads like PacBio and Oxford Nanopore Technologies (ONT) reads. 
-As SPAdes, Flye is a pipeline that takes care of assembly polishing. 
+Like SPAdes, Flye is a pipeline that takes care of assembling raw reads and polishing. 
 Similarly to assembly scaffolding, it tries to overcome long-reads base call error by comparing different reads that cover the same sequencing fragment. 
 
 :::{.callout-tip}
 
-Flye's parameters are quickly described in the help command:
+Flye's parameters are described in the help command:
 ```bash
 flye -h
 ```
@@ -162,41 +163,41 @@ Flye supports metagenomic assemblies with the `--meta` flag.
 
 The output for this section can be found in the `assembly_flye` folder. They have been generated with the following parameters:
 
-- `--nano-raw`: depending on the quality of data, a different pre-set can be used. For example, if reads were previously polished and adapters were removed, we could use `--nano-corr`. `--nano-hq` should be reserved for high-quality data. The same applies to the `pacbio` options.
-- `long_reads/ONT_example.fastq` input raw reads file
+- `--nano-raw`: depending on the quality of data, a different pre-set can be used. For example, if reads were previously polished and adapters were removed, we could use `--nano-corr`. `--nano-hq` should be reserved, respectively, for corrected and higher-quality data. The same applies to the `pacbio` options.
+- `long_reads/file.fastq` input raw reads file
 - `--out-dir assembly_flye` output folder
 - `--threads 4` number of threads
 
 :::{.callout-note}
-# Extra
 Note that we did not use the `--meta` flag. 
-You also have the result of using this flag in addition to the command above in the folder `assembly_flye_meta`.
+The assembly output of the same command with the addition of `--meta` is in the folder `assembly_flye_meta`.
 :::
 
 :::{.callout-warning}
-As before, we recommend to NOT launch this command during this session. Each execution would take around 5 minutes.
+As before, we recommend to NOT launch this command during this session. Each execution would take around 5 minutes, but it would take up all CPUs.
 :::
 
+# Diving into assembly graphs
 Let's have a first look at how assembly graphs look like.
 Bandage (a Bioinformatics Application for Navigating De novo Assembly Graphs Easily) is a program that creates interactive visualisations of assembly graphs. 
-They can be useful for finding sections of the graph, such as rRNA, or identify specific parts of a genome. 
+They can be useful for finding sections of the graph, such as rRNA, SNPs, or identify specific parts of a genome. 
 Note, you can install Bandage on your local system. 
 With Bandage, you can zoom and pan around the graph and search for sequences, and much more.
 
-When looking at files generated with metaSPAdes, it is usually recommended to launch Bandage on `assembly_graph.fastg`. 
-However, our assembly is quite fragmented, so we will load `assembly_graph_after_simplification.gfa`.
+We will use Bandage to compare the two assemblies we have generated with Flye and metaSPAdes. We will start with metaSPAdes.
 
-We will use Bandage to compare the two assemblies we have generated, Flye and metaSPAdes.
+When looking at metaSPAdes files, it is usually recommended to launch Bandage on `assembly_graph.fastg`. 
+However, our assembly is quite fragmented, so we will load `assembly_graph_after_simplification.gfa`.
 
 :::{.callout-step .callout-tip}
 ```bash
-Bandage
+Bandage &
 ```
 
 In the Bandage GUI perform the following:
 
 - Select File -> Load graph
-- Navigate to Home/training/Data/Assembly/assembly.bak and open `assembly_graph_after_simplification.gfa`
+- Navigate to `/home/training/Assembly/assembly_spades` and open `assembly_graph_after_simplification.gfa`
 
 Once loaded, you need to draw the graph. 
 To do so, under the “Graph drawing” panel on the left side perform the following:
@@ -210,13 +211,16 @@ Can you find any large, complex parts of the metaSPAdes graph?
 If so, what do they look like?
 :::
 
+Now open another instance of Bandage as you previously did, and open `assembly_flye/assembly_graph.gfa`.
+
 :::{.callout-question .callout-tip}
 How does the Flye assembly differ from the one generated with metaSPAdes?
 :::
 
+As already mentioned, we launched Flye both with and without `--meta` on file `long_reads/ONT_example.fastq`. You can now repeat the procedure for this other graph. 
+
 :::{.callout-note}
 # Extra
-We launched Flye both with and without `--meta` on file `reads/ONT_example.fastq`.
 This file originally comes from run ERR3775163, which can be browsed on [ENA](https://www.ebi.ac.uk/ena/browser/home). 
 Have a look at sample metadata.
 
@@ -230,38 +234,41 @@ If you blast the first contig of the long-read assembly, do results match the me
 
 # Co-assemblies: MEGAHIT
 
-In the following steps of this exercise, we will observe co-assembly of multiple datasets. Remember that co-assembly produces meaningful results only when applied to "similar" samples. This is the case for the raw reads we co-assembled: they originally come from a single sample that has been split for this exercise. 
+In the following steps of this exercise, we will observe co-assembly of multiple datasets. Remember that co-assembly produces meaningful results only when applied to "similar" samples. This is the case for the raw reads we co-assembled: they originally come from a single sample that has been split for this exercise. In particular, we co-assembled more data coming from the same sample we assembled with metaSPAdes. 
 
 ```bash
-megahit -h```
+megahit -h
+```
 
 :::{.callout-tip}
-When you launch MEGAHIT, make sure that output directories do not already exist, as it can't overwrite existing directories. 
 You will find MEGAHIT output files in the `co_assembly_short_reads` folder.
 :::
 
 :::{.callout-warning}
-As earlier, we will leave you with parameters you could perform co-assemblies with, but we recommend not to try in this instance.
+As earlier, we these are the parameters we generated the co-assemblies with, but we recommend not to try in this instance.
 :::
 
 - `-1 [forward files comma-separated]`
 - `-2 [reverse files comma-separated]`
 - `-o co_assembly_megahit` output folder
 - `-t 4` number of threads
-- `--k-list 23,51,77` list of kmer lengths
+- `--k-list 23,51,77` list of k-mer lengths
 
-:::{.callout-step}
+:::{.callout-step .callout-tip}
 Compare the results of the co-assembly contig file to the single-assembly one with `assembly_stats`. 
 
 How do these assemblies differ from the one generated previously with metaSPAdes? 
 Which one do you think is best?
 :::
 
-:::{.callout-step}
-To generate assembly graphs for the MEGAHIT output, execute:
+:::{.callout-note}
+# Extra
+You might notice that MEGAHIT does not generate assembly graphs by default. To do so, execute:
 ```bash
 megahit_toolkit contig2fastg 77 co_assembly_megahit/final.contigs.fa > co_assembly_megahit/final.contigs.fastg
 ```
+
+The samples used for the metaSPAdes assembly and the MEGAHIT co-assembly come from the same source. Do you see any relevant difference between the two assembly graphs?
 :::
 
 # ... And now?
