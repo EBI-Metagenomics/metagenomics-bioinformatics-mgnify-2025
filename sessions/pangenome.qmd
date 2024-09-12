@@ -9,19 +9,19 @@ author:
     email: shorsfield@ebi.ac.uk
     affiliation: 
       - name: EMBL-EBI
-        url: www.ebi.ac.uk
+        url: https://www.ebi.ac.uk
   - name: Johanna von Wachsmann,
     orcid: 0000-0002-4464-3900
     email: wachsmannj@ebi.ac.uk
     affiliation:
       - name: EMBL-EBI
-        url: www.ebi.ac.uk
+        url: https://www.ebi.ac.uk
   - name: John Lees
     orcid: 0000-0001-5360-1254
     email: jlees@ebi.ac.uk
     affiliation:
       - name: EMBL-EBI
-        url: www.ebi.ac.uk
+        url: https://www.ebi.ac.uk
 ---
 
 Preamble
@@ -336,7 +336,7 @@ To prevent CELEBRIMBOR from re-running Bakta and CheckM, we must update the crea
 ```bash
 (cd ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs && touch *.fasta)
 (cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch annotated/*/* && touch annotated/*)
-(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out/* && touch checkm_out/*/* && && touch checkm_out/*/*/*)
+(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out/* && touch checkm_out/*/* && touch checkm_out/*/*/*)
 (cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out.tsv)
 ```
 
