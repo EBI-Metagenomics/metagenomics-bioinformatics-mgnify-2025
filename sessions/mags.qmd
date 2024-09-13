@@ -1,6 +1,6 @@
 ---
 title: "MAG Generation"
-date: 2023-10-05
+date: 2024-09-24
 license: "Apache 2.0"
 order: 3.5
 author:
@@ -8,6 +8,13 @@ author:
     orcid: 0000-0002-7537-8871
     email: tgurbich@ebi.ac.uk
     affiliation: 
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+
+  - name: Ekaterina Sakharova
+    orcid: 0000-0001-6867-2039
+    email: kates@ebi.ac.uk
+    affiliation:
       - name: EMBL-EBI
         url: www.ebi.ac.uk
 ---
