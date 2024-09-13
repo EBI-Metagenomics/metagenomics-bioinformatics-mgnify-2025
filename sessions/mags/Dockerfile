@@ -22,27 +22,40 @@ RUN apt-get update && \
     libssl-dev \
     cmake
 
+# Checkm
 RUN pip3 install checkm-genome
-RUN pip3 install checkm2
-RUN pip3 install newick
-RUN pip3 install figtree
+# Checkm2
+RUN pip install CheckM2
+# newick
 
-## Install Metabat
+
+# Install tools
+RUN apt-get update -y && apt-get install -y bwa prodigal samtools bcftools
+
+## Install Metabat2
 ########
+RUN apt-get update  && \
+    apt-get install -y libgomp1 libhts3 autoconf libboost-all-dev curl libhts-dev && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    apt-get autoclean && \
+    rm -rf /var/lib/apt/lists/*
+
 ENV METABAT2_VERSION=2.17
 ENV METABAT2_HASH=1087553d61dcb0b6a18897b1e8d908e57f7e5e34
 ADD https://bitbucket.org/berkeleylab/metabat/get/${METABAT2_HASH}.tar.gz /usr/local/metabat-binary.tar.gz
 RUN mkdir -p /usr/local/metabat \
     && tar xvf /usr/local/metabat-binary.tar.gz --strip-components=1 -C /usr/local/metabat \
     && chmod 777 -R /usr/local/metabat \
-    #&& /usr/local/metabat/contigOverlaps
-    && ln -s /usr/local/metabat/metabat* /usr/local/bin/ \
-    && ln -s /usr/local/metabat/runMetaBat.sh /usr/local/bin/ \
-    && ln -s /usr/local/metabat/*.pl /usr/local/bin/ \
-    && ln -s /usr/local/metabat/jgi_summarize_bam_contig_depths /usr/local/bin/ \
-    && rm /usr/local/metabat-binary.tar.gz
-
-RUN apt update && apt install -y bwa prodigal samtools bcftools
+    && rm /usr/local/metabat-binary.tar.gz \
+    && cd /usr/local/metabat \
+    && mkdir build \
+    && cd build \
+    && cmake -DCMAKE_INSTALL_PREFIX=/usr/local .. \
+    && make -j8 \
+    && make install \
+    && cd .. \
+    && rm -rf build
 
 ## Install htslib
 ########
@@ -56,5 +69,6 @@ RUN tar xvjf /usr/local/htslib.tar.bz2 -C /usr/local/ \
      && make install \
      && rm /usr/local/htslib.tar.bz2
 
+# Custom scripts
 COPY complenetess_vs_contamination.py /usr/local/bin/
 RUN chmod +x /usr/local/bin/complenetess_vs_contamination.py
