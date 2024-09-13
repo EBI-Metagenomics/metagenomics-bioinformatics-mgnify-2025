@@ -47,11 +47,10 @@ gene a classification of core or accessory.
 
 Use the sidebar to see the instructions for each part.
 
-The files for all practicals should be available on the virtual machine. Alternatively,
-you can download all of the files from google drive:
+The files for all practicals are available on the virtual machine here:
 
 ```bash
-https://drive.google.com/drive/folders/1pc17JErBHRwLeRf8Ch8yu4dXSIwFfBQK?usp=share_link
+ls ~/course_dir/data_dir/MGnify_training_course
 ```
 
 The course prerequisities are already install on the VM. To activate the environment, run:
@@ -301,19 +300,19 @@ with nothing in the core genome.
 
 ### CELEBRIMBOR: a pipeline for pangenome analysis and threshold correction
 
-The CELEBRIMBOR prerequisities are already install on the VM. The source code files can be found in the `CELEBRIMBOR` directory which can be listed here :
+The CELEBRIMBOR prerequisities are already install on the VM. The source code files can be found in the `CELEBRIMBOR` directory which can be listed here:
 
 ```bash
 ls /home/training/course_dir/data_dir/MGnify_training_course/CELEBRIMBOR
 ```
 
-As well be editing the source code, make a copy in your working directory : 
+As well be editing the source code, make a copy in your working directory: 
 
 ```bash
 cp -r /home/training/course_dir/data_dir/MGnify_training_course/CELEBRIMBOR ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR
 ```
 
-The files we will be analysing can be listed here :
+The files we will be analysing can be listed here:
 
 ```bash
 ls ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR
@@ -322,7 +321,7 @@ ls ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR
 This archive contains two directories. `CELEBRIMBOR_MAGs` contains the fasta files we will be analysing. 
 `results` contains the [Bakta](https://github.com/oschwengers/bakta) and [CheckM](https://github.com/Ecogenomics/CheckM) outputs which were generated previously from these genomes. As these are the slowest parts of the analysis, we have provided them to allow you to generate results faster.
 
-As we'll be updating `results`, copy the whole directory to your working directory : 
+As we'll be updating `results`, copy the whole directory to your working directory: 
 
 ```bash
 cp -r ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/results ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results
@@ -376,7 +375,7 @@ panaroo_stringency: "strict"
 
 Note: paths in the `config.yaml` file cannot contain `~` symbols.
 
-As CELEBRIMBOR runs CheckM, we'll need to point to the correct database :
+As CELEBRIMBOR runs CheckM, we'll need to point to the correct database:
 
 ```bash
 checkm data setRoot ~/course_dir/data_dir/MGnify_training_course/pangenome_mgnify_env/checkm_data
@@ -402,7 +401,7 @@ Core threshold: >= 102 observations or >= 92.73% frequency
 Rare threshold: <= 11 observations or <= 10.00% frequency
 ```
 
-Take a look at the output files by running :
+Take a look at the output files by running:
 
 ```bash
 cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && ls
@@ -421,7 +420,7 @@ cp ~/course_dir/data_dir/MGnify_training_course/plot_frequency.R ~/course_dir/wo
 vim plot_frequency.R
 ```
 
-Edit the file below : 
+Edit the file below: 
 
 ```bash
 library(ggplot2)
@@ -448,7 +447,7 @@ p <- ggplot(stacked.df, aes(x=Type, fill = Type)) + facet_grid(Compartment~., sc
 ggsave("/home/training/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results/adjusted_gene_frequency.png", plot = p)
 ```
 
-Run the script from the `R` terminal : 
+Run the script from the `R` terminal: 
 
 ```bash
 R
