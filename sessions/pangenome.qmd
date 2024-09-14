@@ -330,14 +330,7 @@ cp -r ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/results 
 CELEBRIMBOR is a snakemake pipeline which enables automated gene annotation, clustering, completeness estimation
 and core threshold adjustment. Snakemake allows workflows to be re-run if workflows stop prematurely. 
 
-To prevent CELEBRIMBOR from re-running Bakta and CheckM, we must update the creation times of the input and output files using `touch`. If you do your own analysis outside of this practical, this is not recommended as you would want to run the full CELEBRIMBOR pipeline.
-
-```bash
-(cd ~/course_dir/data_dir/MGnify_training_course/MAGs_for_CELEBRIMBOR/CELEBRIMBOR_MAGs && touch *.fasta)
-(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch annotated/*/* && touch annotated/*)
-(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out/* && touch checkm_out/*/* && touch checkm_out/*/*/*)
-(cd ~/course_dir/work_dir/Day_5/pangenome/CELEBRIMBOR_results && touch checkm_out.tsv)
-```
+To prevent CELEBRIMBOR from re-running Bakta and CheckM, I have edited the source code. If you do your own analysis outside of this practical, you will run the full workflow using identical commands.
 
 Documentation for CELEBRIMBOR can be found [here](https://github.com/bacpop/CELEBRIMBOR).
 
@@ -375,20 +368,12 @@ panaroo_stringency: "strict"
 
 Note: paths in the `config.yaml` file cannot contain `~` symbols.
 
-As CELEBRIMBOR runs CheckM, we'll need to point to the correct database:
+
+To run CELEBRIMBOR, simply run the below command. Snakemake will read the `config.yaml` file and run CELEBRIMBOR on the associated files, avoiding Bakta and CheckM as these results have already been generated.
 
 ```bash
-checkm data setRoot ~/course_dir/data_dir/MGnify_training_course/pangenome_mgnify_env/checkm_data
+snakemake --cores 4
 ```
-
-To run CELEBRIMBOR, simply run the below command. Snakemake will read the `config.yaml` file and run CELEBRIMBOR on the associated files, avoiding
-Bakta and CheckM as these results have already been generated.
-
-```bash
-snakemake --cores 4 --ignore-incomplete
-```
-
-Note: we need the `--ignore-incomplete` flag here as we are not running Bakta or CheckM. For your own analysis outside of this practical, this option is not recommended.
 
 This will run for a few minutes. You'll see a number of tools being run, including [MMseqs2](https://www.nature.com/articles/nbt.3988) for clustering, and [cgt](https://github.com/bacpop/cgt) for frequency threshold adjustment. 
 
@@ -459,7 +444,7 @@ source("plot_frequency.R")
 
 Use `Ctrl + Z` to close the R terminal.
 
-Take a look at `adjusted_gene_frequency.png`. Observe that the core genome and rare genome sizes increase after adjustment, whilst the middle or intermediate decreases.
+Take a look at `adjusted_gene_frequency.png` by opening the `Files` application and navigating to `Home -> course_dir -> work_dir -> Day_5 -> pangenome -> CELEBRIMBOR_results`. Observe that the core genome and rare genome sizes increase after adjustment, whilst the middle or intermediate decreases.
 
 ![Effect of frequency adjustment](pangenome/frequency_adjustment.png)
 
