@@ -455,3 +455,13 @@ There are other files that can be used for downstream analysis, such as `presenc
 Try running CELEBRIMBOR with different parameters, such as `cgt_breaks` which defines the original rare and core thresholds to adjust, or `cgt_error`, which defines the false negative rate of CELEBRIMBOR. 
 
 You can also try running with `clustering_method` set to `panaroo`, which uses [Panaroo](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02090-4), a more accurate clustering method but less scalable than MMseqs2 (this will likely take a while to run). Also, when running Panaroo, try setting `panaroo_stringency` to `moderate` or `senstive`. Details on the effect of these parameters can be found [here](https://gthlab.au/panaroo/#/gettingstarted/params).
+
+
+Example analysis
+-------------------------------------
+
+Example analysis for all of today's workshop is available here:
+
+```bash
+ls ~/course_dir/data_dir/MGnify_training_course/example_analysis/pangenome
+```
