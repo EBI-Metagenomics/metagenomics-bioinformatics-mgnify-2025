@@ -32,7 +32,7 @@ Once you have quality filtered your sequencing reads, you may want to perform *d
 The first step is to assemble your sequences into contigs. 
 There are many tools available for this, such as `MetaVelvet`, `metaSPAdes`, `IDBA-UD`, or `MEGAHIT`. 
 
-We generally use `metaSPAdes`, as in most cases it yields the best contig size statistics (i.e. more continguous assembly), and it has been shown to be able to capture high degrees of community diversity ([Vollmers, et al. PLOS One 2017](https://europepmc.org/article/MED/28099457)).
+We generally use `metaSPAdes`, as in most cases it yields the best contig size statistics (i.e. more contiguous assembly), and it has been shown to be able to capture high degrees of community diversity ([Vollmers, et al. PLOS One 2017](https://europepmc.org/article/MED/28099457)).
 However, you should consider pros and cons of different assemblers, which not only includes the accuracy of the assembly, but also their computational overhead. 
 Compare these factors to what you have available. 
 
@@ -47,11 +47,11 @@ Let’s first move to the root working directory to run all analyses:
 cd /home/training/Assembly/
 ```
 
-The raw reads used for assembly generation can be found in the `data_dir/[long/short]_reads`" folders. 
+The raw reads used for assembly generation can be found in the `data_dir/[long/short]_reads` folders. 
 
-# Short-reads assemblies: metaSPAdes
+# Short-read assemblies: metaSPAdes
 For short reads, we will use [SPAdes - St. Petersburg genome Assembler](https://github.com/ablab/spades), a suite of assembling tools containing different assembly pipelines. 
-For metagenomic data, we will the more metagenomic-specific side of `SPAdes`: `metaSPAdes`.
+For metagenomic data, we will use the more metagenomic-specific side of `SPAdes`: `metaSPAdes`.
 
 `metaSPAdes` offers many options that fit your requirements differently, which mostly depend on the type of data you want to assemble.
 To explore them, type `metaspades.py -h`. 
@@ -59,7 +59,7 @@ Bear in mind that options will differ when selecting different tools (e.g. `spad
 
 :::{.callout-tip}
 The default metaSPAdes pipeline executes an error correction step on the input fastqs.
-Since reads have already been polished in the previous step, you can run metaspades without the error correction step.
+Since reads have already been polished in the previous step, you can run metaSPAdes without the error correction step.
 
 You can see available metaspades parameters by typing the following: 
 ```bash
@@ -140,16 +140,16 @@ A "gap" is any consecutive run of Ns (undetermined nucleotide bases) of any leng
 :::{.callout-question .callout-tip}
 What is the length of the longest and the shortest contigs? 
 
-What is the N50 of the assembly? Given that input sequences were ~150bp long paired-end sequences, what does this tell you about the assembly?
+What is the N50 of the assembly? Given that input sequences were ~150bp long paired-end sequences, what does this tell you about the assembly in terms of statistics?
 :::
 
-Another tool to keep in mind for metagenomic assemblies is QUAST, which provides a deeper insight on assemblies statistics like indels and misassemblies rate in a very short time.
+Another tool to keep in mind for metagenomic assemblies is QUAST, which provides a deeper insight on assemblies statistics, like indels and misassemblies rate, in a very short time.
 
-# Long-reads assemblies: Flye
+# Long-read assemblies: Flye
 
 For long-reads, we will use [Flye](https://github.com/fenderglass/Flye), which assembles single-molecule sequencing reads like PacBio and Oxford Nanopore Technologies (ONT) reads. 
 Like SPAdes, Flye is a pipeline that takes care of assembling raw reads and polishing. 
-Similarly to assembly scaffolding, it tries to overcome long-reads base call error by comparing different reads that cover the same sequencing fragment. 
+Similarly to assembly scaffolding, it tries to overcome long-read base call error by comparing different reads that cover the same sequencing fragment. 
 
 :::{.callout-tip}
 
@@ -184,7 +184,7 @@ They can be useful for finding sections of the graph, such as rRNA, SNPs, or ide
 Note, you can install Bandage on your local system. 
 With Bandage, you can zoom and pan around the graph and search for sequences, and much more.
 
-We will use Bandage to compare the two assemblies we have generated with Flye and metaSPAdes. We will start with metaSPAdes.
+We will use Bandage to compare the two assembly graphs we generated with Flye and metaSPAdes. We will start with metaSPAdes.
 
 When looking at metaSPAdes files, it is usually recommended to launch Bandage on `assembly_graph.fastg`. 
 However, our assembly is quite fragmented, so we will load `assembly_graph_after_simplification.gfa`.
@@ -217,14 +217,14 @@ Now open another instance of Bandage as you previously did, and open `assembly_f
 How does the Flye assembly differ from the one generated with metaSPAdes?
 :::
 
-As already mentioned, we launched Flye both with and without `--meta` on file `long_reads/ONT_example.fastq`. You can now repeat the procedure for this other graph. 
+As already mentioned, we launched Flye both with and without `--meta` on `long_reads/ONT_example.fastq`. You can now repeat the procedure for this other graph. 
 
 :::{.callout-note}
 # Extra
 This file originally comes from run ERR3775163, which can be browsed on [ENA](https://www.ebi.ac.uk/ena/browser/home). 
-Have a look at sample metadata.
+Have a look at its metadata.
 
-Despite dealing with a long-read sample, can you understand why the assembly graph looks better for the execution without the `--meta` option?
+Can you understand why the assembly graph of the execution without `--meta` looks better than the one with `--meta`?
 :::
 
 :::{.callout-note}
@@ -245,7 +245,7 @@ You will find MEGAHIT output files in the `co_assembly_short_reads` folder.
 :::
 
 :::{.callout-warning}
-As earlier, we these are the parameters we generated the co-assemblies with, but we recommend not to try in this instance.
+As earlier, these are the parameters we generated the co-assemblies with, but we recommend not to launch the command in this instance.
 :::
 
 - `-1 [forward files comma-separated]`
@@ -257,7 +257,7 @@ As earlier, we these are the parameters we generated the co-assemblies with, but
 :::{.callout-step .callout-tip}
 Compare the results of the co-assembly contig file to the single-assembly one with `assembly_stats`. 
 
-How do these assemblies differ from the one generated previously with metaSPAdes? 
+How do this assembly differ from the one generated previously with metaSPAdes? 
 Which one do you think is best?
 :::
 
