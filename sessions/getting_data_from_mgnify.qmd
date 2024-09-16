@@ -1,0 +1,37 @@
+---
+title: "Getting data from MGnify"
+date: 2024-16-09
+license: "Apache 2.0"
+order: 6
+author:
+  - name: Mahfouz Shehu
+    orcid: 0009-0002-9470-0368
+    email: mahfouz@ebi.ac.uk
+    affiliation:
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+---
+
+# Objectives
+
+- Exploring MGnify Studies
+- Exploring MGnify Analyses
+- Metagenomic Assembled Genomes
+
+Instructions
+---------------
+
+For this tutorial, you will need to start the predefined Jupyter notebook and complete the exercises within it.
+follow the steps below To start the notebook.
+
+
+1. From your terminal, navigate to the right environment: `cd /home/training/venv/training_env3`
+2. Activate the environment: `source bin/activate`
+3. Navigate to the mgnify-tutorial directory: `cd /home/training/venv/training_env3/mgnify-tutorial`
+4. Start the Jupyter notebook: `jupyter notebook`
+5. This should have a server started at `http://localhost:8888`. Open this in your browser.
+6. Click on content and then on the `tutorial.ipynb` notebook as shown in the images below to start the tutorial.
+
+![Jupyter Notebook](getting_data_from_mgnify/content_nav_image.png)
+
+![Jupyter Notebook](getting_data_from_mgnify/tutorial_nav_image.png)

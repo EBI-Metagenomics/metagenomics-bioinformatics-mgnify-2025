@@ -1,6 +1,6 @@
 ---
 title: "Pangenome analysis of metagenomic data"
-order: 6
+order: 7
 date: 2024-08-21
 license: "Apache 2.0"
 author:
