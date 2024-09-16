@@ -2,7 +2,7 @@
 title: "MAG Generation"
 date: 2023-10-05
 license: "Apache 2.0"
-order: 3.5
+order: 3
 author:
   - name: Tatiana Gurbich
     orcid: 0000-0002-7537-8871
