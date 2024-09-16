@@ -1,7 +1,7 @@
 ---
 title: "Quality control and filtering of the raw sequence files"
 order: 1
-date: 2024-08-30
+date: 2024-09-16
 license: "Apache 2.0"
 author:
   - name: Jennifer Lu
@@ -52,7 +52,7 @@ You will get the message "access control disabled, clients can connect from any 
 Now start the Docker container:
 
 ```bash
-docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY microbiomeinformatics/biata-qc-assembly:v2021
+docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v1
 ```
 
 Quality control and filtering of the raw sequencing read files
@@ -417,42 +417,32 @@ Running the practical externally
 We need to first fetch the practical datasets.
 
 ```bash
-    wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
-    or
-    rsync -av --partial --progress rsync://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz .
+wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
+# or
+rsync -av --partial --progress rsync://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz .
 ```
 
 Once downloaded, extract the files from the tarball:
 
 
 ```bash
-    tar -xzvf quality.tar.gz
+tar -xzvf quality.tar.gz
 ```
 
-We also need the trimmomatic binary
-
-```bash
-    cd quality
-    wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip
-    unzip Trimmomatic-0.39.zip
-    cd ..
-```
-
-Now pull the docker container and set the above quality directory as DATADIR.
+Now pull the docker container and export the above directories.
 
 
 ```bash
-    docker pull microbiomeinformatics/biata-qc-assembly:v2021
-    export DATADIR={path to quality directory}
-    xhost +
+docker pull quay.io/microbiome-informatics/qc-practical-2024:v1
+export DATADIR={path to quality directory}
+export RESDIR={path to output directory}
 ```
 
 You will see the message "access control disabled, clients can connect from any host"
 
 
-
 ```bash
-    docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY microbiomeinformatics/biata-qc-assembly:v2021
+docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v1
 ```
 
 The container has the following tools installed:
