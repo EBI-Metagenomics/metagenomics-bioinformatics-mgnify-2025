@@ -1,6 +1,19 @@
 # Use the official Ubuntu image from the Docker Hub
 FROM ubuntu:20.04
 
+# ------------- Docker contains tools for MAGs practical:
+# - checkm_v1.2.3
+# - prodigal
+# - samtools
+# - bcftools
+# - BWA
+# - Metabat2
+# - htslib
+# - newick utils
+# custom scripts:
+# - complenetess_vs_contamination.py
+# ---------------------------------------------------------
+
 # Set the environment to non-interactive to avoid user interaction during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -24,10 +37,6 @@ RUN apt-get update && \
 
 # Checkm
 RUN pip3 install checkm-genome
-# Checkm2
-RUN pip install CheckM2
-# newick
-
 
 # Install tools
 RUN apt-get update -y && apt-get install -y bwa prodigal samtools bcftools
@@ -72,3 +81,16 @@ RUN tar xvjf /usr/local/htslib.tar.bz2 -C /usr/local/ \
 # Custom scripts
 COPY complenetess_vs_contamination.py /usr/local/bin/
 RUN chmod +x /usr/local/bin/complenetess_vs_contamination.py
+
+# newick
+RUN apt-get update  && \
+    apt-get install -y flex bison
+RUN git clone https://github.com/tjunier/newick_utils.git
+RUN cd newick_utils \
+    && autoreconf -fi \
+    && ./configure \
+    && make \
+    && make install \
+    && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib \
+    && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib" >> /etc/bash.bashrc
+    #&& sudo ldconfig
