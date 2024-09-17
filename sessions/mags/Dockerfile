@@ -94,3 +94,30 @@ RUN cd newick_utils \
     && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib \
     && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib" >> /etc/bash.bashrc
     #&& sudo ldconfig
+
+# checkm1 requirements
+RUN pip3 install pysam
+## Install hmmer
+########
+ADD http://eddylab.org/software/hmmer/hmmer-3.2.tar.gz /usr/local/hmmer-3.2.tar.gz
+RUN tar xvf /usr/local/hmmer-3.2.tar.gz -C /usr/local/ \
+    && chmod 777 -R /usr/local/hmmer-3.2 \
+    && cd /usr/local/hmmer-3.2 \
+    && ./configure \
+    && make \
+    && make check \
+    && make install \
+    && cd easel \
+    && make install \
+    && rm /usr/local/hmmer-3.2.tar.gz
+
+## Install PPlacer
+########
+RUN apt-get update; apt-get install -y unzip
+ADD https://github.com/matsen/pplacer/releases/download/v1.1.alpha19/pplacer-linux-v1.1.alpha19.zip /usr/local/pplacer-linux-v1.1.alpha19.zip
+RUN unzip /usr/local/pplacer-linux-v1.1.alpha19.zip -d /usr/local/ \
+    && chmod -R 777 /usr/local/pplacer-Linux-v1.1.alpha19 \
+    && ln -s /usr/local/pplacer-Linux-v1.1.alpha19/guppy /usr/local/bin/ \
+    && ln -s /usr/local/pplacer-Linux-v1.1.alpha19/pplacer /usr/local/bin/ \
+    && ln -s /usr/local/pplacer-Linux-v1.1.alpha19/rppr /usr/local/bin/ \
+    && rm /usr/local/pplacer-linux-v1.1.alpha19.zip
