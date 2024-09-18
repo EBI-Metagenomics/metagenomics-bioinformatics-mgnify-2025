@@ -46,17 +46,18 @@ ls /home/training
 
 
 ::: {.callout-note}
-# Download required dataset
+# Check data is loaded correctly
 
-For this practical we will need to a sample dataset. Downoload and extract the files from the tarball.
+For this practical we will need to a sample dataset. The sample dataset should already 
+have all the data you need in `/home/training/QC_session/quality`. If not, you should download and decompress the data as follows:
 
 ```bash
-cd /home/training
+cd /home/training/QC_session
 
 wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
 
 tar -xzvf quality.tar.gz
-# you should now have the quality subdirectory in your /home/training folder. All the data you will need to run the practicals will be in this subdirectory
+# you should now have the quality subdirectory in your /home/training/QC_session. All the data you will need to run the practicals will be in this subdirectory
 
 #you can now remove the quality.tar.gz
 rm quality.tar.gz
@@ -70,21 +71,21 @@ rm quality.tar.gz
 This practical (and the others) will generate quite a few output files from the different commands. It's therefore recommended you keep your results well organised into different subdirectories, starting with the creation of a `qc_results` directory that will contain everything else.
 
 ```bash
-mkdir /home/training/qc_results
+mkdir /home/training/QC_session/qc_results
 
 ```
-you should now have in your `/home/training` directory, the following subdirectories (`quality` and `qc_results`). Make sure both are there before moving onto the next steps.
+you should now have in your `/home/training/QC_session` directory, the following subdirectories (`quality` and `qc_results`). Make sure both are there before moving onto the next steps.
 
 :::
 
 For this tutorial, you'll need to move into the working directory (/home/training/quality) and start a Docker container. Set the variables `DATADIR` and `RESDIR` as instructed.
 
 ```bash
-cd /home/training/quality
-chmod -R 777 /home/training/quality
-export DATADIR=/home/training/quality
-chmod -R 777 /home/training/qc_results
-export RESDIR=/home/training/qc_results
+cd /home/training/QC_session/quality
+chmod -R 777 /home/training/QC_session/quality
+export DATADIR=/home/training/QC_session/quality
+chmod -R 777 /home/training/QC_session/qc_results
+export RESDIR=/home/training/QC_session/qc_results
 xhost +
 ```
 You will get the message "access control disabled, clients can connect from any host"
@@ -132,7 +133,7 @@ The `-o` option used with FastQC sends the output files to the given path.
 ::: {.callout-step .callout-tip}
 # Now on your computer, select the folder icon.
 
-Navigate to home → quality → fastqc_results in your VM
+Navigate to Files → Home → QC_session → qc_results → fastqc_results → oral in your VM
 
 Right-click on file `oral_human_example_1_splitaa_fastqc.html`, select 'open with other application', and open with Firefox.
 
@@ -189,7 +190,7 @@ In this case, we provide the folder containing the FastQC results to multiqc, an
 ::: {.callout-step .callout-tip}
 # Now on your computer, select the folder icon.
 
-Navigate to home → quality → multiqc_results
+Navigate to Files → Home → QC_session → qc_results → multiqc_results → oral in your VM
 
 Right-click on file `multiqc_report.html`, select 'open with other application', and open with Firefox.
 
@@ -515,6 +516,7 @@ chown 1001 /opt/results/fastqc_results/skin/*.html
 
 #generate MultiQC report of pre- and post-QC fastq files
 multiqc /opt/results/fastqc_results/skin -o /opt/results/multiqc_results/skin
+chown 1001 /opt/results/fastqc_results/skin/*.html
 
 #visualise multiQC reports in web browser.
 
