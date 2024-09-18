@@ -1,19 +1,13 @@
 ---
 title: "Quality control and filtering of the raw sequence files"
 order: 1
-date: 2024-09-16
+date: 2024-09-18
 license: "Apache 2.0"
 author:
   - name: Jennifer Lu
     orcid: 0000-0002-1777-4788
     email: jlu8@ebi.ac.uk
     affiliation: 
-      - name: EMBL-EBI
-        url: www.ebi.ac.uk
-  - name: Varsha Kale
-    orcid: 0000-0002-3503-6383
-    email: vkale@ebi.ac.uk
-    affiliation:
       - name: EMBL-EBI
         url: www.ebi.ac.uk
   - name: Christian Atallah
@@ -29,6 +23,13 @@ Prerequisites
 
 These instructions are for the course VM. To run externally, please refer to the section at the end.
 
+::: {.callout-caution}
+# A note about copying and pasting in the VMs
+
+You will not be able to use Ctrl+C for copying and Ctrl+P for pasting in the VM terminals. Instead, we recommend using right click and selecting copy/paste.
+
+:::
+
 
 ::: {.callout-note}
 # Activate virtual environment
@@ -37,8 +38,9 @@ Firstly, we need to create a virtual environment for this session so everything 
 ```bash
 source /home/training/venv/training_env5/bin/activate
 
-#check /home/training is in your path
+#check /home/training is in your environment
 ls /home/training
+
 ```
 :::
 
@@ -69,10 +71,13 @@ This practical (and the others) will generate quite a few output files from the 
 
 ```bash
 mkdir /home/training/qc_results
+
 ```
+you should now have in your `/home/training` directory, the following subdirectories (`quality` and `qc_results`). Make sure both are there before moving onto the next steps.
+
 :::
 
-For this tutorial, you'll need to move into the working directory and start a Docker container. Set the variables `DATADIR` and `RESDIR` as instructed.
+For this tutorial, you'll need to move into the working directory (/home/training/quality) and start a Docker container. Set the variables `DATADIR` and `RESDIR` as instructed.
 
 ```bash
 cd /home/training/quality
@@ -127,7 +132,7 @@ The `-o` option used with FastQC sends the output files to the given path.
 ::: {.callout-step .callout-tip}
 # Now on your computer, select the folder icon.
 
-Navigate to Home → quality → fastqc_results
+Navigate to home → quality → fastqc_results in your VM
 
 Right-click on file `oral_human_example_1_splitaa_fastqc.html`, select 'open with other application', and open with Firefox.
 
