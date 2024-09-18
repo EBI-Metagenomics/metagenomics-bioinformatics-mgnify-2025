@@ -52,7 +52,7 @@ You will get the message "access control disabled, clients can connect from any 
 Now start the Docker container:
 
 ```bash
-docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v1
+docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v2
 ```
 
 Quality control and filtering of the raw sequencing read files
@@ -139,7 +139,7 @@ We are currently only looking at two files, but often we want to look at many fi
 ::: {.callout-step .callout-tip}
 # Run
 ```bash
-mkdir /opt/results/multiqc_results/oral
+mkdir -p /opt/results/multiqc_results/oral
 multiqc /opt/results/fastqc_results/oral -o /opt/results/multiqc_results/oral
 chown 1001 /opt/results/multiqc_results/oral/*.html
 ```
@@ -150,7 +150,7 @@ In this case, we provide the folder containing the FastQC results to multiqc, an
 ::: {.callout-step .callout-tip}
 # Now on your computer, select the folder icon.
 
-Navigate to Home → quality → multiqc_results
+Navigate to home → quality → multiqc_results
 
 Right-click on file `multiqc_report.html`, select 'open with other application', and open with Firefox.
 
@@ -278,6 +278,17 @@ mv /opt/results/cleaned/oral/oral_human_example.fastq.2.gz /opt/results/cleaned/
 Using what you have learned previously, generate a FastQC report for each of the `*trimmed_decontam.fastq.gz` files. Output the new fastqc report files in the same `/opt/results/fastqc_results/oral` directory as last time.
 :::
 
+::: {.callout-caution collapse="true"}
+## Run FastQC (code)
+
+```bash
+fastqc /opt/results/cleaned/oral/oral_human_example_1_splitaa_trimmed_decontam.fastq.gz -o /opt/results/fastqc_results/oral
+fastqc /opt/results/cleaned/oral/oral_human_example_2_splitaa_trimmed_decontam.fastq.gz -o /opt/results/fastqc_results/oral
+chown 1001 /opt/results/fastqc_results/oral/*.html
+```
+
+:::
+
 ::: {.callout-step .callout-tip}
 # Run multiQC
 Also generate a multiQC report, with `/opt/results/fastqc_results/oral` as input. The reason we generated the new FastQC reports in the same directory is so that you can compare how the reads have changed after the quality filtering and decontamination steps in the same final multiqc report.
@@ -287,6 +298,15 @@ mkdir -p /opt/results/final_multiqc_results/oral
 <you construct the command>
 ```
 :::
+
+::: {.callout-caution collapse="true"}
+## Run multiQC (code)
+```bash
+mkdir -p /opt/results/final_multiqc_results/oral
+multiqc /opt/results/fastqc_results/oral -o /opt/results/final_multiqc_results/oral
+```
+:::
+
 
 ::: {.callout-step .callout-tip}
 # Check report
@@ -433,7 +453,7 @@ Now pull the docker container and export the above directories.
 
 
 ```bash
-docker pull quay.io/microbiome-informatics/qc-practical-2024:v1
+docker pull quay.io/microbiome-informatics/qc-practical-2024:v2
 export DATADIR={path to quality directory}
 export RESDIR={path to output directory}
 ```
@@ -442,7 +462,7 @@ You will see the message "access control disabled, clients can connect from any 
 
 
 ```bash
-docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v1
+docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v2
 ```
 
 The container has the following tools installed:
