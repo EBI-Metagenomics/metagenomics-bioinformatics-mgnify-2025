@@ -29,6 +29,40 @@ Prerequisites
 
 These instructions are for the course VM. To run externally, please refer to the section at the end.
 
+
+::: {.callout-note}
+# Activate virtual environment
+Firstly, we need to create a virtual environment for this session so everything we do for this practical is contained within this environment.
+
+```bash
+source /home/training/venv/training_env5/bin/activate
+
+#check /home/training is in your path
+ls /home/training
+```
+:::
+
+
+::: {.callout-note}
+# Download required dataset
+
+For this practical we will need to a sample dataset. Downoload and extract the files from the tarball.
+
+```bash
+cd /home/training
+
+wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
+
+tar -xzvf quality.tar.gz
+# you should now have the quality subdirectory in your /home/training folder. All the data you will need to run the practicals will be in this subdirectory
+
+#you can now remove the quality.tar.gz
+rm quality.tar.gz
+
+```
+
+
+
 ::: {.callout-note}
 # Keeping your results organised
 This practical (and the others) will generate quite a few output files from the different commands. It's therefore recommended you keep your results well organised into different subdirectories, starting with the creation of a `qc_results` directory that will contain everything else.
@@ -414,6 +448,9 @@ Is there any overlap between the negative control and skin sample phylum? Can we
 Are there any genera in the negative control which aren't present in the skin sample? If you do a google search of this genus, where are they commonly found? With this information, where could this bacteria in the negative control have originated from?
 :::
 
+ Additional Exercise 
+---------------------------------
+
 If you have finished the practical you can try this step for more practice assessing and trimming datasets, there is another set of raw reads called "skin_example_aa" from the skin metagenome available. These will require a `FastQC` or `multiqc` report, followed by quality filtering and mapping to the reference database with `fastp` and `bowtie2`. Using what you have learned previously, construct the relevant commands. Remember to check the quality before and after trimming.
 
 ::: {.callout-step .callout-tip}
@@ -429,6 +466,56 @@ Remember you will need to run the following command to view any html files in th
 ```bash
 chown 1001 foldername/*.html
 ```
+
+
+::: {.callout-caution collapse="true"}
+## Additional Excercise (code)
+
+```bash
+
+
+#generate fastqc of raw reads of skin samples and negative control
+mkdir /opt/results/fastqc_results/skin
+fastqc /opt/data/skin/skin_example_aa_1.fastq.gz -o /opt/results/fastqc_results/skin
+fastqc /opt/data/skin/skin_example_aa_2.fastq.gz -o /opt/results/fastqc_results/skin
+fastqc /opt/data/skin/skin_neg_control.fastq.gz -o /opt/results/fastqc_results/skin
+
+#do quality filtering using fastp 
+mkdir /opt/results/cleaned/skin
+fastp --in1 /opt/data/skin/skin_example_aa_1.fastq.gz \
+      --in2 /opt/data/skin/skin_example_aa_2.fastq.gz \
+      --out1 /opt/results/cleaned/skin/skin_example_aa_1.trimmed.fastq.gz \
+      --out2 /opt/results/cleaned/skin/skin_example_aa_2.trimmed.fastq.gz \
+      -l 50 --cut_right --cut_right_window_size 4 --cut_right_mean_quality 20 -t 1 \
+      --detect_adapter_for_pe \
+      --json /opt/results/cleaned/skin/oral.fastp.json --html /opt/results/cleaned/skin/skin.fastp.html
+
+#do host decontamination with bowtie2
+bowtie2 -1 /opt/results/cleaned/skin/skin_example_aa_1.trimmed.fastq.gz \
+        -2 /opt/results/cleaned/skin/skin_example_aa_2.trimmed.fastq.gz \
+        -x /opt/data/decontamination/chr10_phix.index \
+        --un-conc-gz  /opt/results/cleaned/skin/skin_human_example.fastq.gz \
+        --very-sensitive --dovetail > /dev/null
+
+##decontaminated reads will be output as skin_human_example.fastq.1.gz and skin_human_example.fastq.2.gz in the /opt/results/cleaned/skin/ folder
+
+#rename decontaminated reads to be consistent
+mv /opt/results/cleaned/skin/skin_human_example.fastq.1.gz /opt/results/cleaned/skin/skin_human_example_1_trimmed_decontam.fastq.gz
+mv /opt/results/cleaned/skin/skin_human_example.fastq.2.gz /opt/results/cleaned/skin/skin_human_example_2_trimmed_decontam.fastq.gz
+
+#post-qc assessment with Fastqc and MultiQC
+fastqc /opt/results/cleaned/skin/skin_human_example_1_trimmed_decontam.fastq.gz -o /opt/results/fastqc_results/skin
+fastqc /opt/results/cleaned/skin/skin_human_example_2_trimmed_decontam.fastq.gz -o /opt/results/fastqc_results/skin
+chown 1001 /opt/results/fastqc_results/skin/*.html
+
+#generate MultiQC report of pre- and post-QC fastq files
+multiqc /opt/results/fastqc_results/skin -o /opt/results/multiqc_results/skin
+
+#visualise multiQC reports in web browser.
+
+```
+
+:::
 
 
 Running the practical externally
