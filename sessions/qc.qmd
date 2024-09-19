@@ -42,14 +42,18 @@ source /home/training/venv/training_env5/bin/activate
 ls /home/training
 
 ```
+
+
 :::
 
+For this practical we will need to a sample dataset. The sample dataset should already 
+be in `/home/training/QC_session/quality`. Check if it is there. If not, go to the `Downloading data` section
 
-::: {.callout-note}
-# Check data is loaded correctly
+::: {.callout-caution collapse="true"}
+# Downloading data
 
 For this practical we will need to a sample dataset. The sample dataset should already 
-have all the data you need in `/home/training/QC_session/quality`. If not, you should download and decompress the data as follows:
+be in `/home/training/QC_session/quality`. If not, you should download and decompress the data as follows:
 
 ```bash
 cd /home/training/QC_session
@@ -63,7 +67,7 @@ tar -xzvf quality.tar.gz
 rm quality.tar.gz
 
 ```
-
+:::
 
 
 ::: {.callout-note}
@@ -190,7 +194,7 @@ In this case, we provide the folder containing the FastQC results to multiqc, an
 ::: {.callout-step .callout-tip}
 # Now on your computer, select the folder icon.
 
-Navigate to Files → Home → QC_session → qc_results → multiqc_results → oral in your VM
+Navigate to Home → QC_session → qc_results → multiqc_results → oral in your VM
 
 Right-click on file `multiqc_report.html`, select 'open with other application', and open with Firefox.
 
