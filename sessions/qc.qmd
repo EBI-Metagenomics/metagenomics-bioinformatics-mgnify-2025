@@ -46,8 +46,12 @@ ls /home/training
 
 :::
 
+::: {.callout-note}
+# Check data is loaded correctly
 For this practical we will need to a sample dataset. The sample dataset should already 
 be in `/home/training/QC_session/quality`. Check if it is there. If not, go to the `Downloading data` section
+
+:::
 
 ::: {.callout-caution collapse="true"}
 # Downloading data
