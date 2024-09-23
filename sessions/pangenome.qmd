@@ -53,6 +53,12 @@ The files for all practicals are available on the virtual machine here:
 ls ~/course_dir/data_dir/MGnify_training_course
 ```
 
+Activate the virtual enviroment for this session:
+
+```bash
+virtualenv /home/training/venv/training_env2/bin/activate
+```
+
 The course prerequisities are already install on the VM. To activate the environment, run:
 
 ```bash
