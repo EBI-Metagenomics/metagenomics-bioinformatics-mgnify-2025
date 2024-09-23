@@ -408,7 +408,7 @@ Now we will get back to iTOL visualisation.
 reformat the tree with [**FigTree**](http://tree.bio.ed.ac.uk/software/figtree/).
 
 :::{.callout-step .callout-tip}
-In order to open **FigTree**, open a new terminal window (without docker) and type `figtree`
+In order to open **FigTree**, open a new terminal window (without docker) and type `java -jar /home/training/JAR/figtree.jar`
 :::
 
 
