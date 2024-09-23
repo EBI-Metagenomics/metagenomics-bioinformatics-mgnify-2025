@@ -60,6 +60,7 @@ For this practical we will need to a sample dataset. The sample dataset should a
 be in `/home/training/QC_session/quality`. If not, you should download and decompress the data as follows:
 
 ```bash
+mkdir -p /home/training/QC_session
 cd /home/training/QC_session
 
 wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
@@ -96,7 +97,10 @@ chmod -R 777 /home/training/QC_session/qc_results
 export RESDIR=/home/training/QC_session/qc_results
 xhost +
 ```
+
 You will get the message "access control disabled, clients can connect from any host"
+
+
 Now start the Docker container:
 
 ```bash
@@ -277,21 +281,35 @@ cat /opt/data/decontamination/GRCh38_chr10.fasta /opt/data/decontamination/phix.
 ```
 :::
 
-You will often need to build indices for large sequence files - including sequencing files and reference files - to speed up computation. To build a bowtie index for our new concatenated PhiX-chr10 file:
+You will often need to build indices for large sequence files - including sequencing files and reference files - to speed up computation. To build a bowtie index for our new concatenated PhiX-chr10 file, run the following script. `NOTE.` The indexing step can take a while to run (~ 2 -3 minutes for the example used in this practical)
 
 ::: {.callout-step .callout-tip}
+
 # Run
 ```bash
 bowtie2-build /opt/data/decontamination/chr10_phix.fasta /opt/data/decontamination/chr10_phix.index
+
+#check output - indexed files end with *bt2
+ls /opt/data/decontamination/chr10_phix.index*bt2
+
+# opt/data/decontamination/chr10_phix.index.1.bt2
+# opt/data/decontamination/chr10_phix.index.2.bt2
+# opt/data/decontamination/chr10_phix.index.3.bt2
+# opt/data/decontamination/chr10_phix.index.4.bt2
+# opt/data/decontamination/chr10_phix.index.rev.1.bt2
+# opt/data/decontamination/chr10_phix.index.rev.2.bt2
+
 ```
+
 :::
 
 ::: {.callout-note}
 # Tip
-It is possible to automatically download a pre-indexed human genome in bowtie2
+It is possible to automatically download a pre-indexed human genome in bowtie2. Commonly-used bowtie2 indices can be downloaded from https://bowtie-bio.sourceforge.net/bowtie2/index.shtml.
+
 :::
 
-Now we are going to use our new indexed chr10_phix reference and decontaminate our already quality-filtered reads from `fastp`. Using bowtie2 again:
+Now we are going to use our new indexed chr10_phix reference and decontaminate our already quality-filtered reads from `fastp`. Run bowtie2 as below. `NOTE.` This alignment step can take a few minutes to run.
 
 ::: {.callout-step .callout-tip}
 # Run
@@ -302,6 +320,14 @@ bowtie2 -1 /opt/results/cleaned/oral/oral_human_example_1_splitaa.trimmed.fastq.
         --un-conc-gz  /opt/results/cleaned/oral/oral_human_example.fastq.gz \
         --very-sensitive --dovetail > /dev/null
 ```
+
+- `-1` - input read 1
+- `-2` - input read 2
+- `-x` - reference genome index filename prefix (minus trailing .X.bt2)
+- `--un-con-gz` - write pairs that didn't align concordantly to assigned <filepath> #this will be your cleaned reads
+- `--very-sensitive` - set stringent parameters to call reads as a mapped read (Same as -D 20 -R 3 -N 0 -L 20 -i S,1,0.50)
+- `--dovetail` - concordant when mates extend past each other (ie. the paired alignments overlaps one another )
+
 :::
 
 ::: {.callout-question .callout-tip}
@@ -539,6 +565,9 @@ Running the practical externally
 We need to first fetch the practical datasets.
 
 ```bash
+mkdir QC_session
+cd QC_session
+
 wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
 # or
 rsync -av --partial --progress rsync://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz .
@@ -549,6 +578,13 @@ Once downloaded, extract the files from the tarball:
 
 ```bash
 tar -xzvf quality.tar.gz
+
+rm quality.tar.gz
+
+mkdir qc_results
+
+cd quality
+
 ```
 
 Now pull the docker container and export the above directories.
@@ -557,7 +593,7 @@ Now pull the docker container and export the above directories.
 ```bash
 docker pull quay.io/microbiome-informatics/qc-practical-2024:v2
 export DATADIR={path to quality directory}
-export RESDIR={path to output directory}
+export RESDIR={path to qc_results directory}
 ```
 
 You will see the message "access control disabled, clients can connect from any host"
