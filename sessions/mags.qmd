@@ -28,9 +28,12 @@ author:
 Prerequisites
 ---------------
 
-For this tutorial, you will need to first start the docker container by running the following command in the terminal:
+For this tutorial, you will need to first activate the virtual environment and
+start the docker container by running the following commands in the terminal:
 
 ```bash
+virtualenv /home/training/venv/training_env6/bin/activate
+
 sudo docker run --rm -it -v /home/training/Binning:/opt/data quay.io/microbiome-informatics/mags-practical-2024:v2
 ```
 *password: training*
@@ -231,11 +234,10 @@ wrapped into the **lineage_wf** workflow.
 
 
 :::{.callout-step .callout-tip}
-STOP!!!! The following command fails. Please use backups instead, inspect the command visually only:
+This command uses a lot of memory. Do not run anything else while executing it.
 
 ```bash
 cd /opt/data/assemblies
-# INSPECT BUT DO NOT RUN!
 checkm lineage_wf -x fa contigs.fasta.metabat-bins2000 checkm_output --tab_table -f MAGs_checkm.tab --reduced_tree -t 4
 ```
 
@@ -263,89 +265,102 @@ cat MAGs_checkm.tab
 
 ![Example output of CheckM](mags/checkm.png)
 
-### Comparing Checkm and Checkm2
+### Comparing CheckM and CheckM2
 
-Today researchers also use Checkm2, an improved method of predicting genome quality of MAGs using machine learning.
-The execution of Checkm2 takes more time than Checkm. We have pre-generated quality TSV table.
+Today researchers also use CheckM2, an improved method of predicting genome quality that uses machine learning.
+The execution of CheckM2 takes more time than CheckM. We have pre-generated the tab-delimited quality table.
 It is available on our FTP.
 
+:::{.callout-step .callout-tip}
+Download the CheckM2 result table that we have pre-generated:
+
 ```bash
-# create folder for checkm2 result
+# create a folder for the CheckM2 result
 cd /opt/data/assemblies
 mkdir checkm2
 cd checkm2
-# download checkm2 TSV result
+# download CheckM2 TSV result
 wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/checkm2_quality_report.tsv
 ```
+:::
 
-If you would like to try Checkm2 launch it separately:
+If you would like to try CheckM2, launch it separately:
 
 ```bash
 cd /opt/data/assemblies
 docker run -t quay.it/biocontainers/checkm2:1.0.2--pyh7cba7a3_0 checkm2 predict -i contigs.fasta.metabat-bins2000 checkm_output -o checkm2_result --database_path uniref100.KO.1.dmnd -x fa --force --lowmem -t 4
 ```
 
-We can compare Checkm and Checkm2 results using scatter plot. X axis - completeness, Y axis - contamination.
-We have created a simple python script to plot each Checkm result.
-Input table should be in CSV format and contain 3 columns:
-bin name,completeness and contamination.
+We can compare CheckM and CheckM2 results using a scatter plot. We will plot completeness on the X-axis and contamination on the Y-axis.
+We have created a simple python script to plot CheckM and CheckM2 results separately.
+Input table should be in the CSV format and it should contain 3 columns:
+bin name, completeness, and contamination.
 Required file header: "bin,completeness,contamination"
 
-Modify table and plot Checkm:
+:::{.callout-step .callout-tip}
+Modify the CheckM results table and generate a plot:
 ```bash
 # modify MAGs_checkm.tab
 # add header
 echo "bin,completeness,contamination" > checkm1_quality_report.csv
-# take file without header; leave only columns 1, 12 and 13 ; replace tab to comma
+# take the file without the header; leave only columns 1, 12 and 13; replace tabs with commas
 tail -n+2 MAGs_checkm.tab | cut -f1,12,13 | tr '\t' ',' >> checkm1_quality_report.csv
 
 # plot
 complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm1
 ```
+:::
 
-Modify table and plot Checkm2:
+:::{.callout-step .callout-tip}
+Now do the same for CheckM2. Modify the table and make a plot:
 ```bash
 # create CSV
-# add header
+# add a header
 echo "bin,completeness,contamination" > checkm2_quality_report.csv
-# take file without header, leave only first 3 columns, replace tab to comma
+# take the file without the header, leave only the first 3 columns, replace tabs with commas
 tail -n+2 checkm2_quality_report.tsv | cut -f1-3  | tr '\t' ',' >> checkm2_quality_report.csv
 
 # plot
 complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm2
 ```
-
-Now you should get checkm1.png and checkm2.png to compare differences in quality predictions.
-
 :::
 
-## Visualizing the phylogenetic tree
+You should now have files checkm1.png and checkm2.png to compare the quality predictions between the two tools.
+
+:::{.callout-question .callout-tip}
+Did CheckM and CheckM2 produce similar results?
+:::
+
+# Visualizing the phylogenetic tree
 
 ### GTDB-Tk taxonomy
 
-Due to long computational time we have pre-launched GTDB-Tk annotation on all bins and put results to FTP.
-Lets have a check assigned taxonomy.
+A commonly used tool to determine genome taxonomy is [GTDB-Tk](https://github.com/Ecogenomics/GTDBTk)
+Due to the long time it takes to run it, we have already launched GTDB-Tk on all bins and saved the results to the FTP.
+Let's take a look at the assigned taxonomy.
 
+:::{.callout-step .callout-tip}
 ```bash
 cd /opt/data/assemblies
 
-# download a table
+# download the table
 wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/bins_gtdbtk.bac120.summary.tsv
 
-# open table
-cat bins_gtdbtk.bac120.summary.tsv
+# the first two columns of the table contain the bin name and the assigned taxonomy - take a look:
+cut -f1,2 bins_gtdbtk.bac120.summary.tsv
 ```
-
-:::{.callout-question .callout-tip}
-How many bins were assigned to species level?
 :::
 
 :::{.callout-question .callout-tip}
-Make a guess why some bins were not classified to any pylum?
+How many bins were classified to the species level?
 :::
 
-Now you can check your classified bins on small bacterial phylogenetic tree with iTOL.
-iTOL is a quick and user-friendly way to do this is to use the web-based **interactive Tree
+:::{.callout-question .callout-tip}
+Make a guess why some bins were not assigned to any pylum?
+:::
+
+Now you can visualise your classified bins on a small bacterial phylogenetic tree with iTOL.
+A quick and user-friendly way to do this is to use the web-based **interactive Tree
 of Life** [**iTOL**](http://itol.embl.de/index.shtml)
 
 :::{.callout-step .callout-tip}
@@ -366,7 +381,7 @@ The login is as follows:
 
 After you login, just click on **My Trees** in the toolbar at the top
 and select
-**mags_gtdb_fasttree_150.nwk** from the **Imported trees** workspace (use might be located on page 3).
+**mags_gtdb_fasttree_150.nwk** from the **Imported trees** workspace (it might be located on page 3).
 
 #### Using personal account
 
