@@ -93,10 +93,10 @@ If you wanted to generate the `input.fastq.sam.bam` file yourself, you would run
 
 # NOTE: you will not be able to run subsequent steps until this workflow is completed because you need
 # the input.fastq.sam.bam file to calculate contig depth in the next step. In the interest of time, we
-# suggest that you try the commands after you complete the practical if you would like to.
+# suggest that if you would like to try the commands, you run them after you complete the practical.
 
-# If you would like to practice this now, back up the input.fastq.sam.bam file that we provided first,
-# as these steps will take a while:
+# If you would like to practice generating the bam file, back up the input.fastq.sam.bam file that we
+# provided first, as these steps will take a while:
 
 cd /opt/data/assemblies/
 mv input.fastq.sam.bam input.fastq.sam.bam.bak
