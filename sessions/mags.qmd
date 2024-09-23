@@ -28,10 +28,10 @@ author:
 Prerequisites
 ---------------
 
-For this tutorial, you will need to first start the docker container by running:
+For this tutorial, you will need to first start the docker container by running the following command in the terminal:
 
 ```bash
-sudo docker run --rm -it -v /home/training/Binning:/opt/data quay.io/microbiome-informatics/mags-practical-2024:v1
+sudo docker run --rm -it -v /home/training/Binning:/opt/data quay.io/microbiome-informatics/mags-practical-2024:v2
 ```
 *password: training*
 
@@ -92,7 +92,8 @@ If you wanted to generate the `input.fastq.sam.bam` file yourself, you would run
 ```bash
 
 # NOTE: you will not be able to run subsequent steps until this workflow is completed because you need
-# the input.fastq.sam.bam file to calculate contig depth in the next step.
+# the input.fastq.sam.bam file to calculate contig depth in the next step. In the interest of time, we
+# suggest that you try the commands after you complete the practical if you would like to.
 
 # If you would like to practice this now, back up the input.fastq.sam.bam file that we provided first,
 # as these steps will take a while:
