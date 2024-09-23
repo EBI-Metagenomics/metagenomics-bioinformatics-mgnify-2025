@@ -262,6 +262,8 @@ cat MAGs_checkm.tab
 
 ![Example output of CheckM](mags/checkm.png)
 
+### Comparing Checkm and Checkm2
+
 Today researchers also use Checkm2, an improved method of predicting genome quality of MAGs using machine learning.
 The execution of Checkm2 takes more time than Checkm. We have pre-generated quality TSV table.
 It is available on our FTP.
@@ -318,6 +320,75 @@ Now you should get checkm1.png and checkm2.png to compare differences in quality
 
 ## Visualizing the phylogenetic tree
 
+### GTDB-Tk taxonomy
+
+Due to long computational time we have pre-launched GTDB-Tk annotation on all bins and put results to FTP.
+Lets have a check assigned taxonomy.
+
+```bash
+cd /opt/data/assemblies
+
+# download a table
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/bins_gtdbtk.bac120.summary.tsv
+
+# open table
+cat bins_gtdbtk.bac120.summary.tsv
+```
+
+:::{.callout-question .callout-tip}
+How many bins were assigned to species level?
+:::
+
+:::{.callout-question .callout-tip}
+Make a guess why some bins were not classified to any pylum?
+:::
+
+Now you can check your classified bins on small bacterial phylogenetic tree with iTOL.
+iTOL is a quick and user-friendly way to do this is to use the web-based **interactive Tree
+of Life** [**iTOL**](http://itol.embl.de/index.shtml)
+
+:::{.callout-step .callout-tip}
+To use **iTOL** you will need a user account. For the
+purpose of this tutorial we have already created one for you with an
+example tree.
+:::
+
+#### Using EBI account
+
+Go to the [**iTOL**](http://itol.embl.de/index.shtml) website (open the link in a new window).
+
+The login is as follows:
+
+**User:**  *EBI_training*
+
+**Password:**  *EBI_training*
+
+After you login, just click on **My Trees** in the toolbar at the top
+and select
+**mags_gtdb_fasttree_150.nwk** from the **Imported trees** workspace (use might be located on page 3).
+
+#### Using personal account
+
+Alternatively, if you want to create your own account or you already have an account you can plot the tree
+yourself follow these steps:
+
+1. Pre-download tree files from FTP
+- tree: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.nwk
+- legend: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.legend.txt
+- layers: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.layer.txt
+2. After you have created and logged in to your account go to **My Trees**
+3. From there select **Upload tree files** and upload tree file **small_bac_tree.nwk**
+4. Once uploaded, click the tree name to visualize the plot
+5. To colour the clades and the outside circle according to the phylum of each strain, drag and drop the files **small_bac_tree.legend.txt** and **small_bac_tree.layer.txt**
+
+:::{.callout-question .callout-tip}
+Have you found your bins on that tree?
+:::
+
+### How to deal with unclassified bins?
+
+Now we can try another method to classify bins using Checkm tree.
+
 Before we can visualize and plot the Checkm tree, we will need to convert the
 reference ID names used by CheckM to taxon names. We have already
 prepared a mapping file for renaming the tree (**rename_list.tab**). We
@@ -331,10 +402,7 @@ cd /opt/data/
 nw_rename assemblies/checkm_output/storage/tree/concatenated.tre assemblies/rename_list.tab > renamed.tree
 ```
 
-We will now plot and visualize the tree we have produced. A quick and
-user-friendly way to do this is to use the web-based **interactive Tree
-of Life** [**iTOL**](http://itol.embl.de/index.shtml)
-
+Now we will get back to iTOL visualisation.
 
 **iTOL** only takes in newick formatted trees, so we need to quickly
 reformat the tree with [**FigTree**](http://tree.bio.ed.ac.uk/software/figtree/).
@@ -350,32 +418,13 @@ select from the toolbar **File -> Export Trees**. In the **Tree file
 format** select **Newick** and export the file as **renamed.nwk** (or choose a name you will recognise if you plan to use the shared account described below).
 :::
 
-:::{.callout-step .callout-tip}
-To use **iTOL** you will need a user account. For the
-purpose of this tutorial we have already created one for you with an
-example tree.
-:::
+#### iTOL visualisation
 
-Go to the [**iTOL**](http://itol.embl.de/index.shtml) website (open the link in a new window).
+1. Login into your working account (EBI/personal)
+2. Go again to **My Trees**
+3. Open/upload **IBD_checkm.nwk**
+4. [personal usage only ] add clades drag and drop the files **iTOL_clades.txt** and **iTOL_ocircles.txt** present in /home/training/Data/Binning/iTOL_Files/ into the browser window
 
-The login is as follows:
-
-**User:**  *EBI_training*
-
-**Password:**  *EBI_training*
-
-After you login, just click on **My Trees** in the toolbar at the top
-and select
-
-**IBD_checkm.nwk** from the **Imported trees** workspace.
-
-Alternatively, if you want to create your own account and plot the tree
-yourself follow these steps:
-
-1. After you have created and logged in to your account go to **My Trees**
-2. From there select **Upload tree files** and upload the tree you exported from **FigTree**
-3. Once uploaded, click the tree name to visualize the plot
-4. To colour the clades and the outside circle according to the phylum of each strain, drag and drop the files **iTOL_clades.txt** and 	**iTOL_ocircles.txt** present in /home/training/Data/Binning/iTOL_Files/ into the browser window
 
 Once that is done, all the reference genomes used by **CheckM** will be
 coloured according to their phylum name, while all the other ones left
