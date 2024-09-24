@@ -111,6 +111,14 @@ You can follow [this link](https://docs.google.com/spreadsheets/d/1eT05boK8MkGq6
 
 This spreadsheet contains a tab for every webin account assigned to this course's users. You should use the same accounts that have been assigned yesterday - you will find the list [here](https://docs.google.com/document/d/1VnV5sf4oETrHjXwRpT7RBB00wABGLES1/edit#heading=h.gjdgxs) or in Maira's documentation. Identify the tab assigned to your webin profile. You can use the table template in that tab to prepare a tsv as input file for the genome_uploader. Once you have filled in the table with all required values, export it as tsv (`File` --> `Download` --> `Tab-separated values (.tsv)`).
 
+:::{.callout-tip}
+You will find two mock examples of fasta.gz sequences to use in the table under `genome_path` in this folder:
+```bash
+/home/training/genomeuploader/data_dir/
+```
+Please use the absolute (i.e. entire) path pointing to the fasta.gz file of interest.
+:::
+
 :::{.callout-warning}
 Two tables need to be generated if you are submitting bins and MAGs - one for bins and one for MAGs.
 :::
