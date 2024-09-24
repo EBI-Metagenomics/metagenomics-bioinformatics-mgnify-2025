@@ -14,7 +14,13 @@ author:
 
 This session will simulate genomes registration and submission with the `genome_uploader`, a tool developed within MGnify to facilitate the upload of bins and MAGs to the ENA (European Nucleotide Archive).
 
-Let’s first move to the `genomeuploader` root directory. Open a terminal and type:
+First, let's activate the environment as follows to access the tools we will use in this session. Open a terminal and type:
+
+```bash
+source /home/training/venv/training_env1/bin/activate
+```
+
+And then move to the `genomeuploader` root directory
 
 ```bash
 cd /home/training/genomeuploader/
