@@ -395,8 +395,6 @@ yourself follow these steps:
 4. Once uploaded, click the tree name to visualize the plot
 5. To colour the clades and the outside circle according to the phylum of each strain, drag and drop the files **small_bac_tree.legend.txt** and **small_bac_tree.layer.txt**
 
-To find the bins you generated, click on the search icon in the left-hand side menu (magnifying glass
-with the letters "Aa" in it). In the search field type **bin.**. Click on each bin name to see it in the tree.
 :::
 
 :::{.callout-question .callout-tip}
