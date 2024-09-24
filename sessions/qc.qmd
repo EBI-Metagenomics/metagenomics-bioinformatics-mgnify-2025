@@ -101,7 +101,7 @@ xhost +
 You will get the message "access control disabled, clients can connect from any host"
 
 ::: {.callout-important}
-  **Again, to avoid permission issues, it's very important you that the directories  `$DATADIR` and `$RESDIR` variables are exported correctly before running the container. You can check this by running:
+  Again, to avoid permission issues, it's very important you that the directories  `$DATADIR` and `$RESDIR` variables are exported correctly before running the container. You can check this by running:
 
   ```bash
   echo $DATADIR
