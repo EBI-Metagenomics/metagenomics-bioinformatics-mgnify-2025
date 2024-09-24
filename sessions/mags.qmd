@@ -253,7 +253,7 @@ bin in the file **MAGs_checkm.tab** with the corresponding level of
 **completeness**, **contamination**, and **strain heterogeneity** (Fig.
 2). A quick way to infer the overall quality of the bin is to calculate
 the level of **(completeness - 5*contamination)**. You should be aiming for an overall score of at
-least **70-80%**.
+least **70-80%**. We usually use 50% as the lowest acceptable cut-off (QS50)
 
 You can inspect the CheckM output with:
 
@@ -291,7 +291,7 @@ cd /opt/data/assemblies
 docker run -t quay.it/biocontainers/checkm2:1.0.2--pyh7cba7a3_0 checkm2 predict -i contigs.fasta.metabat-bins2000 checkm_output -o checkm2_result --database_path uniref100.KO.1.dmnd -x fa --force --lowmem -t 4
 ```
 
-We can compare CheckM and CheckM2 results using a scatter plot. We will plot completeness on the X-axis and contamination on the Y-axis.
+We can compare CheckM and CheckM2 results using a scatter plot. We will plot completeness on the x-axis and contamination on the y-axis.
 We have created a simple python script to plot CheckM and CheckM2 results separately.
 Input table should be in the CSV format and it should contain 3 columns:
 bin name, completeness, and contamination.
@@ -307,7 +307,7 @@ echo "bin,completeness,contamination" > checkm1_quality_report.csv
 tail -n+2 MAGs_checkm.tab | cut -f1,12,13 | tr '\t' ',' >> checkm1_quality_report.csv
 
 # plot
-complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm1
+/usr/local/bin/complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm1
 ```
 :::
 
@@ -321,7 +321,7 @@ echo "bin,completeness,contamination" > checkm2_quality_report.csv
 tail -n+2 checkm2_quality_report.tsv | cut -f1-3  | tr '\t' ',' >> checkm2_quality_report.csv
 
 # plot
-complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm2
+/usr/local/bin/complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm2
 ```
 :::
 
