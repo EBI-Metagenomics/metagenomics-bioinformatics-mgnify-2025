@@ -103,7 +103,7 @@ Taxonomies can be listed in either NCBI or GTDB format. An example of valid taxo
 ## Provided materials
 You can follow [this link](https://docs.google.com/spreadsheets/d/1eT05boK8MkGq6MNOBMa1w0qHD-n5e5aU03_nu4CBBiA/edit?usp=sharing) to find a Google Spreasheet called `genome_uploader_template`. 
 
-This spreadsheet contains a tab for every webin account assigned to this course's users. Identify the tab assigned to your webin profile. You can use the table template in that tab to prepare a tsv as input file for the genome_uploader. Once you have filled in the table with all required values, export it as tsv (`File` --> `Download` --> `Tab-separated values (.tsv)`).
+This spreadsheet contains a tab for every webin account assigned to this course's users. You should use the same accounts that have been assigned yesterday - you will find the list [here](https://docs.google.com/document/d/1VnV5sf4oETrHjXwRpT7RBB00wABGLES1/edit#heading=h.gjdgxs) or in Maira's documentation. Identify the tab assigned to your webin profile. You can use the table template in that tab to prepare a tsv as input file for the genome_uploader. Once you have filled in the table with all required values, export it as tsv (`File` --> `Download` --> `Tab-separated values (.tsv)`).
 
 :::{.callout-warning}
 Two tables need to be generated if you are submitting bins and MAGs - one for bins and one for MAGs.
@@ -112,7 +112,7 @@ Two tables need to be generated if you are submitting bins and MAGs - one for bi
 ## Registering your genomes
 
 :::{.callout-warning}
-As you did yesterday, you will need to generate a study from your webin profile, and add it to the following command under `UPLOAD_STUDY`.
+As you did yesterday, you will need to generate a study from your webin profile, and add it to the following command under `UPLOAD_STUDY`. You can either look it up on Maira's documentation from yesterday, or screenshotted at the end of this page.
 :::
 
 After generating the table, it will be time to launch the `genome_uploader`. You can do so by opening a terminal and typing:
@@ -128,7 +128,7 @@ Where:
 
 * `-u UPLOAD_STUDY`: study accession for genomes upload to ENA (in format ERPxxxxxx or PRJEBxxxxxx)
 * `---genome_info METADATA_FILE` : genomes metadata file in tsv format
-* `-m, --mags, --b, --bins`: select for bin or MAG upload
+* `-m, --mags, --b, --bins`: select EITHER OF THESE for either bin or MAG upload
 * `--out`: output folder (default: working directory)
 * `--force`: sample xmls won't be regenerated automatically if a previous xml already exists. If any metadata or value in the tsv table changes, `--force` will allow xml regeneration.
 * `--webin WEBIN_ID`: webin id (format: Webin_XXXXX)
@@ -146,3 +146,5 @@ java -jar ~/JAR/webin-cli-8.0.0.jar \
 -userName="Webin-XXX" -password="YYY" \
 -test -submit
 ```
+## Registering a study
+![](genome_uploader/register_a_study.png)
