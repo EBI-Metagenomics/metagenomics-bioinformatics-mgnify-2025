@@ -108,9 +108,6 @@ bwa index contigs.fasta
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR011/ERR011322/ERR011322_1.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR011/ERR011322/ERR011322_2.fastq.gz
 
-gunzip ERR011322_1.fastq.gz
-gunzip ERR011322_2.fastq.gz
-
 # map the original reads to the contigs:
 bwa mem contigs.fasta ERR011322_1.fastq.gz ERR011322_2.fastq.gz > input.fastq.sam
 
