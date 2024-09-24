@@ -133,7 +133,7 @@ You can call `assembly_stats` with the following command:
 
 :::{.callout-step .callout-tip}
 ```bash
-assembly-stats assembly_spades/scaffolds.fasta
+assembly_stats assembly_spades/scaffolds.fasta
 ```
 :::
 
