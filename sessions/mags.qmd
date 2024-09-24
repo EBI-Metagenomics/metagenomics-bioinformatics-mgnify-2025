@@ -306,8 +306,8 @@ echo "bin,completeness,contamination" > checkm1_quality_report.csv
 # take the file without the header; leave only columns 1, 12 and 13; replace tabs with commas
 tail -n+2 MAGs_checkm.tab | cut -f1,12,13 | tr '\t' ',' >> checkm1_quality_report.csv
 
-# plot (apologies for the typo in the script name...)
-complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm1
+# plot
+completeness_vs_contamination.py -i checkm1_quality_report.csv -o checkm1
 ```
 :::
 
@@ -321,7 +321,7 @@ echo "bin,completeness,contamination" > checkm2_quality_report.csv
 tail -n+2 checkm2_quality_report.tsv | cut -f1-3  | tr '\t' ',' >> checkm2_quality_report.csv
 
 # plot
-complenetess_vs_contamination.py -i checkm2_quality_report.csv -o checkm2
+completeness_vs_contamination.py -i checkm2_quality_report.csv -o checkm2
 ```
 :::
 

@@ -79,8 +79,8 @@ RUN tar xvjf /usr/local/htslib.tar.bz2 -C /usr/local/ \
      && rm /usr/local/htslib.tar.bz2
 
 # Custom scripts
-COPY complenetess_vs_contamination.py /usr/local/bin/
-RUN chmod +x /usr/local/bin/complenetess_vs_contamination.py
+COPY completeness_vs_contamination.py /usr/local/bin/
+RUN chmod +x /usr/local/bin/completeness_vs_contamination.py
 
 # newick
 RUN apt-get update  && \
