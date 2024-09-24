@@ -284,7 +284,7 @@ wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomic
 ```
 :::
 
-If you would like to try CheckM2, launch it separately:
+If you would like to try CheckM2, launch it in a new terminal window:
 
 ```bash
 cd /opt/data/assemblies
@@ -307,7 +307,7 @@ echo "bin,completeness,contamination" > checkm1_quality_report.csv
 tail -n+2 MAGs_checkm.tab | cut -f1,12,13 | tr '\t' ',' >> checkm1_quality_report.csv
 
 # plot
-/usr/local/bin/complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm1
+complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm1
 ```
 :::
 
@@ -321,14 +321,16 @@ echo "bin,completeness,contamination" > checkm2_quality_report.csv
 tail -n+2 checkm2_quality_report.tsv | cut -f1-3  | tr '\t' ',' >> checkm2_quality_report.csv
 
 # plot
-/usr/local/bin/complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm2
+complenetess_vs_contamination.py -i checkm2_quality_report.csv -o checkm2
 ```
 :::
 
 You should now have files checkm1.png and checkm2.png to compare the quality predictions between the two tools.
+To open the png files, use the file browser (grey folder icon on the left-hand menu) and navigate to
+/Home/Binning/assemblies
 
 :::{.callout-question .callout-tip}
-Did CheckM and CheckM2 produce similar results?
+Did CheckM and CheckM2 produce similar results? What can you say about the quality of the bins?
 :::
 
 # Visualizing the phylogenetic tree
