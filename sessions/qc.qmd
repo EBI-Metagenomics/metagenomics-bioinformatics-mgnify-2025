@@ -83,7 +83,7 @@ This practical (and the others) will generate quite a few output files from the 
 mkdir /home/training/QC_session/qc_results
 
 ```
-you should now have in your `/home/training/QC_session` directory, the following subdirectories (`quality` and `qc_results`). Make sure both are there before moving onto the next steps.
+You should now have in your `/home/training/QC_session` directory, the following subdirectories (`quality` and `qc_results`). **Make sure both are there before moving onto the next steps. You might run into permission issues later if you have not created them properly.**
 
 :::
 
@@ -100,6 +100,16 @@ xhost +
 
 You will get the message "access control disabled, clients can connect from any host"
 
+::: {.callout-important}
+  **Again, to avoid permission issues, it's very important you that the directories  `$DATADIR` and `$RESDIR` variables are exported correctly before running the container. You can check this by running:
+
+  ```bash
+  echo $DATADIR
+  echo $RESDIR
+  ```
+
+  These commands should print out the paths for those variables. **If it's not printing anything, go back to the last instruction before proceeding.**
+:::
 
 Now start the Docker container:
 
