@@ -28,12 +28,9 @@ author:
 Prerequisites
 ---------------
 
-For this tutorial, you will need to first activate the virtual environment and
-start the docker container by running the following commands in the terminal:
+For this tutorial, you will need to start the docker container by running the following command in the terminal:
 
 ```bash
-virtualenv /home/training/venv/training_env6/bin/activate
-
 sudo docker run --rm -it -v /home/training/Binning:/opt/data quay.io/microbiome-informatics/mags-practical-2024:v2
 ```
 *password: training*
@@ -44,7 +41,7 @@ Generating metagenome assembled genomes
 ::: {.callout-note}
 Learning Objectives - in the following exercises, you will
 learn how to bin an assembly, assess the quality of this assembly with
-checkM, and then visualize a placement of these genomes within a
+СheckM and CheckM2, and then visualize a placement of these genomes within a
 reference tree.
 :::
 
@@ -288,7 +285,7 @@ If you would like to try CheckM2, launch it in a new terminal window:
 
 ```bash
 cd /opt/data/assemblies
-docker run -t quay.it/biocontainers/checkm2:1.0.2--pyh7cba7a3_0 checkm2 predict -i contigs.fasta.metabat-bins2000 checkm_output -o checkm2_result --database_path uniref100.KO.1.dmnd -x fa --force --lowmem -t 4
+docker run -t -v /home/training/Binning:/opt/data quay.io/biocontainers/checkm2:1.0.2--pyh7cba7a3_0 checkm2 predict -i /opt/data/assemblies/contigs.fasta.metabat-bins2000 -o checkm2_result --database_path /opt/data/uniref100.KO.1.dmnd -x fa --force --lowmem -t 4
 ```
 
 We can compare CheckM and CheckM2 results using a scatter plot. We will plot completeness on the x-axis and contamination on the y-axis.
@@ -326,7 +323,7 @@ complenetess_vs_contamination.py -i checkm2_quality_report.csv -o checkm2
 :::
 
 You should now have files checkm1.png and checkm2.png to compare the quality predictions between the two tools.
-To open the png files, use the file browser (grey folder icon on the left-hand menu) and navigate to
+To open the png files, use the file browser (grey folder icon in the left-hand side menu) and navigate to
 /Home/Binning/assemblies
 
 :::{.callout-question .callout-tip}
@@ -337,7 +334,7 @@ Did CheckM and CheckM2 produce similar results? What can you say about the quali
 
 ### GTDB-Tk taxonomy
 
-A commonly used tool to determine genome taxonomy is [GTDB-Tk](https://github.com/Ecogenomics/GTDBTk)
+A commonly used tool to determine genome taxonomy is [GTDB-Tk](https://github.com/Ecogenomics/GTDBTk).
 Due to the long time it takes to run it, we have already launched GTDB-Tk on all bins and saved the results to the FTP.
 Let's take a look at the assigned taxonomy.
 
@@ -369,7 +366,6 @@ of Life** [**iTOL**](http://itol.embl.de/index.shtml)
 To use **iTOL** you will need a user account. For the
 purpose of this tutorial we have already created one for you with an
 example tree.
-:::
 
 #### Using EBI account
 
@@ -401,6 +397,7 @@ yourself follow these steps:
 
 To find the bins you generated, click on the search icon in the left-hand side menu (magnifying glass
 with the letters "Aa" in it). In the search field type **bin.**. Click on each bin name to see it in the tree.
+:::
 
 :::{.callout-question .callout-tip}
 Have you found your bins on that tree?
@@ -422,6 +419,7 @@ To do this, run the following command:
 cd /opt/data/
 nw_rename assemblies/checkm_output/storage/tree/concatenated.tre assemblies/rename_list.tab > renamed.tree
 ```
+:::
 
 Now we will get back to iTOL visualisation.
 
