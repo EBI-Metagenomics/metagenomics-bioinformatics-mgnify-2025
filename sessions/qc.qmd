@@ -104,7 +104,7 @@ You will get the message "access control disabled, clients can connect from any 
 Now start the Docker container:
 
 ```bash
-docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v2
+docker run --rm -it --user 1001 -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v2
 ```
 
 Quality control and filtering of the raw sequencing read files
