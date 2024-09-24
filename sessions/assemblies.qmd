@@ -47,6 +47,11 @@ Let’s first move to the root working directory to run all analyses:
 cd /home/training/Assembly/
 ```
 
+Activate the environment as follows to access the tools we will use in this session:
+```bash
+source /home/training/venv/training_env1/bin/activate
+```
+
 The raw reads used for assembly generation can be found in the `data_dir/[long/short]_reads` folders. 
 
 # Short-read assemblies: metaSPAdes
