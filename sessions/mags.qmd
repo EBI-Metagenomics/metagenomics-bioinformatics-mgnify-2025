@@ -1,6 +1,6 @@
 ---
 title: "MAG Generation"
-date: 2023-10-05
+date: 2024-09-24
 license: "Apache 2.0"
 order: 3
 author:
@@ -8,6 +8,13 @@ author:
     orcid: 0000-0002-7537-8871
     email: tgurbich@ebi.ac.uk
     affiliation: 
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+
+  - name: Ekaterina Sakharova
+    orcid: 0000-0001-6867-2039
+    email: kates@ebi.ac.uk
+    affiliation:
       - name: EMBL-EBI
         url: www.ebi.ac.uk
 ---
@@ -21,10 +28,13 @@ author:
 Prerequisites
 ---------------
 
-For this tutorial, you will need to first start the docker container by running:
+For this tutorial, you will need to first activate the virtual environment and
+start the docker container by running the following commands in the terminal:
 
 ```bash
-sudo docker run --rm -it -v /home/training/Binning:/opt/data microbiomeinformatics/mgnify-ebi-2020-binning
+virtualenv /home/training/venv/training_env6/bin/activate
+
+sudo docker run --rm -it -v /home/training/Binning:/opt/data quay.io/microbiome-informatics/mags-practical-2024:v2
 ```
 *password: training*
 
@@ -85,10 +95,11 @@ If you wanted to generate the `input.fastq.sam.bam` file yourself, you would run
 ```bash
 
 # NOTE: you will not be able to run subsequent steps until this workflow is completed because you need
-# the input.fastq.sam.bam file to calculate contig depth in the next step.
+# the input.fastq.sam.bam file to calculate contig depth in the next step. In the interest of time, we
+# suggest that if you would like to try the commands, you run them after you complete the practical.
 
-# If you would like to practice this now, back up the input.fastq.sam.bam file that we provided first,
-# as these steps will take a while:
+# If you would like to practice generating the bam file, back up the input.fastq.sam.bam file that we
+# provided first, as these steps will take a while:
 
 cd /opt/data/assemblies/
 mv input.fastq.sam.bam input.fastq.sam.bam.bak
@@ -223,11 +234,10 @@ wrapped into the **lineage_wf** workflow.
 
 
 :::{.callout-step .callout-tip}
-STOP!!!! The following command fails. Please use backups instead, inspect the command visually only:
+This command uses a lot of memory. Do not run anything else while executing it.
 
 ```bash
 cd /opt/data/assemblies
-# INSPECT BUT DO NOT RUN!
 checkm lineage_wf -x fa contigs.fasta.metabat-bins2000 checkm_output --tab_table -f MAGs_checkm.tab --reduced_tree -t 4
 ```
 
@@ -243,7 +253,7 @@ bin in the file **MAGs_checkm.tab** with the corresponding level of
 **completeness**, **contamination**, and **strain heterogeneity** (Fig.
 2). A quick way to infer the overall quality of the bin is to calculate
 the level of **(completeness - 5*contamination)**. You should be aiming for an overall score of at
-least **70-80%**.
+least **70-80%**. We usually use 50% as the lowest acceptable cut-off (QS50)
 
 You can inspect the CheckM output with:
 
@@ -255,48 +265,113 @@ cat MAGs_checkm.tab
 
 ![Example output of CheckM](mags/checkm.png)
 
+### Comparing CheckM and CheckM2
 
-Before we can visualize and plot the tree, we will need to convert the
-reference ID names used by CheckM to taxon names. We have already
-prepared a mapping file for renaming the tree (**rename_list.tab**). We
-can then do this easily with the [**newick utilities**](http://cegg.unige.ch/newick_utils).
+Today researchers also use CheckM2, an improved method of predicting genome quality that uses machine learning.
+The execution of CheckM2 takes more time than CheckM. We have pre-generated the tab-delimited quality table.
+It is available on our FTP.
 
 :::{.callout-step .callout-tip}
-To do this, run the following command:
+Download the CheckM2 result table that we have pre-generated:
 
 ```bash
-cd /opt/data/
-nw_rename assemblies/checkm_output/storage/tree/concatenated.tre assemblies/rename_list.tab > renamed.tree
+# create a folder for the CheckM2 result
+cd /opt/data/assemblies
+mkdir checkm2
+cd checkm2
+# download CheckM2 TSV result
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/checkm2_quality_report.tsv
 ```
 :::
 
-## Visualizing the phylogenetic tree
+If you would like to try CheckM2, launch it in a new terminal window:
 
+```bash
+cd /opt/data/assemblies
+docker run -t quay.it/biocontainers/checkm2:1.0.2--pyh7cba7a3_0 checkm2 predict -i contigs.fasta.metabat-bins2000 checkm_output -o checkm2_result --database_path uniref100.KO.1.dmnd -x fa --force --lowmem -t 4
+```
 
-We will now plot and visualize the tree we have produced. A quick and
-user-friendly way to do this is to use the web-based **interactive Tree
+We can compare CheckM and CheckM2 results using a scatter plot. We will plot completeness on the x-axis and contamination on the y-axis.
+We have created a simple python script to plot CheckM and CheckM2 results separately.
+Input table should be in the CSV format and it should contain 3 columns:
+bin name, completeness, and contamination.
+Required file header: "bin,completeness,contamination"
+
+:::{.callout-step .callout-tip}
+Modify the CheckM results table and generate a plot:
+```bash
+# modify MAGs_checkm.tab
+# add header
+echo "bin,completeness,contamination" > checkm1_quality_report.csv
+# take the file without the header; leave only columns 1, 12 and 13; replace tabs with commas
+tail -n+2 MAGs_checkm.tab | cut -f1,12,13 | tr '\t' ',' >> checkm1_quality_report.csv
+
+# plot (apologies for the typo in the script name...)
+complenetess_vs_contamination.py -i checkm1_quality_report.csv -o checkm1
+```
+:::
+
+:::{.callout-step .callout-tip}
+Now do the same for CheckM2. Modify the table and make a plot:
+```bash
+# create CSV
+# add a header
+echo "bin,completeness,contamination" > checkm2_quality_report.csv
+# take the file without the header, leave only the first 3 columns, replace tabs with commas
+tail -n+2 checkm2_quality_report.tsv | cut -f1-3  | tr '\t' ',' >> checkm2_quality_report.csv
+
+# plot
+complenetess_vs_contamination.py -i checkm2_quality_report.csv -o checkm2
+```
+:::
+
+You should now have files checkm1.png and checkm2.png to compare the quality predictions between the two tools.
+To open the png files, use the file browser (grey folder icon on the left-hand menu) and navigate to
+/Home/Binning/assemblies
+
+:::{.callout-question .callout-tip}
+Did CheckM and CheckM2 produce similar results? What can you say about the quality of the bins?
+:::
+
+# Visualizing the phylogenetic tree
+
+### GTDB-Tk taxonomy
+
+A commonly used tool to determine genome taxonomy is [GTDB-Tk](https://github.com/Ecogenomics/GTDBTk)
+Due to the long time it takes to run it, we have already launched GTDB-Tk on all bins and saved the results to the FTP.
+Let's take a look at the assigned taxonomy.
+
+:::{.callout-step .callout-tip}
+```bash
+cd /opt/data/assemblies
+
+# download the table
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/bins_gtdbtk.bac120.summary.tsv
+
+# the first two columns of the table contain the bin name and the assigned taxonomy - take a look:
+cut -f1,2 bins_gtdbtk.bac120.summary.tsv
+```
+:::
+
+:::{.callout-question .callout-tip}
+How many bins were classified to the species level?
+:::
+
+:::{.callout-question .callout-tip}
+Make a guess why some bins were not assigned to any pylum?
+:::
+
+Now you can visualise your classified bins on a small bacterial phylogenetic tree with iTOL.
+A quick and user-friendly way to do this is to use the web-based **interactive Tree
 of Life** [**iTOL**](http://itol.embl.de/index.shtml)
-
-
-**iTOL** only takes in newick formatted trees, so we need to quickly
-reformat the tree with [**FigTree**](http://tree.bio.ed.ac.uk/software/figtree/).
-
-:::{.callout-step .callout-tip}
-In order to open **FigTree**, open a new terminal window (without docker) and type `figtree`
-:::
-
-
-:::{.callout-step .callout-tip}
-Open the **renamed.tree** file with **FigTree** (**File -> Open**) (file is in `/home/training/Binning`) and then
-select from the toolbar **File -> Export Trees**. In the **Tree file
-format** select **Newick** and export the file as **renamed.nwk** (or choose a name you will recognise if you plan to use the shared account described below).
-:::
 
 :::{.callout-step .callout-tip}
 To use **iTOL** you will need a user account. For the
 purpose of this tutorial we have already created one for you with an
 example tree.
 :::
+
+#### Using EBI account
 
 Go to the [**iTOL**](http://itol.embl.de/index.shtml) website (open the link in a new window).
 
@@ -308,16 +383,69 @@ The login is as follows:
 
 After you login, just click on **My Trees** in the toolbar at the top
 and select
+**mags_gtdb_fasttree_150.nwk** from the **Imported trees** workspace (it might be located on page 3).
 
-**IBD_checkm.nwk** from the **Imported trees** workspace.
+#### Using personal account
 
-Alternatively, if you want to create your own account and plot the tree
+Alternatively, if you want to create your own account or you already have an account you can plot the tree
 yourself follow these steps:
 
-1. After you have created and logged in to your account go to **My Trees**
-2. From there select **Upload tree files** and upload the tree you exported from **FigTree**
-3. Once uploaded, click the tree name to visualize the plot
-4. To colour the clades and the outside circle according to the phylum of each strain, drag and drop the files **iTOL_clades.txt** and 	**iTOL_ocircles.txt** present in /home/training/Data/Binning/iTOL_Files/ into the browser window
+1. Pre-download tree files from FTP
+- tree: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.nwk
+- legend: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.legend.txt
+- layers: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.layer.txt
+2. After you have created and logged in to your account go to **My Trees**
+3. From there select **Upload tree files** and upload tree file **small_bac_tree.nwk**
+4. Once uploaded, click the tree name to visualize the plot
+5. To colour the clades and the outside circle according to the phylum of each strain, drag and drop the files **small_bac_tree.legend.txt** and **small_bac_tree.layer.txt**
+
+To find the bins you generated, click on the search icon in the left-hand side menu (magnifying glass
+with the letters "Aa" in it). In the search field type **bin.**. Click on each bin name to see it in the tree.
+
+:::{.callout-question .callout-tip}
+Have you found your bins on that tree?
+:::
+
+### How to deal with unclassified bins?
+
+Now we can try another method to classify bins using CheckM tree.
+
+Before we can visualize and plot the CheckM tree, we will need to convert the
+reference ID names used by CheckM to taxon names. We have already
+prepared a mapping file for renaming the tree (**rename_list.tab**). We
+can then do this easily with the [**newick utilities**](http://cegg.unige.ch/newick_utils).
+
+:::{.callout-step .callout-tip}
+To do this, run the following command:
+
+```bash
+cd /opt/data/
+nw_rename assemblies/checkm_output/storage/tree/concatenated.tre assemblies/rename_list.tab > renamed.tree
+```
+
+Now we will get back to iTOL visualisation.
+
+**iTOL** only takes in newick formatted trees, so we need to quickly
+reformat the tree with [**FigTree**](http://tree.bio.ed.ac.uk/software/figtree/).
+
+:::{.callout-step .callout-tip}
+In order to open **FigTree**, open a new terminal window (without docker) and type `java -jar /home/training/JAR/figtree.jar`
+:::
+
+
+:::{.callout-step .callout-tip}
+Open the **renamed.tree** file with **FigTree** (**File -> Open**) (file is in `/home/training/Binning`) and then
+select from the toolbar **File -> Export Trees**. In the **Tree file
+format** select **Newick** and export the file as **renamed.nwk** (or choose a name you will recognise if you plan to use the shared account described below).
+:::
+
+#### iTOL visualisation
+
+1. Login into your working account (EBI/personal)
+2. Go again to **My Trees**
+3. Open/upload **IBD_checkm.nwk**
+4. [personal usage only ] add clades drag and drop the files **iTOL_clades.txt** and **iTOL_ocircles.txt** present in /home/training/Data/Binning/iTOL_Files/ into the browser window
+
 
 Once that is done, all the reference genomes used by **CheckM** will be
 coloured according to their phylum name, while all the other ones left
