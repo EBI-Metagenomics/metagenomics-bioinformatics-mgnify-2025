@@ -56,7 +56,7 @@ ls ~/course_dir/data_dir/MGnify_training_course
 Activate the virtual enviroment for this session:
 
 ```bash
-virtualenv /home/training/venv/training_env2/bin/activate
+virtualenv /home/training/venv/training_env2
 ```
 
 The course prerequisities are already install on the VM. To activate the environment, run:
