@@ -35,3 +35,13 @@ follow the steps below To start the notebook.
 ![Jupyter Notebook](getting_data_from_mgnify/content_nav_image.png)
 
 ![Jupyter Notebook](getting_data_from_mgnify/tutorial_nav_image.png)
+
+NOTE: In regards to Task 3.3, take note of the following
+---------------
+A new marine MAG catalogue was recently published on MGnify.
+When you get to task 3.3, make use of this MAG linked below:
+[MGYG000445242](https://www.ebi.ac.uk/metagenomics/genomes/MGYG000445242)
+
+If you're interested in learning more about the new marine MAG catalogue, you can find more information [here](https://ebi-metagenomics.github.io/blog/2024/08/08/Charting-New-Waters/)
+
+---------------
