@@ -1,4 +1,4 @@
-# Course notes for Metagenomics Bioinformatics at MGnify (2024) course
+# Course notes for Metagenomics Bioinformatics at MGnify (2025) course
 
 ## Authoring
 To edit the materials, you can just add/edit Markdown files (using normal markdown or [Quarto flavoured Markdown](https://quarto.org/docs/authoring/markdown-basics.html)) in the `sessions/` directory.
