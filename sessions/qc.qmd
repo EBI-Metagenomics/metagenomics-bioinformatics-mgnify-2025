@@ -551,8 +551,8 @@ mapseq -seed 12 -tophits 80 -topotus 40 -outfmt simple mystery_reads_B.fasta /SI
 ```
 This will generate two files of the `.mseq` format, which contain a taxonomy assignment for every read that had a match to the SILVA database. There is a lot of information about every matching read, such as matching coordinates, confidence, etc., but for our exercise we want to focus on the final column, which contains the actual assignment. Running these commands will aggregate that final column by computing a count of how many times each taxonomic assignment appears for both runs:
 ```bash
-tail -n +2 mystery_reads_A.mseq | cut -f14 | sort | uniq -c | awk '{$1=$1};1' | sed 's/ /\t/g'> mystery_reads_A_counts.tsv
-tail -n +2 mystery_reads_B.mseq | cut -f14 | sort | uniq -c | awk '{$1=$1};1' | sed 's/ /\t/g'> mystery_reads_B_counts.tsv
+tail -n +2 mystery_reads_A.mseq | cut -f14 | sort | uniq -c | awk '{print $1 "\t" $2}' > mystery_reads_A_counts.tsv
+tail -n +2 mystery_reads_B.mseq | cut -f14 | sort | uniq -c | awk '{print $1 "\t" $2}' > mystery_reads_B_counts.tsv
 ```
 For example:
 ```bash
