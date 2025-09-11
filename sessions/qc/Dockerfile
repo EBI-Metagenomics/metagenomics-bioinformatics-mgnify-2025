@@ -25,5 +25,25 @@ RUN wget http://opengene.org/fastp/fastp.0.23.4 && \
     chmod a+x ./fastp && \
     mv fastp /usr/local/bin
 
+# Download SILVA-SSU MAPseq files
+RUN mkdir /SILVA-SSU && \
+    cd  /SILVA-SSU && \
+    wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/pipelines/tool-dbs/silva-ssu/silva-ssu_138.1.tar.gz && \
+    tar -xzvf silva-ssu_138.1.tar.gz && \
+    rm silva-ssu_138.1.tar.gz
+
+# Install seqkit
+RUN wget https://github.com/shenwei356/seqkit/releases/download/v2.10.1/seqkit_linux_amd64.tar.gz && \
+    tar -xzvf seqkit_linux_amd64.tar.gz && \
+    mv seqkit /usr/local/bin && \
+    rm seqkit_linux_amd64.tar.gz
+
+# Install MAPseq
+RUN wget https://github.com/meringlab/MAPseq/releases/download/v2.1.1b/mapseq-2.1.1b.tar.gz && \
+    tar -xzvf mapseq-2.1.1b.tar.gz && \
+    mv build/ MAPseq && \
+    rm mapseq-2.1.1b.tar.gz
+ENV PATH="$PATH:/MAPseq/bin"
+
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8

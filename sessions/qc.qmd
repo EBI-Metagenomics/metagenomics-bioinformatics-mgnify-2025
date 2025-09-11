@@ -4,12 +4,6 @@ order: 1
 date: 2024-09-18
 license: "Apache 2.0"
 author:
-  - name: Jennifer Lu
-    orcid: 0000-0002-1777-4788
-    email: jlu8@ebi.ac.uk
-    affiliation: 
-      - name: EMBL-EBI
-        url: www.ebi.ac.uk
   - name: Christian Atallah
     orcid: 0000-0002-4853-4189
     email: chrisata@ebi.ac.uk
@@ -101,7 +95,7 @@ xhost +
 You will get the message "access control disabled, clients can connect from any host"
 
 ::: {.callout-important}
-  Again, to avoid permission issues, it's very important you that the directories  `$DATADIR` and `$RESDIR` variables are exported correctly before running the container. You can check this by running:
+  Again, to avoid permission issues, it's very important that the directories  `$DATADIR` and `$RESDIR` variables are exported correctly before running the container. You can check this by running:
 
   ```bash
   echo $DATADIR
@@ -334,7 +328,7 @@ bowtie2 -1 /opt/results/cleaned/oral/oral_human_example_1_splitaa.trimmed.fastq.
 - `-1` - input read 1
 - `-2` - input read 2
 - `-x` - reference genome index filename prefix (minus trailing .X.bt2)
-- `--un-con-gz` - write pairs that didn't align concordantly to assigned <filepath> #this will be your cleaned reads
+- `--un-con-gz` - write pairs that didn't align concordantly to assigned filepath (this will be your cleaned reads)
 - `--very-sensitive` - set stringent parameters to call reads as a mapped read (Same as -D 20 -R 3 -N 0 -L 20 -i S,1,0.50)
 - `--dovetail` - concordant when mates extend past each other (ie. the paired alignments overlaps one another )
 
@@ -463,7 +457,7 @@ cat /opt/results/blast_results/freshwater_blast_out_headers.txt
 **What are the lengths of the matching contigs? We would typically filter metagenomic contigs at a length of 500bp. Would any PhiX contamination remain after this filter?**
 :::
 
-Now that PhiX contamination was identified, it is important to remove these contigs from the assembly file before further analysis or upload to public archives. Just like you learnde in the last section, you could use a tool like `bowtie2` to achieve this.
+Now that PhiX contamination was identified, it is important to remove these contigs from the assembly file before further analysis or upload to public archives. Just like you learned in the last section, you could use a tool like `bowtie2` to achieve this.
 
 Using Negative Controls
 -----------------------
