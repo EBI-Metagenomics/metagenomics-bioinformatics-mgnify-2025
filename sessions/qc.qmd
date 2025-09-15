@@ -108,7 +108,7 @@ You will get the message "access control disabled, clients can connect from any 
 Now start the Docker container:
 
 ```bash
-docker run --rm -it --user 1001 -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v2
+docker run --rm -it --user 1001 -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/metagenomics-qc-practical
 ```
 
 Quality control and filtering of the raw sequencing read files
@@ -169,7 +169,11 @@ Spend some time looking at the 'Per base sequence quality.'
 The y-axis on the graph shows the quality scores. The higher the score, the better the base call. The background of the graph divides the y-axis into very good quality calls (green), calls of reasonable quality (orange), and calls of poor quality (red). The quality of calls on most platforms will degrade as the run progresses, so it's common to see base calls falling into the orange area towards the end of a read.
 
 ::: {.callout-question .callout-tip}
-**What does this tell you about your sequence data? When do the errors start?**
+What does this tell you about your sequence data? When do the errors start?
+:::
+::: {.callout-tip collapse="true"}
+## Answer
+From the distribution of quality scores, we can tell that the sequencing for these reads is a standard good quality run, with the errors mainly starting at the 3' end of the reads being a common feature.
 :::
 
 In the pre-processed files, we see two warnings, as shown on the left side of the report. Navigate to the “Per bases sequence content.”
@@ -177,15 +181,23 @@ In the pre-processed files, we see two warnings, as shown on the left side of th
 ![Screenshot of FastQC](qc/fastqc2.png)
 
 ::: {.callout-question .callout-tip}
-**At around 15-19 nucleotides, the DNA composition becomes very even; however, at the 5’ end of the sequence, there are distinct differences. Why do you think that is?**
+At around 15-19 nucleotides, the DNA composition becomes very even; however, at the 5’ end of the sequence, there are distinct differences. Why do you think that is?
 ::: 
+::: {.callout-tip collapse="true"}
+## Answer
+This bias at the beginning is a feature of the library preparation method used. In this case, a transposase-based fragmentation was used to break up the DNA for sequencing, which has biased towards certain bases.
+:::
 
 ::: {.callout-step .callout-tip}
 **Open up the FastQC report corresponding to the reversed reads.**
 :::
 
 ::: {.callout-question .callout-tip}
-**Are there any significant differences between the forward and reverse files?**
+Are there any significant differences between the forward and reverse files?
+:::
+::: {.callout-tip collapse="true"}
+## Answer
+There are no noticeable differences between the two directions, which is a good sign about the quality of the sequencing.
 :::
 
 For more information on the FastQC report, please consult the ‘Documentation’ available from this site: [FastQC Documentation](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
@@ -216,7 +228,11 @@ Right-click on file `multiqc_report.html`, select 'open with other application',
 :::
 
 ::: {.callout-question .callout-tip}
-**What fraction of reads are duplicates?**
+What fraction of reads are duplicates?
+:::
+::: {.callout-tip collapse="true"}
+## Answer
+For both directions, the fraction of duplicate reads is 0.9%.
 :::
 
 ### Quality filtering with fastp
@@ -255,10 +271,13 @@ fastp --in1 /opt/data/oral_human_example_1_splitaa.fastq.gz \
 - `--detect_adapter_for_pe` — One of the very useful features of `fastp` is that it can detect adapters automatically and remove them, which this parameter activates.
 - `--json/--html` — Outputs a summary report similar to FastQC, in both .json and .html formats.
 
-
 ::: {.callout-question .callout-tip}
-**Find and open the .html report. How many reads were removed? How has the average quality of the reads changed?**
+Find and open the .html report. How many reads were removed? How has the average quality of the reads changed?
 ![Screenshot of fastp report](qc/fastp.png){width=600}
+:::
+::: {.callout-tip collapse="true"}
+## Answer
+Comparing the `total reads` metric in the before and after sections of the report, we can see that about 3.9 million reads were removed completely. The average quality of the reads has already increased, which can be seen from comparing the Q20/Q30 bases before and after filtering.
 :::
 
 ### Decontamination with bowtie2
@@ -302,7 +321,6 @@ ls /opt/data/decontamination/chr10_phix.index*bt2
 # opt/data/decontamination/chr10_phix.index.4.bt2
 # opt/data/decontamination/chr10_phix.index.rev.1.bt2
 # opt/data/decontamination/chr10_phix.index.rev.2.bt2
-
 ```
 
 :::
@@ -335,7 +353,11 @@ bowtie2 -1 /opt/results/cleaned/oral/oral_human_example_1_splitaa.trimmed.fastq.
 :::
 
 ::: {.callout-question .callout-tip}
-**From the bowtie2 output on the terminal, what fraction of reads have been deemed to be contaminating?**
+From the bowtie2 output on the terminal, what fraction of reads have been deemed to be contaminating?
+:::
+::: {.callout-tip collapse="true"}
+## Answer
+TODO need to run this to fill it out (about 2% are removed entirely?)
 :::
 
 `bowtie2` changes the naming scheme of the output files, so we rename them to be consistent:
@@ -396,9 +418,11 @@ Scroll down through the report. The sequence quality histograms show the above r
 :::
 
 ::: {.callout-question .callout-tip}
-**What do you think of the change in sequence quality histograms? Have they improved?**
-
-**Did sequences at the 5’ end become uniform? Why might that be? Is there anything that suggests that adaptor sequences were found?**
+What do you think of the change in sequence quality histograms? Have they improved?
+:::
+::: {.callout-tip collapse="true"}
+## Answer
+The sequence quality histograms show clearly that the cleaned and decontaminated reads have improved quality throughout the reads now.
 :::
 
 The reads have now been decontaminated and can be uploaded to ENA, one of the INSDC members. It is beyond the scope of this course to include a tutorial on how to submit to ENA, but there is additional information available on how to do this in this [Online Training guide provided by EMBL-EBI](https://www.ebi.ac.uk/training/online/course/ebi-metagenomics-portal-submitting-metagenomics-da/considerations-submitting-metagenomic-data)
@@ -450,11 +474,19 @@ cat /opt/results/blast_results/freshwater_blast_out_headers.txt
 :::
 
 ::: {.callout-question .callout-tip}
-**Are the hits significant?**
+Are the hits significant?
+:::
+::: {.callout-tip collapse="true"}
+## Answer
+The hits are very significant - they all have e-value hits of 0, which is the lowest it can go, and therefore the most confident the hit can be.
 :::
 
 ::: {.callout-question .callout-tip}
-**What are the lengths of the matching contigs? We would typically filter metagenomic contigs at a length of 500bp. Would any PhiX contamination remain after this filter?**
+What are the lengths of the matching contigs? We would typically filter metagenomic contigs at a length of 500bp. Would any PhiX contamination remain after this filter?
+:::
+::: {.callout-tip collapse="true"}
+## Answer
+The lengths of the matching contigs, in order, are: 596, 426, 389, and 385. You'd therefore still have the longest contig still present using this filter, as it's 596 bases long.
 :::
 
 Now that PhiX contamination was identified, it is important to remove these contigs from the assembly file before further analysis or upload to public archives. Just like you learned in the last section, you could use a tool like `bowtie2` to achieve this.
@@ -499,7 +531,7 @@ ls -lh
 ```
 Could you make an initial guess about which run is the control from this?
 :::
-::: {.callout-caution collapse="true"}
+::: {.callout-tip collapse="true"}
 ## Answer
 The fifth column shows the file size, and it's immediately noticeable how much smaller `mystery_reads_A` is compared to `mystery_reads_B`. This could indicate a lack of reads, which is either on purpose in the form of a control, or indicative of potential issues in sequencing.
 :::
@@ -526,7 +558,7 @@ gunzip mystery_reads_B.fasta.gz
 There's another SeqKit utility that can generate summary metrics on the sequencing runs.  Find it from the [SeqKit documentation](https://bioinf.shenwei.me/seqkit/usage/) and use it on the mystery runs. What metric gives you another potential hint at the identity of the control?
 :::
 
-::: {.callout-caution collapse="true"}
+::: {.callout-tip collapse="true"}
 ## Answer
 The `stats` utility is very useful for getting a quick overview of sequence files:
 ```bash
@@ -565,7 +597,7 @@ This line means that this particular taxon was assigned to 23 different reads by
 On your virtual machine, open the two counts files you've just generated side-by-side, and compare them. What do you notice about the amount of unique assignments in both files? How about the counts? What is your final conclusion about which run is the control, and the kind of control it is?
 :::
 
-::: {.callout-caution collapse="true"}
+::: {.callout-tip collapse="true"}
 ## Answer
 It is clear that `mystery_reads_A` has significantly less microbial diversity than `mystery_reads_B`. In terms of richness i.e. how many unique taxa there are, `mystery_reads_A` only has 29, while `mystery_reads_B` has 123. In terms of abundance i.e. the total counts, only 229 reads were given a taxonomic assignment in `mystery_reads_A`, while `mystery_reads_B` has a total read count of 77,565.
 
@@ -672,7 +704,7 @@ cd quality
 Now pull the docker container and export the above directories.
 
 ```bash
-docker pull quay.io/microbiome-informatics/qc-practical-2024:v2
+docker pull quay.io/microbiome-informatics/metagenomics-qc-practical
 export DATADIR={path to quality directory}
 export RESDIR={path to qc_results directory}
 ```
@@ -681,7 +713,7 @@ You will see the message "access control disabled, clients can connect from any 
 
 
 ```bash
-docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/qc-practical-2024:v2
+docker run --rm -it  -e DISPLAY=$DISPLAY  -v $DATADIR:/opt/data -v $RESDIR:/opt/results -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=unix$DISPLAY quay.io/microbiome-informatics/metagenomics-qc-practical
 ```
 
 The container has the following tools installed:
