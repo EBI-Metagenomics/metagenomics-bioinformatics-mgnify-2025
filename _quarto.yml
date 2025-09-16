@@ -4,7 +4,7 @@ project:
     - "CNAME"
 
 website:
-  title: "Metagenomics bioinformatics at MGnify (2024)"
+  title: "Metagenomics bioinformatics at MGnify (2025)"
   favicon: static/mgnify_logo.png
   page-navigation: true
   navbar:
