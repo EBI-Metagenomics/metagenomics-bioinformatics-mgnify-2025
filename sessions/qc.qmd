@@ -489,7 +489,7 @@ What are the lengths of the matching contigs? We would typically filter metageno
 The lengths of the matching contigs, in order, are: 596, 426, 389, and 385. You'd therefore still have the longest contig still present using this filter, as it's 596 bases long.
 :::
 
-Now that PhiX contamination was identified, it is important to remove these contigs from the assembly file before further analysis or upload to public archives. Just like you learned in the last section, you could use a tool like `bowtie2` to achieve this.
+Now that PhiX contamination was identified, it is important to remove these contigs from the assembly file before further analysis or upload to public archives. You can either remove these matching contigs directly, or use a tool like `bowtie2` to achieve this like you learned in the last section.
 
 Using Controls
 -----------------------
@@ -602,6 +602,8 @@ On your virtual machine, open the two counts files you've just generated side-by
 It is clear that `mystery_reads_A` has significantly less microbial diversity than `mystery_reads_B`. In terms of richness i.e. how many unique taxa there are, `mystery_reads_A` only has 29, while `mystery_reads_B` has 123. In terms of abundance i.e. the total counts, only 229 reads were given a taxonomic assignment in `mystery_reads_A`, while `mystery_reads_B` has a total read count of 77,565.
 
 From these observations, it becomes clear that `mystery_reads_A` is the control, and that it is specifically a negative control. Indeed, `mystery_reads_A` has the accession [SRR17185965](https://www.ebi.ac.uk/ena/browser/view/SRR17185965), and is a water negative control sample, while `mystery_reads_B` has the accession [SRR17185970](https://www.ebi.ac.uk/ena/browser/view/SRR17185970), and is a mouse gut metagenome sample.
+
+Now that you know it's a negative control, do you identify any taxa the samples have in common? Can you make any assertions about what this means?
 :::
 
  Additional Exercise 
