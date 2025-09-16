@@ -1,8 +1,8 @@
 ---
-title: "Metagenomics bioinformatics at MGnify (2024)"
+title: "Metagenomics bioinformatics at MGnify (2025)"
 ---
 
-This is the course material for the [Metagenomics bioinformatics at MGnify course (2024)](https://www.ebi.ac.uk/training/events/metagenomics-bioinformatics-mgnify/).
+This is the course material for the [Metagenomics bioinformatics at MGnify course (2025)](https://www.ebi.ac.uk/training/events/metagenomics-bioinformatics-mgnify/).
 
 # Overview
 
