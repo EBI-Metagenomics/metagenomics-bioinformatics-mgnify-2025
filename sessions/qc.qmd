@@ -1,7 +1,7 @@
 ---
 title: "Quality control and filtering of the raw sequence files"
 order: 1
-date: 2024-09-18
+date: 2025-09-18
 license: "Apache 2.0"
 author:
   - name: Christian Atallah
@@ -26,24 +26,9 @@ You will not be able to use Ctrl+C for copying and Ctrl+P for pasting in the VM 
 
 
 ::: {.callout-note}
-# Activate virtual environment
-Firstly, we need to create a virtual environment for this session so everything we do for this practical is contained within this environment.
-
-```bash
-source /home/training/venv/training_env5/bin/activate
-
-#check /home/training is in your environment
-ls /home/training
-
-```
-
-
-:::
-
-::: {.callout-note}
 # Check data is loaded correctly
 For this practical we will need to a sample dataset. The sample dataset should already 
-be in `/home/training/QC_session/quality`. Check if it is there. If not, go to the `Downloading data` section
+be in `/home/training/QC_session/qc_data`. Check if it is there. If not, go to the `Downloading data` section
 
 :::
 
@@ -51,19 +36,19 @@ be in `/home/training/QC_session/quality`. Check if it is there. If not, go to t
 # Downloading data
 
 For this practical we will need to a sample dataset. The sample dataset should already 
-be in `/home/training/QC_session/quality`. If not, you should download and decompress the data as follows:
+be in `/home/training/QC_session/qc_data`. If not, you should download and decompress the data as follows:
 
 ```bash
 mkdir -p /home/training/QC_session
 cd /home/training/QC_session
 
-wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
+wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/qc_data.tar.gz
 
-tar -xzvf quality.tar.gz
+tar -xzvf qc_data.tar.gz
 # you should now have the quality subdirectory in your /home/training/QC_session. All the data you will need to run the practicals will be in this subdirectory
 
-#you can now remove the quality.tar.gz
-rm quality.tar.gz
+#you can now remove the qc_data.tar.gz
+rm qc_data.tar.gz
 
 ```
 :::
@@ -77,16 +62,16 @@ This practical (and the others) will generate quite a few output files from the 
 mkdir /home/training/QC_session/qc_results
 
 ```
-You should now have in your `/home/training/QC_session` directory, the following subdirectories (`quality` and `qc_results`). **Make sure both are there before moving onto the next steps. You might run into permission issues later if you have not created them properly.**
+You should now have in your `/home/training/QC_session` directory, the following subdirectories (`qc_data` and `qc_results`). **Make sure both are there before moving onto the next steps. You might run into permission issues later if you have not created them properly.**
 
 :::
 
-For this tutorial, you'll need to move into the working directory (/home/training/quality) and start a Docker container. Set the variables `DATADIR` and `RESDIR` as instructed.
+For this tutorial, you'll need to move into the working directory (/home/training/qc_data) and start a Docker container. Set the variables `DATADIR` and `RESDIR` as instructed.
 
 ```bash
-cd /home/training/QC_session/quality
-chmod -R 777 /home/training/QC_session/quality
-export DATADIR=/home/training/QC_session/quality
+cd /home/training/QC_session/qc_data
+chmod -R 777 /home/training/QC_session/qc_data
+export DATADIR=/home/training/QC_session/qc_data
 chmod -R 777 /home/training/QC_session/qc_results
 export RESDIR=/home/training/QC_session/qc_results
 xhost +
@@ -357,7 +342,7 @@ From the bowtie2 output on the terminal, what fraction of reads have been deemed
 :::
 ::: {.callout-tip collapse="true"}
 ## Answer
-TODO need to run this to fill it out (about 2% are removed entirely?)
+As the bowtie2 output says, 3.15% reads have aligned to the reference, and are therefore contaminating.
 :::
 
 `bowtie2` changes the naming scheme of the output files, so we rename them to be consistent:
@@ -500,7 +485,7 @@ This exercise will use 16S amplicon sequencing runs to look at the analysis of s
 :::
 
 ### The mystery sequencing runs
-Going to this [path](https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/qc-practical/), you will find two mystery FASTQ files. You have this information about them:
+Going to `/opt/results/mystery_reads`, you will find two mystery FASTQ files. You have this information about them:
 
 - They are both amplicon sequencing runs.
 - One of the runs is a control
@@ -512,24 +497,18 @@ In particular, you will use a tool called [MAPseq](https://github.com/meringlab/
 
 ::: {.callout-step .callout-tip}
 # Download the mystery sequencing runs into a new folder
-Create a new directory from your terminal, change into it, and download the two FASTQ files
+Change into the directory containing hte mystery reads, and run `ls -lh` to see some information about the files.
 ```bash
-mkdir /opt/results/mystery_runs
-cd /opt/results/mystery_runs
-wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/qc-practical/mystery_reads_A.fastq.gz
-wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/qc-practical/mystery_reads_B.fastq.gz
-```
-:::
-
-::: {.callout-question .callout-tip}
-Run `ls -lh` to see some information about the files you've just downloaded. 
-```bash
+cd /opt/results/mystery_reads
 ls -lh
 # total 7.7M
 # -rw-r--r-- 1 root root  26K Sep 11 12:24 mystery_reads_A.fastq.gz
 # -rw-r--r-- 1 root root 7.6M Sep 11 12:24 mystery_reads_B.fastq.gz
 ```
-Could you make an initial guess about which run is the control from this?
+:::
+
+::: {.callout-question .callout-tip}
+Could you make an initial guess about which run is the control from this output?
 :::
 ::: {.callout-tip collapse="true"}
 ## Answer
@@ -562,7 +541,7 @@ There's another SeqKit utility that can generate summary metrics on the sequenci
 ## Answer
 The `stats` utility is very useful for getting a quick overview of sequence files:
 ```bash
-seqkit stats mystery_reads_*.fasta.gz
+seqkit stats mystery_reads_*.fasta
 # file                      format  type  num_seqs     sum_len  min_len  avg_len  max_len
 # mystery_reads_A.fasta  FASTA   DNA        229      68,471      299      299      299
 # mystery_reads_B.fasta  FASTA   DNA     77,566  23,192,234      299      299      299
@@ -625,13 +604,10 @@ Remember you will need to run the following command to view any html files in th
 chown 1001 foldername/*.html
 ```
 
-
 ::: {.callout-caution collapse="true"}
 ## Additional Excercise (code)
 
 ```bash
-
-
 #generate fastqc of raw reads of skin samples and negative control
 mkdir /opt/results/fastqc_results/skin
 fastqc /opt/data/skin/skin_example_aa_1.fastq.gz -o /opt/results/fastqc_results/skin
@@ -671,9 +647,7 @@ multiqc /opt/results/fastqc_results/skin -o /opt/results/multiqc_results/skin
 chown 1001 /opt/results/fastqc_results/skin/*.html
 
 #visualise multiQC reports in web browser.
-
 ```
-
 :::
 
 
@@ -686,21 +660,21 @@ We need to first fetch the practical datasets.
 mkdir QC_session
 cd QC_session
 
-wget http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/qc-practical/qc_data.tar.gz
 # or
-rsync -av --partial --progress rsync://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/ebi_2020/quality.tar.gz .
+rsync -av --partial --progress rsync://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/qc-practical/qc_data.tar.gz .
 ```
 
 Once downloaded, extract the files from the tarball:
 
 ```bash
-tar -xzvf quality.tar.gz
+tar -xzvf qc_data.tar.gz
 
-rm quality.tar.gz
+rm qc_data.tar.gz
 
 mkdir qc_results
 
-cd quality
+cd qc_data
 ```
 
 Now pull the docker container and export the above directories.
@@ -725,6 +699,8 @@ The container has the following tools installed:
 - fastp
 - bowtie2
 - blast
+- seqkit
+- mapseq
 
 You can now continue this practical from the section "Quality control and filtering of the raw sequence files"
 
