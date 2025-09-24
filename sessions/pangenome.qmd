@@ -126,7 +126,7 @@ Have a look at the plots in the output directory e.g. `b_uniformis_db/b_uniformi
 ::: {.callout-important}
 ## Challenge
 
-Are can you identify clusters by eye? Is the relationship between k and the proportion of matching k-mers linear?
+Can you identify clusters by eye? Is the relationship between k and the proportion of matching k-mers linear?
 
 :::
 
@@ -196,7 +196,7 @@ To run with more components:
 poppunk --fit-model bgmm --ref-db b_uniformis_db --output b_uniformis_BGMM_K3 --K 3
 ```
 
-That looks better and there are some clusters (In `Network Summary` there are is seven components), but if you look at the same plot again (`b_uniformis_BGMM_K3/b_uniformis_BGMM_K3_DPGMM_fit.png`) it doesn't look like a great fit to the data.
+That looks better and there are some clusters (In `Network Summary` there are is seven/eight components), but if you look at the same plot again (`b_uniformis_BGMM_K3/b_uniformis_BGMM_K3_DPGMM_fit.png`) it doesn't look like a great fit to the data.
 
 :::
 
