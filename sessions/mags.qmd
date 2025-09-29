@@ -1,6 +1,6 @@
 ---
 title: "MAG Generation"
-date: 2024-09-24
+date: 2025-10-07
 license: "Apache 2.0"
 order: 3
 author:
@@ -31,7 +31,7 @@ Prerequisites
 For this tutorial, you will need to start the docker container by running the following command in the terminal:
 
 ```bash
-sudo docker run --rm -it -v /home/training/Binning:/opt/data quay.io/microbiome-informatics/mags-practical-2024:v2
+sudo docker run --rm -it -v /home/training/Binning:/opt/data quay.io/microbiome-informatics/mags-practical-2025
 ```
 *password: training*
 
@@ -265,7 +265,7 @@ cat MAGs_checkm.tab
 ### Comparing CheckM and CheckM2
 
 Today researchers also use CheckM2, an improved method of predicting genome quality that uses machine learning.
-The execution of CheckM2 takes more time than CheckM. We have pre-generated the tab-delimited quality table.
+The execution of CheckM2 takes more time than CheckM. We have pre-generated the tab-delimited quality table with Checkm2 v1.1.0.
 It is available on our FTP.
 
 :::{.callout-step .callout-tip}
@@ -277,16 +277,10 @@ cd /opt/data/assemblies
 mkdir checkm2
 cd checkm2
 # download CheckM2 TSV result
-wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/checkm2_quality_report.tsv
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/checkm2_quality_report.tsv
 ```
 :::
 
-If you would like to try CheckM2, launch it in a new terminal window:
-
-```bash
-cd /opt/data/assemblies
-docker run -t -v /home/training/Binning:/opt/data quay.io/biocontainers/checkm2:1.0.2--pyh7cba7a3_0 checkm2 predict -i /opt/data/assemblies/contigs.fasta.metabat-bins2000 -o checkm2_result --database_path /opt/data/uniref100.KO.1.dmnd -x fa --force --lowmem -t 4
-```
 
 We can compare CheckM and CheckM2 results using a scatter plot. We will plot completeness on the x-axis and contamination on the y-axis.
 We have created a simple python script to plot CheckM and CheckM2 results separately.
@@ -330,12 +324,12 @@ To open the png files, use the file browser (grey folder icon in the left-hand s
 Did CheckM and CheckM2 produce similar results? What can you say about the quality of the bins?
 :::
 
-# Visualizing the phylogenetic tree
+# Taxonomy assignment
 
 ### GTDB-Tk taxonomy
 
-A commonly used tool to determine genome taxonomy is [GTDB-Tk](https://github.com/Ecogenomics/GTDBTk).
-Due to the long time it takes to run it, we have already launched GTDB-Tk on all bins and saved the results to the FTP.
+A commonly used tool to determine genome taxonomy is [GTDB-Tk](https://github.com/Ecogenomics/GTDBTk). The taxonomy is built using phylogenomics (based on conserved single-copy marker genes across >300,000 bacterial/archaeal genomes) and regularly updated.
+Due to the long time it takes to run it, we have already launched GTDB-Tk v2.4.1 with DB release v226 on all bins and saved the results to the FTP.
 Let's take a look at the assigned taxonomy.
 
 :::{.callout-step .callout-tip}
@@ -343,10 +337,10 @@ Let's take a look at the assigned taxonomy.
 cd /opt/data/assemblies
 
 # download the table
-wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/bins_gtdbtk.bac120.summary.tsv
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/bins_v226_gtdbtk.bac120.summary.tsv
 
 # the first two columns of the table contain the bin name and the assigned taxonomy - take a look:
-cut -f1,2 bins_gtdbtk.bac120.summary.tsv
+cut -f1,2 bins_v226_gtdbtk.bac120.summary.tsv
 ```
 :::
 
@@ -357,6 +351,41 @@ How many bins were classified to the species level?
 :::{.callout-question .callout-tip}
 Make a guess why some bins were not assigned to any pylum?
 :::
+
+
+### GTDB vs NCBI taxonomy
+
+Another widely used taxonomy is from **NCBI** but, unfortunately, GTDB and NCBI taxonomies are differ in their goals, methodology, and naming rules.
+NCBI taxonomy contains all organisms (bacteria, archaea, eukaryotes, viruses) but GTDB has only bacteria and archaea. Submission to NCBI is integrated with GenBank, RefSeq, SRA, and most bioinformatics pipelines. Taxonomy is built on historical taxonomic assignments (literature, culture collections) but it might be inconsistent (different ranks may not reflect phylogeny).
+Many bioinformatics tools and pipelines require NCBI taxID assigned for your data. It is possible to assign it with [CAT](https://github.com/MGXlab/CAT_pack) or convert existing GTDB taxonomy into NCBI using script [gtdb_to_ncbi_majority_vote.py](https://github.com/Ecogenomics/GTDBTk/blob/master/scripts/gtdb_to_ncbi_majority_vote.py).
+
+As we already have GTDB taxonomy lets convert it into NCBI. Converter input is full gtdb-tk output folder and matadata files for bacteria and archaea.
+
+:::{.callout-step .callout-tip}
+```bash
+cd /opt/data/assemblies
+
+# download the archive with gtdb-tk result
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/gtdbtk_results.tar.gz
+
+# uncompress archive
+tar -xzf gtdbtk_results.tar.gz
+
+# download metadata for archaea
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/ar53_metadata_r226.tsv
+
+# download metadata for bacteria
+wget https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/bac120_metadata_r226.tsv
+
+# run a converter
+gtdb_to_ncbi_majority_vote.py --gtdbtk_output_dir gtdbtk_results --output_file gtdb_ncbi_taxonomy.txt --ar53_metadata_file ar53_metadata_r226.tsv --bac120_metadata_file bac120_metadata_r226.tsv
+
+```
+:::
+
+
+
+### Visualizing the phylogenetic tree
 
 Now you can visualise your classified bins on a small bacterial phylogenetic tree with iTOL.
 A quick and user-friendly way to do this is to use the web-based **interactive Tree
@@ -387,9 +416,9 @@ Alternatively, if you want to create your own account or you already have an acc
 yourself follow these steps:
 
 1. Pre-download tree files from FTP
-- tree: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.nwk
-- legend: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.legend.txt
-- layers: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2024/mags/taxonomy/small_bac_tree.layer.txt
+- tree: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/small_bac_tree.nwk
+- legend: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/small_bac_tree.legend.txt
+- layers: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/small_bac_tree.layer.txt
 2. After you have created and logged in to your account go to **My Trees**
 3. From there select **Upload tree files** and upload tree file **small_bac_tree.nwk**
 4. Once uploaded, click the tree name to visualize the plot
