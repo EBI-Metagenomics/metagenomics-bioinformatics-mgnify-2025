@@ -24,6 +24,7 @@ author:
 - Generation of metagenome assembled genomes (MAGs) from assemblies
 - Assessment of quality
 - Taxonomic assignment
+- Visualisation of taxonomy tree
 
 Prerequisites
 ---------------
@@ -31,9 +32,9 @@ Prerequisites
 For this tutorial, you will need to start the docker container by running the following command in the terminal:
 
 ```bash
-sudo docker run --rm -it -v /home/training/Binning:/opt/data quay.io/microbiome-informatics/mags-practical-2025
+docker pull quay.io/microbiome-informatics/mags-practical-2025:latest
+docker run --rm --user 1001:1001 -it -v /home/training/course_dir/work_dir/Day_2/binning:/opt/data quay.io/microbiome-informatics/mags-practical-2025
 ```
-*password: training*
 
 Generating metagenome assembled genomes
 ----------------------------------------
@@ -41,7 +42,7 @@ Generating metagenome assembled genomes
 ::: {.callout-note}
 Learning Objectives - in the following exercises, you will
 learn how to bin an assembly, assess the quality of this assembly with
-СheckM and CheckM2, and then visualize a placement of these genomes within a
+СheckM and CheckM2, define GTDB and NCBI taxonomies and then visualize a placement of these genomes within a
 reference tree.
 :::
 
@@ -218,7 +219,7 @@ Before we start, we need to configure CheckM.
 ```bash
 cd /opt/data
 mkdir /opt/data/checkm_data
-tar -xf checkm_data_2015_01_16.tar.gz -C /opt/data/checkm_data
+tar -xf checkm_data.tar.gz -C /opt/data/checkm_data
 checkm data setRoot /opt/data/checkm_data
 ```
 :::
@@ -318,7 +319,7 @@ completeness_vs_contamination.py -i checkm2_quality_report.csv -o checkm2
 
 You should now have files checkm1.png and checkm2.png to compare the quality predictions between the two tools.
 To open the png files, use the file browser (grey folder icon in the left-hand side menu) and navigate to
-/Home/Binning/assemblies
+/home/training/course_dir/work_dir/Day_2/binning/assemblies
 
 :::{.callout-question .callout-tip}
 Did CheckM and CheckM2 produce similar results? What can you say about the quality of the bins?
@@ -357,9 +358,9 @@ Make a guess why some bins were not assigned to any pylum?
 
 Another widely used taxonomy is from **NCBI** but, unfortunately, GTDB and NCBI taxonomies are differ in their goals, methodology, and naming rules.
 NCBI taxonomy contains all organisms (bacteria, archaea, eukaryotes, viruses) but GTDB has only bacteria and archaea. Submission to NCBI is integrated with GenBank, RefSeq, SRA, and most bioinformatics pipelines. Taxonomy is built on historical taxonomic assignments (literature, culture collections) but it might be inconsistent (different ranks may not reflect phylogeny).
-Many bioinformatics tools and pipelines require NCBI taxID assigned for your data. It is possible to assign it with [CAT](https://github.com/MGXlab/CAT_pack) or convert existing GTDB taxonomy into NCBI using script [gtdb_to_ncbi_majority_vote.py](https://github.com/Ecogenomics/GTDBTk/blob/master/scripts/gtdb_to_ncbi_majority_vote.py).
+Many bioinformatics tools and pipelines require NCBI taxID assigned for your data. It is possible to assign it with [CAT](https://github.com/MGXlab/CAT_pack) or convert existing GTDB taxonomy into NCBI using script [gtdb_to_ncbi_majority_vote.py](https://github.com/Ecogenomics/GTDBTk/blob/master/scripts/gtdb_to_ncbi_majority_vote.py) provided by GTDB-Tk developers.
 
-As we already have GTDB taxonomy lets convert it into NCBI. Converter input is full gtdb-tk output folder and matadata files for bacteria and archaea.
+As we already have GTDB taxonomy lets convert it into NCBI. Converter input is full gtdb-tk output folder and metadata files for bacteria and archaea.
 
 :::{.callout-step .callout-tip}
 ```bash
@@ -383,6 +384,22 @@ gtdb_to_ncbi_majority_vote.py --gtdbtk_output_dir gtdbtk_results --output_file g
 ```
 :::
 
+:::{.callout-question .callout-tip}
+Do you find any differences in assigned taxonomies?
+:::
+
+:::{.callout-question .callout-tip}
+Compare those lineages with Checkm results. What do you see?
+:::
+
+### Defining Taxonomy Identifier (TaxID)
+
+A **taxonomy identifier** (often called taxid) is a numeric identifier assigned to a taxon (species, genus, etc.) in a taxonomy database. It’s a stable way to refer to a taxon without relying on names, which can change.
+The simplest way to search for it is using [Taxonomy Browser](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi). You can also use ENA **Text** [search](https://www.ebi.ac.uk/ena/browser/home).
+
+:::{.callout-question .callout-tip}
+Can you determine TaxID for all bins (if the species-level TaxId is not known, a TaxId for a higher taxonomic level can be used)? Try to search for GTDB lineage. What can you see in taxonomy for bin.5?
+:::
 
 
 ### Visualizing the phylogenetic tree
@@ -459,7 +476,7 @@ In order to open **FigTree**, open a new terminal window (without docker) and ty
 
 
 :::{.callout-step .callout-tip}
-Open the **renamed.tree** file with **FigTree** (**File -> Open**) (file is in `/home/training/Binning`) and then
+Open the **renamed.tree** file with **FigTree** (**File -> Open**) (file is in `/home/training/course_dir/work_dir/Day_2/binning`) and then
 select from the toolbar **File -> Export Trees**. In the **Tree file
 format** select **Newick** and export the file as **renamed.nwk** (or choose a name you will recognise if you plan to use the shared account described below).
 :::
@@ -469,7 +486,7 @@ format** select **Newick** and export the file as **renamed.nwk** (or choose a n
 1. Login into your working account (EBI/personal)
 2. Go again to **My Trees**
 3. Open/upload **IBD_checkm.nwk**
-4. [personal usage only ] add clades drag and drop the files **iTOL_clades.txt** and **iTOL_ocircles.txt** present in /home/training/Data/Binning/iTOL_Files/ into the browser window
+4. [personal usage only ] add clades drag and drop the files **iTOL_clades.txt** and **iTOL_ocircles.txt** present in /home/training/course_dir/work_dir/Day_2/binning/iTOL_Files/ into the browser window
 
 
 Once that is done, all the reference genomes used by **CheckM** will be
