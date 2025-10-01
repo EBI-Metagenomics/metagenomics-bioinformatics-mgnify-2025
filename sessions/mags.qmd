@@ -292,7 +292,7 @@ We can compare CheckM and CheckM2 results using a scatter plot. We will plot com
 We have created a simple python script to plot CheckM and CheckM2 results separately.
 Input table should be in the CSV format and it should contain 3 columns:
 bin name, completeness, and contamination.
-Required file header: "bin,completeness,contamination"
+Required file header: *"bin,completeness,contamination"*
 
 :::{.callout-step .callout-tip}
 Modify the CheckM results table and generate a plot:
@@ -322,9 +322,9 @@ completeness_vs_contamination.py -i checkm2_quality_report.csv -o checkm2
 ```
 :::
 
-You should now have files checkm1.png and checkm2.png to compare the quality predictions between the two tools.
+You should now have files **checkm1.png** and **checkm2.png** to compare the quality predictions between the two tools.
 To open the png files, use the file browser (grey folder icon in the left-hand side menu) and navigate to
-/home/training/course_dir/work_dir/Day_2/binning/assemblies
+*/home/training/course_dir/work_dir/Day_2/binning/assemblies*
 
 :::{.callout-question .callout-tip}
 Did CheckM and CheckM2 produce similar results?
@@ -441,11 +441,14 @@ FastTree -out small_bac_tree.nwk gtdbtk_results/align/gtdbtk.bac120.msa.chosen.f
 - tree: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/small_bac_tree.nwk
 - legend by phylum: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/small_bac_tree.legend.txt
 - layers by phylum: https://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_courses/metagenomics_2025/mags/taxonomy/small_bac_tree.layer.txt
-2. Rename files with prefix: **<your_name>_training25**.
+2. Rename files with prefix: **your_name_training25**.
 3. Go to the [**iTOL**](http://itol.embl.de/index.shtml) website (open the link in a new window).
 4. Login is as follows:
-**User:**  *EBI_training*
-**Password:**  *EBI_training*
+
+   **User:**  *EBI_training*
+
+   **Password:**  *EBI_training*
+
 5. After you login, just click on **My Trees** in the toolbar at the top
 6. From there select **Tree upload** and upload tree file with **.nwk** extension.
 7. Once uploaded, click the tree name to visualize the plot
@@ -467,8 +470,11 @@ How to find our bins on the tree? For example, try to find bin.7.
 ### What else can I do with MAGs?
 
 Once MAGs are recovered, **annotation** is a critical step in turning raw sequence data into biological knowledge. We have already done **Taxonomic annotation**.
+
 It is also useful to have:
+
 - **Structural** annotation – predicting genes, coding sequences (CDS), rRNAs, tRNAs, and other genomic features.
+
 - **Functional** annotation – assigning putative functions to predicted genes using homology searches against protein/domain databases (e.g., KEGG, Pfam, eggNOG, InterPro).
 
 There are many pipelines available for MAGs annotation. MGnify team wildly uses pipeline [mettannotator](https://github.com/EBI-Metagenomics/mettannotator) or you can also check nf-core [mag pipeline](https://nf-co.re/mag/2.5.1/).
