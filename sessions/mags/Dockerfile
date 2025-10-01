@@ -11,7 +11,7 @@ FROM ubuntu:20.04
 # - htslib
 # - newick utils
 # custom scripts:
-# - complenetess_vs_contamination.py
+# - completeness_vs_contamination.py
 # ---------------------------------------------------------
 
 # Set the environment to non-interactive to avoid user interaction during package installation
@@ -121,3 +121,8 @@ RUN unzip /usr/local/pplacer-linux-v1.1.alpha19.zip -d /usr/local/ \
     && ln -s /usr/local/pplacer-Linux-v1.1.alpha19/pplacer /usr/local/bin/ \
     && ln -s /usr/local/pplacer-Linux-v1.1.alpha19/rppr /usr/local/bin/ \
     && rm /usr/local/pplacer-linux-v1.1.alpha19.zip
+
+# GTDB-Tk for gtdb_to_ncbi_majority_vote.py
+RUN pip3 install gtdbtk==2.4.1
+RUN git clone https://github.com/Ecogenomics/GTDBTk.git /usr/local/bin/GTDBTk
+RUN chmod +x /usr/local/bin/GTDBTk/scripts/gtdb_to_ncbi_majority_vote.py
