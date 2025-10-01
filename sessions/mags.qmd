@@ -179,7 +179,7 @@ metabat2 --inFile contigs.fasta --outFile contigs.fasta.metabat-bins2000/bin --a
 :::{.callout-note}
 Once the binning process is complete, each bin will be
 grouped into a multi-fasta file with a name structure of
-**bin.[0-9].fa**.
+**bin.[0-9]*.fa**.
 :::
 
 :::{.callout-step .callout-tip}
@@ -203,7 +203,7 @@ might represent a very small fraction of a potential species present in
 your dataset. To further assess the quality of the bins, we will use
 [**CheckM**](https://github.com/Ecogenomics/CheckM/wiki).
 
-### Running CheckM
+### Running CheckM v1.2.4
 
 :::{.callout-note}
 **CheckM** has its own reference database of single-copy
@@ -260,8 +260,6 @@ cat MAGs_checkm.tab
 ```
 :::
 
-
-![Example output of CheckM](mags/checkm.png)
 
 ### Comparing CheckM and CheckM2
 
@@ -329,7 +327,9 @@ To open the png files, use the file browser (grey folder icon in the left-hand s
 /home/training/course_dir/work_dir/Day_2/binning/assemblies
 
 :::{.callout-question .callout-tip}
-Did CheckM and CheckM2 produce similar results? What can you say about the quality of the bins?
+Did CheckM and CheckM2 produce similar results?
+What can you say about the quality of the bins?
+How many bins pass QS50?
 :::
 
 # Taxonomy assignment
