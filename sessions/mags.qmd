@@ -88,7 +88,7 @@ You should find the following files in this directory:
 :::
 
 ::: {.callout-tip}
-If you wanted to generate the `input.fastq.sam.bam` file yourself, you would run the following commands:
+If you are very interested to generate the `input.fastq.sam.bam` file yourself, you can run the following commands (but better do it in the end of practical if you have time left):
 
 ```bash
 
@@ -197,6 +197,8 @@ How many bins did the process produce?
 :::{.callout-question .callout-tip}
 How many sequences are in each bin?
 :::
+
+## Quality assessment
 
 Obviously, not all bins will have the same level of accuracy since some
 might represent a very small fraction of a potential species present in
@@ -332,7 +334,17 @@ What can you say about the quality of the bins?
 How many bins pass QS50?
 :::
 
-# Taxonomy assignment
+## Quality filtering
+Usually bins with bad quality are not included into further analysis.
+In MGnify we use criteria: *50 <= completeness <= 100 and 0 <= contamination <= 5* or more strict rule QS50: *completeness - 5 x contamination >= 50*.
+
+In our example, ideally we should **exclude** bin.1, bin.2 and bin.9 but we left those in the practical in order to see how different tools manage bad quality bins.
+
+## Dereplication
+Another mandatory step that should be done in MAGs generation is dereplication of bins. This process includes identifying and removing redundant MAGs from a dataset by clustering bins based on their similarity, typically using Average Nucleotide Identity (ANI), and then selecting the highest-quality representative from each cluster.
+The most popular tool is [dRep](https://github.com/MrOlm/drep) but, unfortunately, we do not have enough time to launch it during that practical. You can browse [documentation](https://drep.readthedocs.io/en/latest/) of dRep if you are interested.
+
+## Taxonomy assignment
 
 ### GTDB-Tk taxonomy
 

@@ -2,6 +2,9 @@ project:
   type: website
   resources: 
     - "CNAME"
+  render:
+    - "*.qmd"                      # only render qmd files
+    - "!sessions/mags/answers.md"  # exclude this file
 
 website:
   title: "Metagenomics bioinformatics at MGnify (2025)"
@@ -24,6 +27,7 @@ website:
     contents: auto
 
   reader-mode: true
+
 
 format:
   html:
