@@ -340,8 +340,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="prerequisites" class="level2">
 <h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
 <p>For this tutorial, you will need to start the docker container by running the following command in the terminal:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull quay.io/microbiome-informatics/mags-practical-2025:latest</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--user</span> 1001:1001 <span class="at">-it</span> <span class="at">-v</span> /home/training/course_dir/work_dir/Day_2/binning:/opt/data quay.io/microbiome-informatics/mags-practical-2025</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a+rwx <span class="at">-R</span> /home/training/course_dir/work_dir/Day_2/binning</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull quay.io/microbiome-informatics/mags-practical-2025:latest</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--user</span> 1001:1001 <span class="at">-it</span> <span class="at">-v</span> /home/training/course_dir/work_dir/Day_2/binning:/opt/data quay.io/microbiome-informatics/mags-practical-2025</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="generating-metagenome-assembled-genomes" class="level2">
 <h2 class="anchored" data-anchor-id="generating-metagenome-assembled-genomes">Generating metagenome assembled genomes</h2>
