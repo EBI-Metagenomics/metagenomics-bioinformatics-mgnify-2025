@@ -369,7 +369,7 @@ Question
 </div>
 <div class="callout-body-container callout-body">
 <p>What <code>metaSPAdes</code> command should be used for the case described below?</p>
-<p>You need to assemble paired-end reads from the <code>short_reads</code> folder and save the output to a folder named <code>spades_output</code>. Limit resource usage to 5 GB of memory and 4 threads. By default, <code>metaSPAdes</code> performs an error correction on the input reads before assembling. Since provided reads have already been polished, you can run the assembler without the error correction step.</p>
+<p>You need to assemble paired-end reads from the <code>short_reads</code> folder and save the output to a folder named <code>assembly_spades</code>. Limit resource usage to 5 GB of memory and 4 threads. By default, <code>metaSPAdes</code> performs an error correction on the input reads before assembling. Since provided reads have already been polished, you can run the assembler without the error correction step.</p>
 <p>Review the help output from <code>metaspades.py -h</code> and select the appropriate options to build your first assembly command.</p>
 </div>
 </div>
@@ -400,7 +400,7 @@ Warning
 <p><strong>Please do not execute the assembly command on your machine.</strong> Execution time would overall cover half of the session (metaSPAdes alone would take ~15 minutes). Moreover, the VMs have limited resources that barely meet <code>metaSPAdes</code>’ requirements, and running multiple assemblies simultaneously could overload the system.</p>
 </div>
 </div>
-<p>All output files (including intermediate ones) can be found in the <code>spades_output</code> folder.</p>
+<p>All output files (including intermediate ones) can be found in the <code>assembly_spades</code> folder.</p>
 <p><code>contigs.fasta</code> and <code>scaffolds.fasta</code> are typically used for downstream analyses (e.g., binning and MAG generation). We will focus on <code>contigs.fasta</code> for this session, which is the same file you will use in the upcoming practicals.</p>
 <p>Without going all the way to MAG generation, you can sometimes identify strong taxonomic signals at the assembly stage using a quick <code>blastn</code> alignment.</p>
 <div class="callout callout-style-default callout-step callout-titled">
