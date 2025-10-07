@@ -69,7 +69,7 @@ metaspades.py -h
 :::{.callout-question .callout-tip}
 What `metaSPAdes` command should be used for the case described below?
 
-You need to assemble paired-end reads from the `short_reads` folder and save the output to a folder named `spades_output`. Limit resource usage to 5 GB of memory and 4 threads. By default, `metaSPAdes` performs an error correction on the input reads before assembling. 
+You need to assemble paired-end reads from the `short_reads` folder and save the output to a folder named `assembly_spades`. Limit resource usage to 5 GB of memory and 4 threads. By default, `metaSPAdes` performs an error correction on the input reads before assembling. 
 Since provided reads have already been polished, you can run the assembler without the error correction step. 
 
 Review the help output from `metaspades.py -h` and select the appropriate options to build your first assembly command.
@@ -93,7 +93,7 @@ The correct `metaSPAdes` parameters are:
 __Please do not execute the assembly command on your machine.__ Execution time would overall cover half of the session (metaSPAdes alone would take ~15 minutes). Moreover, the VMs have limited resources that barely meet `metaSPAdes`' requirements, and running multiple assemblies simultaneously could overload the system.
 :::
 
-All output files (including intermediate ones) can be found in the `spades_output` folder. 
+All output files (including intermediate ones) can be found in the `assembly_spades` folder. 
 
 `contigs.fasta` and `scaffolds.fasta` are typically used for downstream analyses (e.g., binning and MAG generation). 
 We will focus on `contigs.fasta` for this session, which is the same file you will use in the upcoming practicals. 
