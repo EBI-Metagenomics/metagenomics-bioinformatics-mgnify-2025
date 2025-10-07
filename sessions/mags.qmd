@@ -32,6 +32,7 @@ Prerequisites
 For this tutorial, you will need to start the docker container by running the following command in the terminal:
 
 ```bash
+chmod a+rwx -R /home/training/course_dir/work_dir/Day_2/binning
 docker pull quay.io/microbiome-informatics/mags-practical-2025:latest
 docker run --rm --user 1001:1001 -it -v /home/training/course_dir/work_dir/Day_2/binning:/opt/data quay.io/microbiome-informatics/mags-practical-2025
 ```
