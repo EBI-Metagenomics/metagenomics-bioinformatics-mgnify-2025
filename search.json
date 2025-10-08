@@ -172,7 +172,7 @@
     "href": "sessions/getting_data_from_mgnify.html",
     "title": "Getting data from MGnify",
     "section": "",
-    "text": "Exploring MGnify Studies\nExploring MGnify Analyses\nMetagenomic Assembled Genomes\n\n\n\nFor this tutorial, you will need to start the predefined Jupyter notebook and complete the exercises within it. follow the steps below To start the notebook.\n\nOpen this link on your browser: https://sa.ndyroge.rs/mgnify-tutorial/notebooks/index.html?path=tutorial.ipynb\nClick on the run menu, then click run all cells\nGo through the exercises in the notebook\n\n\n\n\nA new marine MAG catalogue was recently published on MGnify. When you get to task 3.3, make use of this MAG linked below: MGYG000445242\nIf you’re interested in learning more about the new marine MAG catalogue, you can find more information here",
+    "text": "Exploring MGnify Studies\nExploring MGnify Analyses\nMetagenomic Assembled Genomes\n\n\n\nFor this tutorial, you will need to start the predefined Jupyter notebook and complete the exercises within it. follow the steps below To start the notebook.\n\nOpen this link on your browser: https://sa.ndyroge.rs/mgnify-tutorial/notebooks/index.html?path=tutorial.ipynb\nClick on the run menu, then click run all cells\nGo through the exercises in the notebook\n\nNOTE: In regards to Task 3.1, please begin from page 61 of the results\n\n\n\nA new marine MAG catalogue was recently published on MGnify. When you get to task 3.3, make use of this MAG linked below: MGYG000445242\nIf you’re interested in learning more about the new marine MAG catalogue, you can find more information here",
     "crumbs": [
       "Home",
       "Sessions",
@@ -184,7 +184,7 @@
     "href": "sessions/getting_data_from_mgnify.html#instructions",
     "title": "Getting data from MGnify",
     "section": "",
-    "text": "For this tutorial, you will need to start the predefined Jupyter notebook and complete the exercises within it. follow the steps below To start the notebook.\n\nOpen this link on your browser: https://sa.ndyroge.rs/mgnify-tutorial/notebooks/index.html?path=tutorial.ipynb\nClick on the run menu, then click run all cells\nGo through the exercises in the notebook",
+    "text": "For this tutorial, you will need to start the predefined Jupyter notebook and complete the exercises within it. follow the steps below To start the notebook.\n\nOpen this link on your browser: https://sa.ndyroge.rs/mgnify-tutorial/notebooks/index.html?path=tutorial.ipynb\nClick on the run menu, then click run all cells\nGo through the exercises in the notebook\n\nNOTE: In regards to Task 3.1, please begin from page 61 of the results",
     "crumbs": [
       "Home",
       "Sessions",
