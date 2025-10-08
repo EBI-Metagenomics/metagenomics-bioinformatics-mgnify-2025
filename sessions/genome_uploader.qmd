@@ -82,20 +82,26 @@ Go to [this spreadsheet](https://docs.google.com/document/d/1uPy4kua_WjaGeGbPmxA
 It's time to launch the `genome_uploader`:
 
 ```bash
-python genome_upload.py -u UPLOAD_STUDY \
---genome_info METADATA_FILE (--mags | --bins) \
---webin WEBIN_ID --password PASSWORD \
---centre_name CENTRE_NAME
+python genome_upload.py -u UPLOAD_STUDY --genome_info METADATA_FILE --mags --webin WEBIN_ID --password PASSWORD --centre_name CENTRE_NAME
 ```
 
 Where:
 
 * `-u UPLOAD_STUDY`: study accession for genomes upload to ENA (in format ERPxxxxxx or PRJEBxxxxxx)
 * `---genome_info METADATA_FILE` : genomes metadata file in tsv format
-* `--mags, --bins`: select EITHER OF THESE for either bin or MAG upload
+* `--mags`: replace `--mags` with `--bins` to upload bins: so EITHER OF THESE for either bin or MAG upload
 * `--webin WEBIN_ID`: webin id (format: Webin_XXXXX)
 * `--password PASSWORD`: webin password
 * `--centre_name CENTRE_NAME`: name of the centre generating and uploading genomes
+
+So for example, to use `--mags` (uploading MAGs, not bins):
+
+```bash
+python genome_upload.py -u UPLOAD_STUDY \
+--genome_info METADATA_FILE --mags \
+--webin WEBIN_ID --password PASSWORD \
+--centre_name CENTRE_NAME
+```
 
 This step will also generate manifest files. 
 
