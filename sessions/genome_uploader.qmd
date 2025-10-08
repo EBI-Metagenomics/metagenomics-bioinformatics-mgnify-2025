@@ -100,11 +100,12 @@ Where:
 * `--mags`: replace `--mags` with `--bins` to upload bins: so EITHER OF THESE for either bin or MAG upload
 * `--centre_name CENTRE_NAME`: name of the centre generating and uploading genomes
 
-This step will also generate manifest files. 
-
 The logging output from this command will tell you which metadata objects have been accessed, and also where the output files have gone.
 This should be the `example_data` directory, but it will also have created a `MAG_upload` directory.
+
 Browse the files here to see the manifests that have been created, which combine the ENA metadata and the provided metadata (e.g. binning software).
+
+You can find the manifests in the `MAG_upload/manifest_tests` folder where you launched the script (should be in `example_data`).
 
 ## Submitting your genomes
 After checking that all needed manifests exist, it is necessary to use ENA's webin-cli resource to upload genomes.
@@ -116,6 +117,10 @@ download_webin_cli -v 8.2.0
 ```
 
 Then, time to submit!
+
+:::{.callout-warning}
+Replace MANIFEST_FILE below with the path to one of the manifest files that you just generated.
+:::
 
 ```bash
 java -jar webin-cli.jar -context=genome -manifest=MANIFEST_FILE -userName=${ENA_WEBIN} -password=${ENA_WEBIN_PASSWORD} -test -submit
