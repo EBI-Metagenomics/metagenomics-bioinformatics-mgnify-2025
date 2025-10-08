@@ -25,12 +25,10 @@ For this tutorial, you will need to start the predefined Jupyter notebook and co
 follow the steps below To start the notebook.
 
 
-1. From your terminal, navigate to the right environment: `cd /home/training/venv/training_env3`
-2. Activate the environment: `source bin/activate`
-3. Navigate to the mgnify-tutorial directory: `cd /home/training/venv/training_env3/mahfouz/mgnify-tutorial`
-4. Start the Jupyter notebook: `jupyter notebook`
-5. This should have a server started at `http://localhost:8888`. Open this in your browser.
-6. Click on content and then on the `tutorial.ipynb` notebook as shown in the images below to start the tutorial.
+1. Open the Jupter notebook: Click on show applications, find the "JupyterLab" app and click to open
+2. Open the notebook: Once the JupyterLab is running, paste this into the URL bar of the JupyterLab app http://localhost:8888/lab/workspaces/auto-3/tree/venv/training_env3/mahfouz/mgnify-tutorial/content/tutorial.ipynb
+3. Go through the exercises in the notebook
+
 
 ![Jupyter Notebook](getting_data_from_mgnify/content_nav_image.png)
 
