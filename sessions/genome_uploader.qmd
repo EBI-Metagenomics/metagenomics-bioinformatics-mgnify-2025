@@ -100,16 +100,10 @@ Where:
 * `--mags`: replace `--mags` with `--bins` to upload bins: so EITHER OF THESE for either bin or MAG upload
 * `--centre_name CENTRE_NAME`: name of the centre generating and uploading genomes
 
-So for example, to use `--mags` (uploading MAGs, not bins):
-
-```bash
-python genome_upload.py -u UPLOAD_STUDY --genome_info METADATA_FILE --mags --webin WEBIN_ID --password PASSWORD --centre_name CENTRE_NAME
-```
-
 This step will also generate manifest files. 
 
 The logging output from this command will tell you which metadata objects have been accessed, and also where the output files have gone.
-This should be the `example_data` directory, but it will also have created a `MAG_uploader` directory.
+This should be the `example_data` directory, but it will also have created a `MAG_upload` directory.
 Browse the files here to see the manifests that have been created, which combine the ENA metadata and the provided metadata (e.g. binning software).
 
 ## Submitting your genomes
