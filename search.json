@@ -275,7 +275,7 @@
     "href": "sessions/genome_uploader.html#registering-mag-samples-and-generating-manifest-files",
     "title": "The genome_uploader: tutorial",
     "section": "Registering MAG samples and generating manifest files",
-    "text": "Registering MAG samples and generating manifest files\nIt’s time to launch the genome_uploader:\npython genome_upload.py -u UPLOAD_STUDY --genome_info METADATA_FILE --mags --webin WEBIN_ID --password PASSWORD --centre_name CENTRE_NAME\nWhere:\n\n-u UPLOAD_STUDY: study accession for genomes upload to ENA (in format ERPxxxxxx or PRJEBxxxxxx)\n---genome_info METADATA_FILE : genomes metadata file in tsv format\n--mags: replace --mags with --bins to upload bins: so EITHER OF THESE for either bin or MAG upload\n--webin WEBIN_ID: webin id (format: Webin_XXXXX)\n--password PASSWORD: webin password\n--centre_name CENTRE_NAME: name of the centre generating and uploading genomes\n\nSo for example, to use --mags (uploading MAGs, not bins):\npython genome_upload.py -u UPLOAD_STUDY \\\n--genome_info METADATA_FILE --mags \\\n--webin WEBIN_ID --password PASSWORD \\\n--centre_name CENTRE_NAME\nThis step will also generate manifest files.\nThe logging output from this command will tell you which metadata objects have been accessed, and also where the output files have gone. This should be the example_data directory, but it will also have created a MAG_uploader directory. Browse the files here to see the manifests that have been created, which combine the ENA metadata and the provided metadata (e.g. binning software).",
+    "text": "Registering MAG samples and generating manifest files\nIt’s time to launch the genome_uploader.\n\n\n\n\n\n\nWarning\n\n\n\nReplace ENA_WEBIN and ENA_WEBIN_PASSWORD with your own credentials, and the METADATA_FILE and CENTRE_NAME parameters below with the right file ones!!\n\n\nexport ENA_WEBIN=\"Webin-XXX\"\nexport ENA_WEBIN_PASSWORD=\"Insert your password here\"\n\n# from the example_data folder:\n../genome_uploader/genomeuploader/genome_upload.py -u UPLOAD_STUDY --genome_info METADATA_FILE --mags --centre_name CENTRE_NAME\nWhere:\n\n-u UPLOAD_STUDY: study accession for genomes upload to ENA (in format ERPxxxxxx or PRJEBxxxxxx)\n---genome_info METADATA_FILE : genomes metadata file in tsv format\n--mags: replace --mags with --bins to upload bins: so EITHER OF THESE for either bin or MAG upload\n--centre_name CENTRE_NAME: name of the centre generating and uploading genomes\n\nSo for example, to use --mags (uploading MAGs, not bins):\npython genome_upload.py -u UPLOAD_STUDY --genome_info METADATA_FILE --mags --webin WEBIN_ID --password PASSWORD --centre_name CENTRE_NAME\nThis step will also generate manifest files.\nThe logging output from this command will tell you which metadata objects have been accessed, and also where the output files have gone. This should be the example_data directory, but it will also have created a MAG_uploader directory. Browse the files here to see the manifests that have been created, which combine the ENA metadata and the provided metadata (e.g. binning software).",
     "crumbs": [
       "Home",
       "Sessions",
@@ -287,7 +287,7 @@
     "href": "sessions/genome_uploader.html#submitting-your-genomes",
     "title": "The genome_uploader: tutorial",
     "section": "Submitting your genomes",
-    "text": "Submitting your genomes\nAfter checking that all needed manifests exist, it is necessary to use ENA’s webin-cli resource to upload genomes.\nFirst, download the resource in your folder.\ndownload_webin_cli -v 8.2.0\nThen, time to submit!\njava -jar webin-cli-8.2.0.jar \\\n-context=genome -manifest=MANIFEST_FILE \\\n-userName=\"Webin-XXX\" -password=\"YYY\" \\\n-test -submit",
+    "text": "Submitting your genomes\nAfter checking that all needed manifests exist, it is necessary to use ENA’s webin-cli resource to upload genomes.\nFirst, download the resource in your folder.\ndownload_webin_cli -v 8.2.0\nThen, time to submit!\njava -jar webin-cli.jar -context=genome -manifest=MANIFEST_FILE -userName=${ENA_WEBIN} -password=${ENA_WEBIN_PASSWORD} -test -submit",
     "crumbs": [
       "Home",
       "Sessions",
@@ -300,6 +300,18 @@
     "title": "The genome_uploader: tutorial",
     "section": "Try it yourself",
     "text": "Try it yourself\n\n\n\n\n\n\nStep\n\n\n\nYour task is to generate another tsv table with sample metadata describing the genomes you want to register and submit.\n\n\nYou will be free to insert values as you wish, as long as regular expressions and mandatory fields described in the checklist are respected. You will need to select whether you are uploading bins or MAGs, and select your checklist accordingly.\n\n\n\n\n\n\nNote\n\n\n\nTo register a sample, a relative set of metadata must be filled according to the selected checklist. Some of them are mandatory, while some others are only recommended. The genome_uploader will automatically pick the right checklist depending on the input flag:\n\nGSC MIMAG for MAG samples (-mags)\nENA binned metagenome for binned samples (-bins)\n\n\n\nThe main difference between bins and MAGs lies in the uniqueness and the quality of your data. Within an ENA study, there should only be one MAG per species, which should be the highest quality representative genome per predicted species.\nHere we suggest a hypothetical scenario you might want to follow to make the metadata search more interesting\nSuppose your original dataset was small, very small, and it only generated three bins. Two of these bins represent the same species, but their statistics are extremely different. One assembled quite well, while the other one was highly contaminated. One would be considered “medium quality”, while the other “high quality”.\n\n\n\n\n\n\nTip\n\n\n\nThe INSDC defines a genome as high-quality when:\n\n\n\nAccording to what we previously mentioned, two of these bins could be categorised as MAGs, while the lower-quality bin would stay as a bin.\n\n\n\n\n\n\nTip\n\n\n\nTaxonomy lineages can be listed in either string (taxonomic names) or integer (taxids) format. An example of valid taxonomies you could use in this scenario could be:\n\nnames: d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacterales;f__Vibrionaceae;g__Photobacterium;s__Photobacterium piscicola\nids: 1;131567;2759;33154;4751;451864;5204;452284;1538075;162474;742845;55193;76775",
+    "crumbs": [
+      "Home",
+      "Sessions",
+      "The genome_uploader: tutorial"
+    ]
+  },
+  {
+    "objectID": "sessions/genome_uploader.html#interested-in-retrieving-and-submitting-more-data-from-and-to-ena",
+    "href": "sessions/genome_uploader.html#interested-in-retrieving-and-submitting-more-data-from-and-to-ena",
+    "title": "The genome_uploader: tutorial",
+    "section": "Interested in retrieving and submitting more data from and to ENA?",
+    "text": "Interested in retrieving and submitting more data from and to ENA?\nHere is a link to a quick tour to use ENA for submission or retrieval of data.",
     "crumbs": [
       "Home",
       "Sessions",

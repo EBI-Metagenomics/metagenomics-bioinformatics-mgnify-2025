@@ -254,6 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#registering-mag-samples-and-generating-manifest-files" id="toc-registering-mag-samples-and-generating-manifest-files" class="nav-link" data-scroll-target="#registering-mag-samples-and-generating-manifest-files">Registering MAG samples and generating manifest files</a></li>
   <li><a href="#submitting-your-genomes" id="toc-submitting-your-genomes" class="nav-link" data-scroll-target="#submitting-your-genomes">Submitting your genomes</a></li>
   <li><a href="#try-it-yourself" id="toc-try-it-yourself" class="nav-link" data-scroll-target="#try-it-yourself">Try it yourself</a></li>
+  <li><a href="#interested-in-retrieving-and-submitting-more-data-from-and-to-ena" id="toc-interested-in-retrieving-and-submitting-more-data-from-and-to-ena" class="nav-link" data-scroll-target="#interested-in-retrieving-and-submitting-more-data-from-and-to-ena">Interested in retrieving and submitting more data from and to ENA?</a></li>
   </ul>
 </nav>
     </div>
@@ -301,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This session will simulate genomes registration and submission with the <code>genome_uploader</code>, a tool developed within MGnify to facilitate the upload of bins and MAGs to the ENA (European Nucleotide Archive). If you are interested, you can find the genome_uploader code on <a href="https://github.com/EBI-Metagenomics/genome_uploader">github</a>, on <a href="https://pypi.org/project/genome-uploader/">pypi</a> and <a href="https://bioconda.github.io/recipes/genome-uploader/README.html">bioconda</a>.</p>
-<p>When you submit genomes to the ENA, you need to register a sample for every genome containing all the relevant metadata describing the genome and the sample of origin. The <code>genome_uploader</code> acts as the main linker to preserve sample metadata as much as possible. For every genome to register, you need an INSDC run or assembly accession associated to the genome in order for the script to inherit its relevant metadata. On top of those metadata, the script adds metadata specified by the user that are specific to the genome, like taxonomy, statistics, or the tools used to generate it. The metadata that ENA requires are descibed in the checklist for <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000050">MAGs</a> and for <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000047">bins</a>, respectively.</p>
+<p>When you submit genomes to the ENA, you need to register a sample for every genome containing all the relevant metadata describing the genome and the sample of origin. The <code>genome_uploader</code> acts as the main linker to preserve sample metadata as much as possible. For every genome to register, you need an INSDC run or assembly accession associated to the genome in order for the script to inherit its relevant metadata. On top of those metadata, the script adds metadata specified by the user that are specific to the genome, like taxonomy, statistics, or the tools used to generate it. The metadata that ENA requires are descibed in the checklist for <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000047">MAGs</a> and for <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000050">bins</a>, respectively.</p>
 <p>First, let’s access the exercise folder. Open a terminal and type:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> course_dir/work_dir/Day_3/uploading_genomes_to_ENA</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You will find a starting dataset of two genomes. Together with them, <code>input_example.tsv</code> is a table containing metadata about those genomes. It will like similar to this:</p>
@@ -418,22 +419,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="registering-mag-samples-and-generating-manifest-files" class="level2">
 <h2 class="anchored" data-anchor-id="registering-mag-samples-and-generating-manifest-files">Registering MAG samples and generating manifest files</h2>
-<p>It’s time to launch the <code>genome_uploader</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> genome_upload.py <span class="at">-u</span> UPLOAD_STUDY <span class="at">--genome_info</span> METADATA_FILE <span class="at">--mags</span> <span class="at">--webin</span> WEBIN_ID <span class="at">--password</span> PASSWORD <span class="at">--centre_name</span> CENTRE_NAME</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It’s time to launch the <code>genome_uploader</code>.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Replace ENA_WEBIN and ENA_WEBIN_PASSWORD with your own credentials, and the METADATA_FILE and CENTRE_NAME parameters below with the right file ones!!</p>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">ENA_WEBIN</span><span class="op">=</span><span class="st">"Webin-XXX"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">ENA_WEBIN_PASSWORD</span><span class="op">=</span><span class="st">"Insert your password here"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># from the example_data folder:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">../genome_uploader/genomeuploader/genome_upload.py</span> <span class="at">-u</span> UPLOAD_STUDY <span class="at">--genome_info</span> METADATA_FILE <span class="at">--mags</span> <span class="at">--centre_name</span> CENTRE_NAME</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Where:</p>
 <ul>
 <li><code>-u UPLOAD_STUDY</code>: study accession for genomes upload to ENA (in format ERPxxxxxx or PRJEBxxxxxx)</li>
 <li><code>---genome_info METADATA_FILE</code> : genomes metadata file in tsv format</li>
 <li><code>--mags</code>: replace <code>--mags</code> with <code>--bins</code> to upload bins: so EITHER OF THESE for either bin or MAG upload</li>
-<li><code>--webin WEBIN_ID</code>: webin id (format: Webin_XXXXX)</li>
-<li><code>--password PASSWORD</code>: webin password</li>
 <li><code>--centre_name CENTRE_NAME</code>: name of the centre generating and uploading genomes</li>
 </ul>
 <p>So for example, to use <code>--mags</code> (uploading MAGs, not bins):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> genome_upload.py <span class="at">-u</span> UPLOAD_STUDY <span class="dt">\</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>--genome_info METADATA_FILE <span class="at">--mags</span> <span class="dt">\</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>--webin WEBIN_ID <span class="at">--password</span> PASSWORD <span class="dt">\</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>--centre_name CENTRE_NAME</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> genome_upload.py <span class="at">-u</span> UPLOAD_STUDY <span class="at">--genome_info</span> METADATA_FILE <span class="at">--mags</span> <span class="at">--webin</span> WEBIN_ID <span class="at">--password</span> PASSWORD <span class="at">--centre_name</span> CENTRE_NAME</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This step will also generate manifest files.</p>
 <p>The logging output from this command will tell you which metadata objects have been accessed, and also where the output files have gone. This should be the <code>example_data</code> directory, but it will also have created a <code>MAG_uploader</code> directory. Browse the files here to see the manifests that have been created, which combine the ENA metadata and the provided metadata (e.g.&nbsp;binning software).</p>
 </section>
@@ -443,10 +456,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>First, download the resource in your folder.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download_webin_cli</span> <span class="at">-v</span> 8.2.0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Then, time to submit!</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> webin-cli-8.2.0.jar <span class="dt">\</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>-context=genome <span class="at">-manifest</span><span class="op">=</span>MANIFEST_FILE <span class="dt">\</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>-userName=<span class="st">"Webin-XXX"</span> <span class="at">-password</span><span class="op">=</span><span class="st">"YYY"</span> <span class="dt">\</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>-test <span class="at">-submit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> webin-cli.jar <span class="at">-context</span><span class="op">=</span>genome <span class="at">-manifest</span><span class="op">=</span>MANIFEST_FILE <span class="at">-userName</span><span class="op">=</span><span class="va">${ENA_WEBIN}</span> <span class="at">-password</span><span class="op">=</span><span class="va">${ENA_WEBIN_PASSWORD}</span> <span class="at">-test</span> <span class="at">-submit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="try-it-yourself" class="level2">
 <h2 class="anchored" data-anchor-id="try-it-yourself">Try it yourself</h2>
@@ -516,6 +526,10 @@ Tip
 </ul>
 </div>
 </div>
+</section>
+<section id="interested-in-retrieving-and-submitting-more-data-from-and-to-ena" class="level2">
+<h2 class="anchored" data-anchor-id="interested-in-retrieving-and-submitting-more-data-from-and-to-ena">Interested in retrieving and submitting more data from and to ENA?</h2>
+<p><a href="https://www.ebi.ac.uk/training/online/courses/ena-quick-tour/">Here is a link</a> to a quick tour to use ENA for submission or retrieval of data.</p>
 
 
 </section>
