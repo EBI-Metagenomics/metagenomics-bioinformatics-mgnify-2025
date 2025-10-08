@@ -99,6 +99,10 @@ Where:
 
 This step will also generate manifest files. 
 
+The logging output from this command will tell you which metadata objects have been accessed, and also where the output files have gone.
+This should be the `example_data` directory, but it will also have created a `MAG_uploader` directory.
+Browse the files here to see the manifests that have been created, which combine the ENA metadata and the provided metadata (e.g. binning software).
+
 ## Submitting your genomes
 After checking that all needed manifests exist, it is necessary to use ENA's webin-cli resource to upload genomes.
 
