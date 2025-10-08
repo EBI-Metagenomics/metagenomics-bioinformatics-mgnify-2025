@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Germana Baldi">
-<meta name="dcterms.date" content="2024-09-10">
+<meta name="dcterms.date" content="2025-10-08">
 
 <title>The genome_uploader: tutorial – Metagenomics bioinformatics at MGnify (2025)</title>
 <style>
@@ -248,12 +248,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-genome_uploader-and-its-metadata-handling" id="toc-the-genome_uploader-and-its-metadata-handling" class="nav-link active" data-scroll-target="#the-genome_uploader-and-its-metadata-handling">The genome_uploader and its metadata handling</a></li>
-  <li><a href="#considerations" id="toc-considerations" class="nav-link" data-scroll-target="#considerations">Considerations</a></li>
-  <li><a href="#provided-materials" id="toc-provided-materials" class="nav-link" data-scroll-target="#provided-materials">Provided materials</a></li>
-  <li><a href="#registering-your-genomes" id="toc-registering-your-genomes" class="nav-link" data-scroll-target="#registering-your-genomes">Registering your genomes</a></li>
-  <li><a href="#submitting-your-genomes" id="toc-submitting-your-genomes" class="nav-link" data-scroll-target="#submitting-your-genomes">Submitting your genomes</a></li>
+  <li><a href="#registering-and-submitting-genomes" id="toc-registering-and-submitting-genomes" class="nav-link active" data-scroll-target="#registering-and-submitting-genomes">Registering and submitting genomes</a></li>
+  <li><a href="#accessing-yor-webin-profile" id="toc-accessing-yor-webin-profile" class="nav-link" data-scroll-target="#accessing-yor-webin-profile">Accessing yor Webin profile</a></li>
   <li><a href="#registering-a-study" id="toc-registering-a-study" class="nav-link" data-scroll-target="#registering-a-study">Registering a study</a></li>
+  <li><a href="#registering-mag-samples-and-generating-manifest-files" id="toc-registering-mag-samples-and-generating-manifest-files" class="nav-link" data-scroll-target="#registering-mag-samples-and-generating-manifest-files">Registering MAG samples and generating manifest files</a></li>
+  <li><a href="#submitting-your-genomes" id="toc-submitting-your-genomes" class="nav-link" data-scroll-target="#submitting-your-genomes">Submitting your genomes</a></li>
+  <li><a href="#try-it-yourself" id="toc-try-it-yourself" class="nav-link" data-scroll-target="#try-it-yourself">Try it yourself</a></li>
   </ul>
 </nav>
     </div>
@@ -288,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 10, 2024</p>
+      <p class="date">October 8, 2025</p>
     </div>
   </div>
   
@@ -300,53 +300,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This session will simulate genomes registration and submission with the <code>genome_uploader</code>, a tool developed within MGnify to facilitate the upload of bins and MAGs to the ENA (European Nucleotide Archive).</p>
-<p>First, let’s activate the environment as follows to access the tools we will use in this session. Open a terminal and type:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /home/training/venv/training_env1/bin/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>And then move to the <code>genomeuploader</code> root directory</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/training/genomeuploader/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="the-genome_uploader-and-its-metadata-handling" class="level2">
-<h2 class="anchored" data-anchor-id="the-genome_uploader-and-its-metadata-handling">The genome_uploader and its metadata handling</h2>
-<p>As Maira thoroughly explained in the theory session, bin and MAG submission undergoes 3 different steps:</p>
-<ul>
-<li>Register binned and/or MAG samples</li>
-<li>Generate manifest files</li>
-<li>Submit assemblies with Webin-CLI</li>
-</ul>
-<p>The <code>genome_uploader</code> takes care of these 3 steps. The first two are executed together, while the third one needs an extra command to submit previously generated files to ENA servers.</p>
-<div class="callout callout-style-default callout-step callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Step
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Your task is to generate a tsv table with sample metadata describing the genomes you want to register and submit.</p>
-</div>
-</div>
-<p>Similarly to yesterday’s practical, you will be free to insert values as you wish, as long as regular expressions and mandatory fields described in the checklist are respected. You will need to select whether you are uploading bins or MAGs, and select your checklist accordingly.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>To register a sample, a relative set of metadata must be filled according to the selected checklist. Some of them are mandatory, while some others are only recommended. The <code>genome_uploader</code> will automatically pick the right checklist depending on the input flag:</p>
-<ul>
-<li><strong>GSC MIMAG</strong> for MAG samples (<code>-mag</code>)</li>
-<li><strong>ENA binned metagenome</strong> for binned samples (<code>-bin</code>)</li>
-</ul>
-</div>
-</div>
-<p>The main difference between bins and MAGs lies in the uniqueness and the quality of your data. Within an ENA study, there should only be one MAG per species, which should be the highest quality representative genome per predicted species.</p>
-<p>The generated table will be similar to the following:</p>
+<p>This session will simulate genomes registration and submission with the <code>genome_uploader</code>, a tool developed within MGnify to facilitate the upload of bins and MAGs to the ENA (European Nucleotide Archive). If you are interested, you can find the genome_uploader code on <a href="https://github.com/EBI-Metagenomics/genome_uploader">github</a>, on <a href="https://pypi.org/project/genome-uploader/">pypi</a> and <a href="https://bioconda.github.io/recipes/genome-uploader/README.html">bioconda</a>.</p>
+<p>When you submit genomes to the ENA, you need to register a sample for every genome containing all the relevant metadata describing the genome and the sample of origin. The <code>genome_uploader</code> acts as the main linker to preserve sample metadata as much as possible. For every genome to register, you need an INSDC run or assembly accession associated to the genome in order for the script to inherit its relevant metadata. On top of those metadata, the script adds metadata specified by the user that are specific to the genome, like taxonomy, statistics, or the tools used to generate it. The metadata that ENA requires are descibed in the checklist for <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000050">MAGs</a> and for <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000047">bins</a>, respectively.</p>
+<p>First, let’s access the exercise folder. Open a terminal and type:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> course_dir/work_dir/Day_3/uploading_genomes_to_ENA</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You will find a starting dataset of two genomes. Together with them, <code>input_example.tsv</code> is a table containing metadata about those genomes. It will like similar to this:</p>
 <div class="table-responsive">
 <table class="caption-top table">
 <colgroup>
@@ -412,34 +370,94 @@ Note
 </tbody>
 </table>
 </div>
-<p>With columns indicating:</p>
-<ul>
-<li><code>genome_name</code>: genome id (unique string identifier)</li>
-<li><code>accessions</code>: run(s) or assembly(ies) the genome was generated from (DRR/ERR/SRRxxxxxx for runs, DRZ/ERZ/SRZxxxxxx for assemblies). If the genome was generated by a co-assembly of multiple runs, separate them with a comma.</li>
-<li><code>assembly_software</code>: name of the assembly software used, with version (e.g.&nbsp;metaSPAdes_4.0.0)</li>
-<li><code>binning_software</code>: name of the binning software used, with version (e.g.&nbsp;metabat_v1.2)</li>
-<li><code>binning_parameters</code>: binning parameters</li>
-<li><code>stats_generation_software</code>: name of the statistics generation software used, with version (e.g.checkM_v1)</li>
-<li><code>completeness</code>: <code>float</code></li>
-<li><code>contamination</code>: <code>float</code></li>
-<li><code>rRNA_presence</code>: <code>True/False</code> if all among 5S, 16S, and 23S genes, and at least 18 tRNA genes, have been detected in the genome</li>
-<li><code>NCBI_lineage</code>: full NCBI lineage, either in tax ids (<code>integers</code>) or <code>strings</code>. Format: x;y;z;…</li>
-<li><code>metagenome</code>: needs to be listed in the taxonomy tree <a href="https://www.ebi.ac.uk/ena/browser/view/408169?show=tax-tree">here</a> (you might need to press “Tax tree - Show” in the right most section of the page)</li>
-<li><code>co-assembly</code>: <code>True/False</code>, whether the genome was generated from a co-assembly.</li>
-<li><code>genome_coverage</code> : genome coverage against raw reads</li>
-<li><code>genome_path</code>: path to genome to upload (already compressed)</li>
-<li><code>broad_environment</code>: <code>string</code> (explanation following)</li>
-<li><code>local_environment</code>: <code>string</code> (explanation following)</li>
-<li><code>environmental_medium</code>: <code>string</code> (explanation following)</li>
-</ul>
-<p>According to ENA checklist’s guidelines, ‘broad_environment’ describes the broad ecological context of a sample - desert, taiga, coral reef, … ‘local_environment’ is more local - lake, harbour, cliff, … ‘environmental_medium’ is either the material displaced by the sample, or the one in which the sample was embedded prior to the sampling event - air, soil, water, … For host-associated metagenomic samples, the three variables can be defined similarly to the following example for the chicken gut metagenome: “chicken digestive system”, “digestive tube”, “caecum”.</p>
+<p>With columns indicating: * <em>genome_name</em>: genome id (unique string identifier) * <em>accessions</em>: run(s) or assembly(ies) the genome was generated from (DRR/ERR/SRRxxxxxx for runs, DRZ/ERZ/SRZxxxxxx for assemblies). If the genome was generated by a co-assembly of multiple runs, separate them with a comma. * <em>assembly_software</em>: assemblerName_vX.X * <em>binning_software</em>: binnerName_vX.X * <em>binning_parameters</em>: binning parameters * <em>stats_generation_software</em>: software_vX.X * <em>completeness</em>: <code>float</code> (optional field for bins) * <em>contamination</em>: <code>float</code> (optional field for bins) * <em>rRNA_presence</em>: <code>True/False</code> if all among 5S, 16S, and 23S genes, and at least 18 tRNA genes, have been detected in the genome (optional field for bins) * <em>NCBI_lineage</em>: full NCBI lineage - format: <code>x;y;z;...</code>. The same organism can be described in two different ways: either in tax ids (<code>integers</code>) or <code>strings</code>. For example, the lineage for <em>E. coli</em> can be: * <code>Bacteria;Pseudomonadati;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriaceae;Escherichia</code> * <code>2;1224;1236;91347;543;561;562</code> * <em>metagenome</em>: needs to be listed in the taxonomy tree <a href="https://www.ebi.ac.uk/ena/browser/view/408169?show=tax-tree">here</a> (you might need to press “Tax tree - Show” in the right most section of the page) * <em>co-assembly</em>: <code>True/False</code>, whether the genome was generated from a co-assembly. N.B. the script only supports co-assemblies generated from the same project. * <em>genome_coverage</em> : genome coverage against raw reads * <em>genome_path</em>: path to genome to upload (already compressed) * <em>broad_environment</em>: <code>string</code> (explanation following) * <em>local_environment</em>: <code>string</code> (explanation following) * <em>environmental_medium</em>: <code>string</code> (explanation following)</p>
+<p>According to ENA checklist’s guidelines, <code>broad_environment</code> describes the broad ecological context of a sample - desert, taiga, coral reef, … <code>local_environment</code> is more local - lake, harbour, cliff, … <code>environmental_medium</code> is either the material displaced by the sample, or the one in which the sample was embedded prior to the sampling event - air, soil, water, … For host-associated metagenomic samples, the three variables can be defined similarly to the following example for the chicken gut metagenome: “chicken digestive system”, “digestive tube”, “caecum”. More information can be found at <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000050">ERC000050</a> for bins and <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000047">ERC000047</a> for MAGs under field names “broad-scale environmental context”, “local environmental context”, “environmental medium”</p>
 <p>If your genome was generated from raw reads available on the INSDC (including ENA and GenBank), the <code>genome_uploader</code> will automatically inherit relevant metadata for that sample to make. For example, if you are submitting a MAG generated from read SRR11910206, some of the sample metadata will be inherited for the genome sample registration (e.g.&nbsp;<code>collection_date</code>, <code>isolation_source</code>).</p>
 <p>Take a look at the <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000047">GCS MIMAG checklist</a> as a reference. You will notice that bins and MAGs checklists are very similar, as mandatory fields are the same. You can compare it with the <a href="https://www.ebi.ac.uk/ena/browser/view/ERC000050">bins checklist</a> yourself.</p>
+<section id="registering-and-submitting-genomes" class="level2">
+<h2 class="anchored" data-anchor-id="registering-and-submitting-genomes">Registering and submitting genomes</h2>
+<p>As explained before, you need to perform 4 steps to submit bins and MAGs:</p>
+<ul>
+<li>Register a study</li>
+<li>Register binned and/or MAG samples</li>
+<li>Generate manifest files</li>
+<li>Submit assemblies with Webin-CLI</li>
+</ul>
+<p>The <code>genome_uploader</code> takes care of the last 3 steps. 2 and 3 are executed together, while the third one needs an extra command to submit previously generated files to ENA servers.</p>
 </section>
-<section id="considerations" class="level2">
-<h2 class="anchored" data-anchor-id="considerations">Considerations</h2>
+<section id="accessing-yor-webin-profile" class="level2">
+<h2 class="anchored" data-anchor-id="accessing-yor-webin-profile">Accessing yor Webin profile</h2>
+<p>Go to https://docs.google.com/document/d/1uPy4kua_WjaGeGbPmxA-h15WX9g9_FcS/edit?usp=sharing&amp;ouid=103754228271574317142&amp;rtpof=true&amp;sd=true and reserve a Webin profile</p>
+</section>
+<section id="registering-a-study" class="level2">
+<h2 class="anchored" data-anchor-id="registering-a-study">Registering a study</h2>
+<p><img src="genome_uploader/register_a_study.png" class="img-fluid"></p>
+</section>
+<section id="registering-mag-samples-and-generating-manifest-files" class="level2">
+<h2 class="anchored" data-anchor-id="registering-mag-samples-and-generating-manifest-files">Registering MAG samples and generating manifest files</h2>
+<p>It’s time to launch the <code>genome_uploader</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> genome_upload.py <span class="at">-u</span> UPLOAD_STUDY <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>--genome_info METADATA_FILE <span class="er">(</span><span class="ex">--mags</span> <span class="kw">|</span> <span class="ex">--bins</span><span class="kw">)</span> <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">--webin</span> WEBIN_ID <span class="at">--password</span> PASSWORD <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>--centre_name CENTRE_NAME</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Where:</p>
+<ul>
+<li><code>-u UPLOAD_STUDY</code>: study accession for genomes upload to ENA (in format ERPxxxxxx or PRJEBxxxxxx)</li>
+<li><code>---genome_info METADATA_FILE</code> : genomes metadata file in tsv format</li>
+<li><code>--mags, --bins</code>: select EITHER OF THESE for either bin or MAG upload</li>
+<li><code>--webin WEBIN_ID</code>: webin id (format: Webin_XXXXX)</li>
+<li><code>--password PASSWORD</code>: webin password</li>
+<li><code>--centre_name CENTRE_NAME</code>: name of the centre generating and uploading genomes</li>
+</ul>
+<p>This step will also generate manifest files.</p>
+</section>
+<section id="submitting-your-genomes" class="level2">
+<h2 class="anchored" data-anchor-id="submitting-your-genomes">Submitting your genomes</h2>
+<p>After checking that all needed manifests exist, it is necessary to use ENA’s webin-cli resource to upload genomes.</p>
+<p>First, download the resource in your folder.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download_webin_cli</span> <span class="at">-v</span> 8.2.0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then, time to submit!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> webin-cli-8.2.0.jar <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>-context=genome <span class="at">-manifest</span><span class="op">=</span>MANIFEST_FILE <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>-userName=<span class="st">"Webin-XXX"</span> <span class="at">-password</span><span class="op">=</span><span class="st">"YYY"</span> <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>-test <span class="at">-submit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="try-it-yourself" class="level2">
+<h2 class="anchored" data-anchor-id="try-it-yourself">Try it yourself</h2>
+<div class="callout callout-style-default callout-step callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Step
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your task is to generate another tsv table with sample metadata describing the genomes you want to register and submit.</p>
+</div>
+</div>
+<p>You will be free to insert values as you wish, as long as regular expressions and mandatory fields described in the checklist are respected. You will need to select whether you are uploading bins or MAGs, and select your checklist accordingly.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To register a sample, a relative set of metadata must be filled according to the selected checklist. Some of them are mandatory, while some others are only recommended. The <code>genome_uploader</code> will automatically pick the right checklist depending on the input flag:</p>
+<ul>
+<li><strong>GSC MIMAG</strong> for MAG samples (<code>-mag</code>)</li>
+<li><strong>ENA binned metagenome</strong> for binned samples (<code>-bin</code>)</li>
+</ul>
+</div>
+</div>
+<p>The main difference between bins and MAGs lies in the uniqueness and the quality of your data. Within an ENA study, there should only be one MAG per species, which should be the highest quality representative genome per predicted species.</p>
 <p>Here we suggest a hypothetical scenario you might want to follow to make the metadata search more interesting</p>
-<p>Suppose your original dataset was small, very small, and it only generated three bins. You’d be surprised but yes, it happens sometimes. Two of these bins represent the same species, but their statistics are extremely different. One assembled quite well, while the other one was highly contaminated. One would be considered “medium quality”, while the other “high quality”.</p>
+<p>Suppose your original dataset was small, very small, and it only generated three bins. Two of these bins represent the same species, but their statistics are extremely different. One assembled quite well, while the other one was highly contaminated. One would be considered “medium quality”, while the other “high quality”.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -465,91 +483,13 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Taxonomies can be listed in either NCBI or GTDB format. An example of valid taxonomies you could use in this scenario could be:</p>
+<p>Taxonomy lineages can be listed in either string (taxonomic names) or integer (taxids) format. An example of valid taxonomies you could use in this scenario could be:</p>
 <ul>
 <li>GTDB: <code>d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacterales;f__Vibrionaceae;g__Photobacterium;s__Photobacterium piscicola</code></li>
 <li>NCBI: <code>1;131567;2759;33154;4751;451864;5204;452284;1538075;162474;742845;55193;76775</code></li>
 </ul>
 </div>
 </div>
-</section>
-<section id="provided-materials" class="level2">
-<h2 class="anchored" data-anchor-id="provided-materials">Provided materials</h2>
-<p>You can follow <a href="https://docs.google.com/spreadsheets/d/1eT05boK8MkGq6MNOBMa1w0qHD-n5e5aU03_nu4CBBiA/edit?usp=sharing">this link</a> to find a Google Spreasheet called <code>genome_uploader_template</code>.</p>
-<p>This spreadsheet contains a tab for every webin account assigned to this course’s users. You should use the same accounts that have been assigned yesterday - you will find the list <a href="https://docs.google.com/document/d/1VnV5sf4oETrHjXwRpT7RBB00wABGLES1/edit#heading=h.gjdgxs">here</a> or in Maira’s documentation. Identify the tab assigned to your webin profile. You can use the table template in that tab to prepare a tsv as input file for the genome_uploader. Once you have filled in the table with all required values, export it as tsv (<code>File</code> –&gt; <code>Download</code> –&gt; <code>Tab-separated values (.tsv)</code>).</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You will find two mock examples of fasta.gz sequences to use in the table under <code>genome_path</code> in this folder:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/training/genomeuploader/data_dir/</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Please use the absolute (i.e.&nbsp;entire) path pointing to the fasta.gz file of interest.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Two tables need to be generated if you are submitting bins and MAGs - one for bins and one for MAGs.</p>
-</div>
-</div>
-</section>
-<section id="registering-your-genomes" class="level2">
-<h2 class="anchored" data-anchor-id="registering-your-genomes">Registering your genomes</h2>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>As you did yesterday, you will need to generate a study from your webin profile, and add it to the following command under <code>UPLOAD_STUDY</code>. You can either look it up on Maira’s documentation from yesterday, or screenshotted at the end of this page.</p>
-</div>
-</div>
-<p>After generating the table, it will be time to launch the <code>genome_uploader</code>. You can do so by opening a terminal and typing:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> genome_upload.py <span class="at">-u</span> UPLOAD_STUDY <span class="dt">\</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>--genome_info METADATA_FILE <span class="er">(</span><span class="ex">--mags</span> <span class="kw">|</span> <span class="ex">--bins</span><span class="kw">)</span> <span class="dt">\</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">--webin</span> WEBIN_ID <span class="at">--password</span> PASSWORD <span class="dt">\</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>--centre_name CENTRE_NAME <span class="pp">[--</span><span class="ss">out</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">force</span><span class="pp">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Where:</p>
-<ul>
-<li><code>-u UPLOAD_STUDY</code>: study accession for genomes upload to ENA (in format ERPxxxxxx or PRJEBxxxxxx)</li>
-<li><code>---genome_info METADATA_FILE</code> : genomes metadata file in tsv format</li>
-<li><code>-m, --mags, --b, --bins</code>: select EITHER OF THESE for either bin or MAG upload</li>
-<li><code>--out</code>: output folder (default: working directory)</li>
-<li><code>--force</code>: sample xmls won’t be regenerated automatically if a previous xml already exists. If any metadata or value in the tsv table changes, <code>--force</code> will allow xml regeneration.</li>
-<li><code>--webin WEBIN_ID</code>: webin id (format: Webin_XXXXX)</li>
-<li><code>--password PASSWORD</code>: webin password</li>
-<li><code>--centre_name CENTRE_NAME</code>: name of the centre generating and uploading genomes</li>
-</ul>
-<p>This step will also generate manifest files.</p>
-</section>
-<section id="submitting-your-genomes" class="level2">
-<h2 class="anchored" data-anchor-id="submitting-your-genomes">Submitting your genomes</h2>
-<p>After checking that all needed manifests exist, it is necessary to use ENA’s webin-cli resource to upload genomes.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> ~/JAR/webin-cli-8.0.0.jar <span class="dt">\</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>-context=genome <span class="at">-manifest</span><span class="op">=</span>MANIFEST_FILE <span class="dt">\</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>-userName=<span class="st">"Webin-XXX"</span> <span class="at">-password</span><span class="op">=</span><span class="st">"YYY"</span> <span class="dt">\</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>-test <span class="at">-submit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="registering-a-study" class="level2">
-<h2 class="anchored" data-anchor-id="registering-a-study">Registering a study</h2>
-<p><img src="genome_uploader/register_a_study.png" class="img-fluid"></p>
 
 
 </section>
