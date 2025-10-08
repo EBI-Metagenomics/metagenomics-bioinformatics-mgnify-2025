@@ -14,7 +14,7 @@ author:
 
 This session will simulate genomes registration and submission with the `genome_uploader`, a tool developed within MGnify to facilitate the upload of bins and MAGs to the ENA (European Nucleotide Archive). If you are interested, you can find the genome_uploader code on [github](https://github.com/EBI-Metagenomics/genome_uploader), on [pypi](https://pypi.org/project/genome-uploader/) and [bioconda](https://bioconda.github.io/recipes/genome-uploader/README.html).
 
-When you submit genomes to the ENA, you need to register a sample for every genome containing all the relevant metadata describing the genome and the sample of origin. The `genome_uploader` acts as the main linker to preserve sample metadata as much as possible. For every genome to register, you need an INSDC run or assembly accession associated to the genome in order for the script to inherit its relevant metadata. On top of those metadata, the script adds metadata specified by the user that are specific to the genome, like taxonomy, statistics, or the tools used to generate it. The metadata that ENA requires are descibed in the checklist for [MAGs](https://www.ebi.ac.uk/ena/browser/view/ERC000050) and for [bins](https://www.ebi.ac.uk/ena/browser/view/ERC000047), respectively.
+When you submit genomes to the ENA, you need to register a sample for every genome containing all the relevant metadata describing the genome and the sample of origin. The `genome_uploader` acts as the main linker to preserve sample metadata as much as possible. For every genome to register, you need an INSDC run or assembly accession associated to the genome in order for the script to inherit its relevant metadata. On top of those metadata, the script adds metadata specified by the user that are specific to the genome, like taxonomy, statistics, or the tools used to generate it. The metadata that ENA requires are descibed in the checklist for [MAGs](https://www.ebi.ac.uk/ena/browser/view/ERC000047) and for [bins](https://www.ebi.ac.uk/ena/browser/view/ERC000050), respectively.
 
 First, let's access the exercise folder. Open a terminal and type:
 
@@ -79,10 +79,18 @@ Go to [this spreadsheet](https://docs.google.com/document/d/1uPy4kua_WjaGeGbPmxA
 
 ## Registering MAG samples and generating manifest files
 
-It's time to launch the `genome_uploader`:
+It's time to launch the `genome_uploader`.
+
+:::{.callout-warning}
+Replace ENA_WEBIN and ENA_WEBIN_PASSWORD with your own credentials, and the METADATA_FILE and CENTRE_NAME parameters below with the right file ones!!
+:::
 
 ```bash
-python genome_upload.py -u UPLOAD_STUDY --genome_info METADATA_FILE --mags --webin WEBIN_ID --password PASSWORD --centre_name CENTRE_NAME
+export ENA_WEBIN="Webin-XXX"
+export ENA_WEBIN_PASSWORD="Insert your password here"
+
+# from the example_data folder:
+../genome_uploader/genomeuploader/genome_upload.py -u UPLOAD_STUDY --genome_info METADATA_FILE --mags --centre_name CENTRE_NAME
 ```
 
 Where:
@@ -90,17 +98,12 @@ Where:
 * `-u UPLOAD_STUDY`: study accession for genomes upload to ENA (in format ERPxxxxxx or PRJEBxxxxxx)
 * `---genome_info METADATA_FILE` : genomes metadata file in tsv format
 * `--mags`: replace `--mags` with `--bins` to upload bins: so EITHER OF THESE for either bin or MAG upload
-* `--webin WEBIN_ID`: webin id (format: Webin_XXXXX)
-* `--password PASSWORD`: webin password
 * `--centre_name CENTRE_NAME`: name of the centre generating and uploading genomes
 
 So for example, to use `--mags` (uploading MAGs, not bins):
 
 ```bash
-python genome_upload.py -u UPLOAD_STUDY \
---genome_info METADATA_FILE --mags \
---webin WEBIN_ID --password PASSWORD \
---centre_name CENTRE_NAME
+python genome_upload.py -u UPLOAD_STUDY --genome_info METADATA_FILE --mags --webin WEBIN_ID --password PASSWORD --centre_name CENTRE_NAME
 ```
 
 This step will also generate manifest files. 
@@ -121,10 +124,7 @@ download_webin_cli -v 8.2.0
 Then, time to submit!
 
 ```bash
-java -jar webin-cli-8.2.0.jar \
--context=genome -manifest=MANIFEST_FILE \
--userName="Webin-XXX" -password="YYY" \
--test -submit
+java -jar webin-cli.jar -context=genome -manifest=MANIFEST_FILE -userName=${ENA_WEBIN} -password=${ENA_WEBIN_PASSWORD} -test -submit
 ```
 
 ## Try it yourself
@@ -162,3 +162,9 @@ Taxonomy lineages can be listed in either string (taxonomic names) or integer (t
 * names: `d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Enterobacterales;f__Vibrionaceae;g__Photobacterium;s__Photobacterium piscicola`
 * ids: `1;131567;2759;33154;4751;451864;5204;452284;1538075;162474;742845;55193;76775`
 :::
+
+## Interested in retrieving and submitting more data from and to ENA?
+
+[Here is a link](https://www.ebi.ac.uk/training/online/courses/ena-quick-tour/) to a quick tour to use ENA for submission or retrieval of data.
+
+
