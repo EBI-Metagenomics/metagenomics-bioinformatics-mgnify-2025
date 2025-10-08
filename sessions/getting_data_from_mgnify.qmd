@@ -25,14 +25,9 @@ For this tutorial, you will need to start the predefined Jupyter notebook and co
 follow the steps below To start the notebook.
 
 
-1. Open the Jupter notebook: Click on show applications, find the "JupyterLab" app and click to open
-2. Open the notebook: Once the JupyterLab is running, paste this into the URL bar of the JupyterLab app http://localhost:8888/lab/workspaces/auto-3/tree/venv/training_env3/mahfouz/mgnify-tutorial/content/tutorial.ipynb
+1. Open this link on your browser: https://sa.ndyroge.rs/mgnify-tutorial/notebooks/index.html?path=tutorial.ipynb
+2. Click on the run menu, then click run all cells
 3. Go through the exercises in the notebook
-NOTE: the images below, show an alternative way to navigate to the notebook:
-
-![Jupyter Notebook](getting_data_from_mgnify/content_nav_image.png)
-
-![Jupyter Notebook](getting_data_from_mgnify/tutorial_nav_image.png)
 
 NOTE: In regards to Task 3.3, take note of the following
 ---------------
