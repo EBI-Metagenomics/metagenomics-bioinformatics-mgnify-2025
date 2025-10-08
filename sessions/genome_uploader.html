@@ -445,8 +445,9 @@ Warning
 <li><code>--mags</code>: replace <code>--mags</code> with <code>--bins</code> to upload bins: so EITHER OF THESE for either bin or MAG upload</li>
 <li><code>--centre_name CENTRE_NAME</code>: name of the centre generating and uploading genomes</li>
 </ul>
-<p>This step will also generate manifest files.</p>
-<p>The logging output from this command will tell you which metadata objects have been accessed, and also where the output files have gone. This should be the <code>example_data</code> directory, but it will also have created a <code>MAG_upload</code> directory. Browse the files here to see the manifests that have been created, which combine the ENA metadata and the provided metadata (e.g.&nbsp;binning software).</p>
+<p>The logging output from this command will tell you which metadata objects have been accessed, and also where the output files have gone. This should be the <code>example_data</code> directory, but it will also have created a <code>MAG_upload</code> directory.</p>
+<p>Browse the files here to see the manifests that have been created, which combine the ENA metadata and the provided metadata (e.g.&nbsp;binning software).</p>
+<p>You can find the manifests in the <code>MAG_upload/manifest_tests</code> folder where you launched the script (should be in <code>example_data</code>).</p>
 </section>
 <section id="submitting-your-genomes" class="level2">
 <h2 class="anchored" data-anchor-id="submitting-your-genomes">Submitting your genomes</h2>
@@ -454,6 +455,19 @@ Warning
 <p>First, download the resource in your folder.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download_webin_cli</span> <span class="at">-v</span> 8.2.0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Then, time to submit!</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Replace MANIFEST_FILE below with the path to one of the manifest files that you just generated.</p>
+</div>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> webin-cli.jar <span class="at">-context</span><span class="op">=</span>genome <span class="at">-manifest</span><span class="op">=</span>MANIFEST_FILE <span class="at">-userName</span><span class="op">=</span><span class="va">${ENA_WEBIN}</span> <span class="at">-password</span><span class="op">=</span><span class="va">${ENA_WEBIN_PASSWORD}</span> <span class="at">-test</span> <span class="at">-submit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="try-it-yourself" class="level2">
