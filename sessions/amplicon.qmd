@@ -1,0 +1,32 @@
+---
+title: "Amplicon stuff"
+date: 2025-12-19
+license: "Apache 2.0"
+order: 2
+author:
+  - name: Germana Baldi
+    orcid: 0000-0003-1719-5206
+    email: germanab@ebi.ac.uk
+    affiliation: 
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+  - name: Tatiana Gurbich
+    email: tgurbich@ebi.ac.uk
+    affiliation: 
+      - name: EMBL-EBI
+        url: www.ebi.ac.uk
+---
+--------------------------------------------------
+
+# Learning Objectives
+
+# Download an amplicon sample
+https://www.ebi.ac.uk/ena/browser/view/SRR5527446 --> download selected files
+
+# Galaxy
+
+https://usegalaxy.org/
+
+Create an account (giving students 5 minutes)
+
+
