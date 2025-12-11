@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -68,8 +68,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../sessions/mags.html" rel="next">
-<link href="../sessions/qc.html" rel="prev">
+<link href="../sessions/metagenomics.html" rel="next">
+<link href="../sessions/amplicon.html" rel="prev">
 <link href="../static/mgnify_logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -78,7 +78,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64358e5ab03b06226dd34ee249bba1f1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-6bf0fe53990927c0feeb3953872c1044.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-ca146c75af252fb53c9e73e81359de52.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -120,8 +120,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Metagenomics bioinformatics at MGnify (2025)</span>
     </a>
@@ -133,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
 </ul>
@@ -175,10 +173,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="../index.html" class="sidebar-logo-link">
-      </a>
-      </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
@@ -203,38 +197,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../sessions/amplicon.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Amplicon stuff</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../sessions/assemblies.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Assembly and Co-assembly of Metagenomic Raw Reads</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sessions/mags.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MAG Generation</span></a>
+  <a href="../sessions/metagenomics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metagenomics stuff</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../sessions/genome_uploader.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">The genome_uploader: tutorial</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/mag_catalogues.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">MAG Catalogues</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/getting_data_from_mgnify.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Getting data from MGnify</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../sessions/pangenome.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Pangenome analysis of metagenomic data</span></a>
   </div>
 </li>
       </ul>
@@ -782,7 +764,7 @@ If anything remains unclear, don’t hesitate to ask questions — there are no 
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/course25\.mgnify\.org");
+        var filterRegex = new RegExp("https:\/\/plants-breeding\.mgnify\.org");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1111,13 +1093,13 @@ If anything remains unclear, don’t hesitate to ask questions — there are no 
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../sessions/qc.html" class="pagination-link" aria-label="Quality control and filtering of the raw sequence files">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Quality control and filtering of the raw sequence files</span>
+      <a href="../sessions/amplicon.html" class="pagination-link" aria-label="Amplicon stuff">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Amplicon stuff</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../sessions/mags.html" class="pagination-link" aria-label="MAG Generation">
-        <span class="nav-page-text">MAG Generation</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../sessions/metagenomics.html" class="pagination-link" aria-label="Metagenomics stuff">
+        <span class="nav-page-text">Metagenomics stuff</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

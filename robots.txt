@@ -1,1 +1,1 @@
-Sitemap: https://course25.mgnify.org/sitemap.xml
+Sitemap: https://plants-breeding.mgnify.org/sitemap.xml
