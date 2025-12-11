@@ -23,10 +23,16 @@ author:
 # Download an amplicon sample
 https://www.ebi.ac.uk/ena/browser/view/SRR5527446 --> download selected files
 
-# Galaxy
+What is galaxy
 
 https://usegalaxy.org/
 
-Create an account (giving students 5 minutes)
+Create an account (give students 5 minutes)
+
+Log-in to your account.
+
+Upload the amplicon sample you downloaded.
+
+![upload](amplicon/file_upload.png)
 
 
