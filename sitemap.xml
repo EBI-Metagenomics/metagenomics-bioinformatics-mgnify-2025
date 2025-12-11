@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://plants-breeding.mgnify.org/sessions/qc.html</loc>
-    <lastmod>2025-12-11T17:44:09.142Z</lastmod>
+    <loc>https://course25.mgnify.org/sessions/qc.html</loc>
+    <lastmod>2025-12-11T17:56:46.278Z</lastmod>
   </url>
   <url>
-    <loc>https://plants-breeding.mgnify.org/sessions/genome_uploader.html</loc>
-    <lastmod>2025-12-11T17:44:09.139Z</lastmod>
+    <loc>https://course25.mgnify.org/sessions/mags.html</loc>
+    <lastmod>2025-12-11T17:56:46.267Z</lastmod>
   </url>
   <url>
-    <loc>https://plants-breeding.mgnify.org/sessions/amplicon.html</loc>
-    <lastmod>2025-12-11T17:44:09.138Z</lastmod>
+    <loc>https://course25.mgnify.org/sessions/getting_data_from_mgnify.html</loc>
+    <lastmod>2025-12-11T17:56:46.264Z</lastmod>
   </url>
   <url>
-    <loc>https://plants-breeding.mgnify.org/index.html</loc>
-    <lastmod>2025-12-11T17:44:09.137Z</lastmod>
+    <loc>https://course25.mgnify.org/sessions/assemblies.html</loc>
+    <lastmod>2025-12-11T17:56:46.260Z</lastmod>
   </url>
   <url>
-    <loc>https://plants-breeding.mgnify.org/sessions/assemblies.html</loc>
-    <lastmod>2025-12-11T17:44:09.138Z</lastmod>
+    <loc>https://course25.mgnify.org/index.html</loc>
+    <lastmod>2025-12-11T17:56:46.260Z</lastmod>
   </url>
   <url>
-    <loc>https://plants-breeding.mgnify.org/sessions/metagenomics.html</loc>
-    <lastmod>2025-12-11T17:44:09.141Z</lastmod>
+    <loc>https://course25.mgnify.org/sessions/genome_uploader.html</loc>
+    <lastmod>2025-12-11T17:56:46.261Z</lastmod>
+  </url>
+  <url>
+    <loc>https://course25.mgnify.org/sessions/mag_catalogues.html</loc>
+    <lastmod>2025-12-11T17:56:46.266Z</lastmod>
+  </url>
+  <url>
+    <loc>https://course25.mgnify.org/sessions/pangenome.html</loc>
+    <lastmod>2025-12-11T17:56:46.277Z</lastmod>
   </url>
 </urlset>
